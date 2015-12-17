@@ -12,7 +12,7 @@ from django.db import models
 from crashsubmit import models as submit_models
 
 class ProcessedCrash(models.Model):
-    crash_id = models.ForeignKey(submit_models.UploadedCrash,
+    crash_id = models.OneToOneField(submit_models.UploadedCrash,
             to_field = 'crash_id')
 
     # OS info
