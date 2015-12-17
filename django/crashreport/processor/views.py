@@ -6,15 +6,9 @@
 #
 
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseServerError
-
-from crashsubmit import models as submit_model
-
-from .models import ProcessedCrash
+from django.http import HttpResponse
 
 from processor import MinidumpProcessor
-
-import subprocess
 
 # Create your views here.
 
