@@ -1,0 +1,176 @@
+<html>
+<body>
+{% load staticfiles %}
+{% load compress %}
+{% load static from staticfiles %}
+
+{% block site_css %}
+{% compress css %}
+<link rel="stylesheet" type="text/css" href="{% static 'stats/css/lib/jquery-ui.css' %}" media="screen" />
+<link rel="stylesheet" type="text/css" href="{% static 'stats/css/lib/jquery-ui.structure.css' %}" media="screen" />
+<link rel="stylesheet" type="text/css" href="{% static 'stats/css/lib/jquery-ui.theme.css' %}" media="screen" />
+{% endcompress %}
+{% endblock %}
+
+{% block site_js %}
+{% compress js %}
+<script src="{% static '/stats/js/jquery/jquery-2.0.3.min.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'stats/js/jquery/plugins/jquery-ui.js' %}"></script>
+<script src="{% static 'stats/js/jquery/plugins/jquery.tablesorter.js' %}"></script>
+{% endcompress %}
+{% endblock %}
+
+<script>
+    $('#tabs').tabs({
+        selected: 0,
+        activate: function(event, ui) {
+            Analytics.trackTabSwitch('report_index', ui.newPanel.attr('id'));
+        }
+    });
+</script>
+
+<h1>Details for crash report: {{ crash.crash_id.crash_id }}</h1>
+<div id="tabs" class="no-border ui-tabs ui-widget ui-widget-content ui-corner-all">
+    <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+        <li class="ui-state-default ui-corner-top">
+            <a href="#details" class="ui-tabs-anchor">
+                <span>Details</span>
+            </a>
+        </li>
+        <li class="ui-state-default ui-corner-top">
+            <a href="#metadata" class="ui-tabs-anchor">
+                <span>Metadata</span>
+            </a>
+        </li>
+        <li class="ui-state-default ui-corner-top">
+            <a href="#modules" class="ui-tabs-anchor">
+                <span>Modules</span>
+            </a>
+        </li>
+        <li class="ui-state-default ui-corner-top">
+            <a href="#rawdump" class="ui-tabs-anchor">
+                <span>Raw Dump</span>
+            </a>
+        </li>
+    </ul>
+
+    <div id="details" class="ui-tabs-panel ui-widget-content ui-corner-bottom">
+        <table class="record data-table vertical">
+            <tbody>
+                <tr>
+                    <th scope="row">Signature</th>
+                    <td>
+                        {{ crash.signature }}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">UUID</th>
+                    <td>
+                        {{ crash.crash_id.crash_id }}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Version</th>
+                    <td>
+                        {{ crash.crash_id.version }}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Upload Time</th>
+                    <td>
+                        {{ crash.crash_id.upload_time }}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">OS</th>
+                    <td>
+                        {{ crash.os_name }}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">OS details</th>
+                    <td>
+                        {{ crash.os_detail }}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Build Architecture</th>
+                    <td>
+                        {{ crash.cpu_architecture }}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">CPU Info</th>
+                    <td>
+                        {{ crash.cpu_info }}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Crash Reason</th>
+                    <td>
+                        {{ crash.crash_cause }}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Crash Address</th>
+                    <td>
+                        {{ crash.crash_address }}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Crash Thread</th>
+                    <td>
+                        {{ crash.crash_thread }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="metadata" class="ui-tabs-hide">
+        <table class="record data-table vertical">
+            <tbody>
+                {% if crash.crash_id.device_id %}
+                <tr>
+                    <th scope="row">Graphic Device Id</th>
+                    <td>
+                        {{ crash.crash_id.device_id }}
+                    </td>
+                </tr>
+                {% endif %}
+                {% if crash.crash_id.vendor_id %}
+                <tr>
+                    <th scope="row">Graphic Vendor Id</th>
+                    <td>
+                        {{ crash.crash_id.vendor_id }}
+                    </td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+    <div id="modules" class="ui-tabs-hide">
+        <table class="record data-table vertical">
+            <thead>
+                <tr>
+                    <th scope="col">Module Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for module in modules %}
+                <tr>
+                    <td>
+                        {{ module }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+
+</div>
+</body>
+</html>

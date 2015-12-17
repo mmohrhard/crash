@@ -31,6 +31,7 @@ urlpatterns = [
     url(r'^submit/', include('crashsubmit.urls')),
     url(r'^process/', include('processor.urls')),
     url(r'^upload/', include('symbols.urls')),
+    url(r'^stats/', include('stats.urls')),
     url(r'^admin/', admin.site.urls),
 ]
 
