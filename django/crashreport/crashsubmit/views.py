@@ -14,6 +14,10 @@ from .models import UploadedCrash, Product, Version
 import os, uuid
 import string
 
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseServerError
+import traceback
+
 class UploadFileForm(forms.Form):
     upload_file_minidump = forms.FileField()
     AdapterDeviceId = forms.CharField(required = False)
@@ -21,17 +25,6 @@ class UploadFileForm(forms.Form):
     Version = forms.CharField()
     ProductName = forms.CharField()
 
-
-from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseServerError
-
-def handle_uploaded_file(f):
-    file_path = os.path.join('/tmp/x', f.name)
-    print(file_path)
-    with open(file_path, 'wb+') as destination:
-        for chunk in f.chunks():
-            destination.write(chunk)
-    return file_path
 
 class InvalidProductException(Exception):
     def __init__(self, product):
@@ -55,7 +48,14 @@ def split_version_string(version_string):
 
     return parameters[0], parameters[1], parameters[2], parameters[3]
 
-import traceback
+def handle_uploaded_file(f):
+    file_path = os.path.join('/tmp/x', f.name)
+    print(file_path)
+    with open(file_path, 'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
+    return file_path
+
 
 def create_database_entry(file, form):
     file_path = handle_uploaded_file(file)
@@ -65,6 +65,8 @@ def create_database_entry(file, form):
     version = form.cleaned_data['Version']
     product = form.cleaned_data['ProductName']
 
+    print(version)
+    print(product)
     model_product = Product.objects.get(product_name=product)
     if not model_product:
         raise InvalidProductException(product)
@@ -85,7 +87,8 @@ def create_database_entry(file, form):
     new_crash.save()
     return crash_id
 
-
+# TODO: moggi: move most of the code into own file
+# keep the view file clean
 @csrf_exempt
 def upload_file(request):
     if request.method != 'POST':
@@ -93,19 +96,18 @@ def upload_file(request):
 
     form = UploadFileForm(request.POST, request.FILES)
 
-    if not form.is_valid():
-        return HttpResponseNotAllowed('Invalid content')
-
     file = request.FILES['upload_file_minidump']
     if file is None:
+        return HttpResponseNotAllowed()
+
+    if not form.is_valid():
         return HttpResponseNotAllowed()
 
     try:
         crash_id = create_database_entry(file, form)
     except (InvalidVersionException, InvalidProductException) as e:
+        print(str(e))
         return HttpResponseServerError(str(e))
-    except:
-        return HttpResponseServerError()
 
     return HttpResponseRedirect(reverse('process', args=(str(crash_id))))
 
