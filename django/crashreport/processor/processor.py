@@ -44,7 +44,6 @@ class MinidumpProcessor(object):
                 pass
             elif thread_pattern.search(line) != None:
                 thread_id = thread_pattern.search(line).group('thread_id')
-                print(thread_id)
                 if thread_id not in content['Thread']:
                     content['Thread'][thread_id] = []
                 content['Thread'][thread_id].append(line)
