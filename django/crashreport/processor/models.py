@@ -11,6 +11,8 @@ from django.db import models
 from django.db.models import Count
 from django.utils import timezone
 
+from datetime import timedelta
+
 from crashsubmit import models as submit_models
 
 class Signature(models.Model):
@@ -32,8 +34,18 @@ class CrashByVersionData(object):
         self.id = id
 
 class ProcessedCrashManager(models.Manager):
-    def get_top_crashes(self):
-        res = self.get_queryset().filter(crash_id__version__major_version=5, crash_id__version__minor_version=1).values('os_name', 'signature').annotate(Count('os_name'))
+    def get_top_crashes(self, version=None, time=None, limit=None):
+        res = self.get_queryset()
+
+        if version is not None:
+            res = res.filter(crash_id__version__major_version=5, crash_id__version__minor_version=1)
+
+        if time is not None:
+            target = timezone.now() - timedelta(days=time)
+            res = res.filter(crash_id__upload_time__gte=target)
+
+        res = res.values('os_name', 'signature').annotate(Count('os_name'))
+
         data = {}
         for entry in res:
             signature = entry['signature']
@@ -45,7 +57,7 @@ class ProcessedCrashManager(models.Manager):
                 data[signature].lin = count
             elif entry['os_name'] == 'windows':
                 data[signature].win = count
-        return data
+        return data.values()
 
 class ProcessedCrash(models.Model):
     # custom manager

@@ -30,7 +30,7 @@ def top_crashes(request):
     return HttpResponse('top crashes')
 
 def crashes_by_version(request, version):
-    data = ProcessedCrash.objects.get_top_crashes()
-    return render(request, 'stats/version.html', {'signatures':data.values()})
+    data = ProcessedCrash.objects.get_top_crashes(version='5.1', limit=10)
+    return render(request, 'stats/version.html', {'signatures':data})
 
 # vim:set shiftwidth=4 softtabstop=4 expandtab: */
