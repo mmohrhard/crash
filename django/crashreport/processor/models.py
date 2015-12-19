@@ -11,6 +11,17 @@ from django.db import models
 
 from crashsubmit import models as submit_models
 
+class Signature(models.Model):
+    signature = models.CharField(max_length=100,
+            primary_key=True)
+
+    first_observed = models.DateTimeField()
+
+    last_observed = models.DateTimeField()
+
+    def __str__(self):
+        return self.signature
+
 class ProcessedCrash(models.Model):
     crash_id = models.OneToOneField(submit_models.UploadedCrash,
             to_field = 'crash_id')
@@ -40,8 +51,7 @@ class ProcessedCrash(models.Model):
     cpu_info = models.CharField(max_length=100,
             default='')
 
-    signature = models.CharField(max_length=100,
-            help_text='The signature(method in frame 0)')
+    signature = models.ForeignKey(Signature, on_delete=models.CASCADE)
 
     # crash info
     crash_cause = models.CharField(max_length=35,
@@ -87,7 +97,15 @@ class ProcessedCrash(models.Model):
                 text = "%s+%s" % (function,frame['offset'])
             else:
                 text = "%s+%s" % (frame['lib_name'], frame['offset'])
-        self.signature = text
+        signature = Signature.objects.get(signature=text)
+        if signature is None:
+            signature = Signature()
+            signature.signature = text
+            signature.first_observed = timezone.now()
+        singature.last_observed = timezone.now()
+        signature.save()
+        self.signature = signature
+
 
     def set_thread_to_model(self, threads, crash_thread):
         main_text = ""
