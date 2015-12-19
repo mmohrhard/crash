@@ -1,5 +1,5 @@
 <html>
-<body>
+<head>
 {% load staticfiles %}
 {% load compress %}
 {% load static from staticfiles %}
@@ -14,20 +14,14 @@
 
 {% block site_js %}
 {% compress js %}
-<script src="{% static '/stats/js/jquery/jquery-2.0.3.min.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'stats/js/jquery/jquery-2.0.3.min.js' %}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'stats/js/jquery/plugins/jquery-ui.js' %}"></script>
 <script src="{% static 'stats/js/jquery/plugins/jquery.tablesorter.js' %}"></script>
 {% endcompress %}
 {% endblock %}
 
-<script>
-    $('#tabs').tabs({
-        selected: 0,
-        activate: function(event, ui) {
-            Analytics.trackTabSwitch('report_index', ui.newPanel.attr('id'));
-        }
-    });
-</script>
+</head>
+<body>
 
 <h1>Details for crash report: {{ crash.crash_id.crash_id }}</h1>
 <div id="tabs" class="no-border ui-tabs ui-widget ui-widget-content ui-corner-all">
@@ -172,5 +166,9 @@
 
 
 </div>
+
+<script>
+    $("#tabs").tabs();
+</script>
 </body>
 </html>
