@@ -64,9 +64,12 @@ class ProcessedCrash(models.Model):
             default=0,
             help_text='The id of the thread that caused the crash')
 
+    # TODO: moggi: look for better solutions
     # modules
     modules = models.TextField()
 
+    # TODO: moggi: check if it makes sense to split the crashing thread out
+    # TODO: moggi: look for better solutions
     # threads
     threads = models.TextField()
 
