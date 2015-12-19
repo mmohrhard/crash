@@ -16,10 +16,6 @@ def main(request):
 
 def crash_details(request, crash_id):
 
-    result = finders.find('stats/js/jquery/jquery-2.0.3.min.js')
-    searched_locations = finders.searched_locations
-    print(searched_locations)
-
     crash = get_object_or_404(ProcessedCrash, crash_id=crash_id)
     modules = ['one module', 'another module']
     return render(request, 'stats/detail.html', {'crash': crash, 'modules':modules})
