@@ -54,7 +54,9 @@
                 <tr>
                     <th scope="row">Signature</th>
                     <td>
-                        {{ crash.signature }}
+                        <a href="{% url 'signature_details' crash.signature %}">
+                            {{ crash.signature }}
+                        </a>
                     </td>
                 </tr>
                 <tr>
