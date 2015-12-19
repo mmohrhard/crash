@@ -8,6 +8,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.db.models import Count
 from django.utils import timezone
 
 from crashsubmit import models as submit_models
@@ -23,7 +24,33 @@ class Signature(models.Model):
     def __str__(self):
         return self.signature
 
+class CrashByVersionData(object):
+    def __init__(self, id):
+        self.all = 0
+        self.win = 0
+        self.lin = 0
+        self.id = id
+
+class ProcessedCrashManager(models.Manager):
+    def get_top_crashes(self):
+        res = self.get_queryset().filter(crash_id__version__major_version=5, crash_id__version__minor_version=1).values('os_name', 'signature').annotate(Count('os_name'))
+        data = {}
+        for entry in res:
+            signature = entry['signature']
+            if not signature in data:
+                data[signature] = CrashByVersionData(signature)
+            count = entry['os_name__count']
+            data[signature].all += count
+            if entry['os_name'] == 'linux':
+                data[signature].lin = count
+            elif entry['os_name'] == 'windows':
+                data[signature].win = count
+        return data
+
 class ProcessedCrash(models.Model):
+    # custom manager
+    objects = ProcessedCrashManager()
+
     crash_id = models.OneToOneField(submit_models.UploadedCrash,
             to_field = 'crash_id')
 
