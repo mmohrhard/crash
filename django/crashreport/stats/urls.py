@@ -10,7 +10,7 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-        url(r'crash_details/(?P<crash_id>.+)$', views.crash_details),
+        url(r'crash_details/(?P<crash_id>.+)$', views.crash_details, name='crash_details'),
         url(r'top_crashes$', views.top_crashes),
         url(r'version/(?P<version>.+)$', views.crashes_by_version),
         url(r'signature/(?P<signature>.+)$', views.signature),
