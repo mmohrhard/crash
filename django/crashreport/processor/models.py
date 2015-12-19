@@ -8,6 +8,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.utils import timezone
 
 from crashsubmit import models as submit_models
 
@@ -105,7 +106,7 @@ class ProcessedCrash(models.Model):
             signature = Signature()
             signature.signature = text
             signature.first_observed = timezone.now()
-        singature.last_observed = timezone.now()
+        signature.last_observed = timezone.now()
         signature.save()
         self.signature = signature
 
@@ -121,7 +122,6 @@ class ProcessedCrash(models.Model):
                 main_text += "\n\nThread %s:\n"%(thread_id) + self._convert_frames(frame_list)
 
         text = crash_thread_text + "\n\n" + main_text
-
         self.threads = text
 
     def set_modules_to_model(self, modules):
