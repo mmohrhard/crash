@@ -1,0 +1,59 @@
+<html>
+<head>
+{% load staticfiles %}
+{% load compress %}
+{% load static from staticfiles %}
+
+{% block site_css %}
+{% compress css %}
+<link rel="stylesheet" type="text/css" href="{% static 'stats/css/lib/jquery-ui.css' %}" media="screen" />
+<link rel="stylesheet" type="text/css" href="{% static 'stats/css/lib/jquery-ui.structure.css' %}" media="screen" />
+<link rel="stylesheet" type="text/css" href="{% static 'stats/css/lib/jquery-ui.theme.css' %}" media="screen" />
+{% endcompress %}
+{% endblock %}
+
+{% block site_js %}
+{% compress js %}
+<script src="{% static 'stats/js/jquery/jquery-2.0.3.min.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'stats/js/jquery/plugins/jquery-ui.js' %}"></script>
+<script src="{% static 'stats/js/jquery/plugins/jquery.tablesorter.js' %}"></script>
+{% endcompress %}
+{% endblock %}
+
+</head>
+<body>
+    <h1>Crash report for Version:</h1>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th scope="col">Crash ID</th>
+                    <th scope="col">All</th>
+                    <th scope="col">Windows</th>
+                    <th scope="col">Linux</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for signature in signatures %}
+                <tr>
+                    <td>
+                        <a href="{% url 'signature_details' signature.id %}">
+                            {{ signature.id }}
+                        </a>
+                    </td>
+                    <td>
+                        {{ signature.all }}
+                    </td>
+                    <td>
+                        {{ signature.win }}
+                    </td>
+                    <td>
+                        {{ signature.lin }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
