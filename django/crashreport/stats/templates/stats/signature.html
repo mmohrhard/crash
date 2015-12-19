@@ -1,0 +1,80 @@
+<html>
+<head>
+{% load staticfiles %}
+{% load compress %}
+{% load static from staticfiles %}
+
+{% block site_css %}
+{% compress css %}
+<link rel="stylesheet" type="text/css" href="{% static 'stats/css/lib/jquery-ui.css' %}" media="screen" />
+<link rel="stylesheet" type="text/css" href="{% static 'stats/css/lib/jquery-ui.structure.css' %}" media="screen" />
+<link rel="stylesheet" type="text/css" href="{% static 'stats/css/lib/jquery-ui.theme.css' %}" media="screen" />
+{% endcompress %}
+{% endblock %}
+
+{% block site_js %}
+{% compress js %}
+<script src="{% static 'stats/js/jquery/jquery-2.0.3.min.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'stats/js/jquery/plugins/jquery-ui.js' %}"></script>
+<script src="{% static 'stats/js/jquery/plugins/jquery.tablesorter.js' %}"></script>
+{% endcompress %}
+{% endblock %}
+
+</head>
+<body>
+    <h1>Details for signature {{ signature }}</h1>
+    <div id="tabs" class="no-border ui-tabs ui-widget ui-widget-content ui-corner-all">
+        <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+            <li class="ui-state-default ui-corner-top">
+                <a href="#reports" class="ui-tabs-anchor">
+                    <span>Reports</span>
+                </a>
+            </li>
+            <li class="ui-state-default ui-corner-top">
+                <a href="#summary" class="ui-tabs-anchor">
+                    <span>Summary</span>
+                </a>
+            </li>
+        </ul>
+
+        <div id="reports" class="ui-tabs-panel ui-widget-content ui-corner-bottom">
+            <table class="record data-table vertical">
+                <thead>
+                    <tr>
+                        <th scope="col">Crash ID</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Version</th>
+                        <th scope="col">Platform</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for crash in crashes %}
+                    <tr>
+                        <td>
+                            {{ crash.crash_id.crash_id }}
+                        </td>
+                        <td>
+                            {{ crash.crash_id.upload_time }}
+                        </td>
+                        <td>
+                            {{ crash.crash_id.version }}
+                        </td>
+                        <td>
+                            {{ crash.os_name }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div id="summary" class="ui-tabs-hide">
+        </div>
+    </div>
+
+<script>
+    $("#tabs").tabs();
+</script>
+
+</body>
+</html>

@@ -8,7 +8,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 
-from processor.models import ProcessedCrash
+from processor.models import ProcessedCrash, Signature
 from django.contrib.staticfiles import finders
 
 def main(request):
@@ -19,6 +19,13 @@ def crash_details(request, crash_id):
     crash = get_object_or_404(ProcessedCrash, crash_id=crash_id)
     modules = ['one module', 'another module']
     return render(request, 'stats/detail.html', {'crash': crash, 'modules':modules})
+
+def signature(request, signature):
+    signature_obj = get_object_or_404(Signature, signature=signature)
+    crashes = signature_obj.processedcrash_set.all()
+    return render(request, 'stats/signature.html', {'signature':signature_obj, 'crashes':crashes})
+
+
 
 def top_crashes(request):
     return HttpResponse('top crashes')
