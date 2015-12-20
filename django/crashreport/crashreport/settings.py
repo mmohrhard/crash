@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'compressor',
 ]
 
-STATICFILES_FINDER = [
+STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'compressor.finders.CompressorFinder',
