@@ -1,0 +1,4 @@
+Dependencies for the django App:
+
+lesscpy (Python based less css compiler)
+django-compressor (css and js compressor)
