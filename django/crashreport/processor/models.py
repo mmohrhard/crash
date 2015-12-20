@@ -31,7 +31,7 @@ class CrashByVersionData(object):
         self.all = 0
         self.win = 0
         self.lin = 0
-        self.id = id
+        self.id = Signature.objects.get(signature=id)
 
 class ProcessedCrashManager(models.Manager):
     def get_top_crashes(self, version=None, time=None, limit=None):

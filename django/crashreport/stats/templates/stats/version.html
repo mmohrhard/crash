@@ -31,6 +31,8 @@
                     <th scope="col">All</th>
                     <th scope="col">Windows</th>
                     <th scope="col">Linux</th>
+                    <th scope="col">First Reported</th>
+                    <th scope="col">Last Reported</th>
                 </tr>
             </thead>
             <tbody>
@@ -49,6 +51,12 @@
                     </td>
                     <td>
                         {{ signature.lin }}
+                    </td>
+                    <td>
+                        {{ signature.id.first_observed }}
+                    </td>
+                    <td>
+                        {{ signature.id.last_observed }}
                     </td>
                 </tr>
                 {% endfor %}
