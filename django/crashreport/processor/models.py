@@ -62,6 +62,8 @@ class ProcessedCrashManager(models.Manager):
                 data[signature].win = count
         values = data.values()
         sorted(values, key=CrashByVersionData.getKey)
+        if limit is not None and len(values) > limit:
+            values = values[0:limit]
         return values
 
 class ProcessedCrash(models.Model):
