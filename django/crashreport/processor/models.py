@@ -33,6 +33,9 @@ class CrashByVersionData(object):
         self.lin = 0
         self.id = Signature.objects.get(signature=id)
 
+    def getKey(item):
+        return item.all
+
 class ProcessedCrashManager(models.Manager):
     def get_top_crashes(self, version=None, time=None, limit=None):
         res = self.get_queryset()
@@ -57,7 +60,9 @@ class ProcessedCrashManager(models.Manager):
                 data[signature].lin = count
             elif entry['os_name'] == 'windows':
                 data[signature].win = count
-        return data.values()
+        values = data.values()
+        sorted(values, key=CrashByVersionData.getKey)
+        return values
 
 class ProcessedCrash(models.Model):
     # custom manager
