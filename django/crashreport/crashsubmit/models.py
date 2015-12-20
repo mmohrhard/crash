@@ -27,6 +27,9 @@ class Version(models.Model):
     micro_version = models.SmallIntegerField()
     patch_version = models.SmallIntegerField()
 
+    featured = models.BooleanField(
+            default=False)
+
     def __str__(self):
         return str(self.product) + " Version: " + str(self.major_version) + "." + \
                 str(self.minor_version) + "." + str(self.micro_version) + "." + str(self.patch_version)
