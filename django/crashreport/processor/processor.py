@@ -50,6 +50,7 @@ class MinidumpProcessor(object):
 
         self.processed_crash = ProcessedCrash()
         self.processed_crash.crash_id = original_crash_report
+        self.processed_crash.raw = output
         self._parse_modules(content['Modules'])
         self._parse_threads(content['Thread'])
         self._parse_os(content['OS'])

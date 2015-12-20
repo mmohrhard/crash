@@ -120,6 +120,8 @@ class ProcessedCrash(models.Model):
     # threads
     threads = models.TextField()
 
+    raw = models.TextField()
+
     def set_view_os_name_to_model(self, view_os_name):
         if view_os_name.lower() == ProcessedCrash.LINUX:
             self.os_name = ProcessedCrash.LINUX
