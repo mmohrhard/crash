@@ -152,13 +152,17 @@
             <thead>
                 <tr>
                     <th scope="col">Module Name</th>
+                    <th scope="col">Debug ID</th>
                 </tr>
             </thead>
             <tbody>
                 {% for module in modules %}
                 <tr>
                     <td>
-                        {{ module }}
+                        {{ module.name }}
+                    </td>
+                    <td>
+                        {{ module.id }}
                     </td>
                 </tr>
                 {% endfor %}

@@ -51,7 +51,7 @@ class MinidumpProcessor(object):
         self.processed_crash = ProcessedCrash()
         self.processed_crash.crash_id = original_crash_report
         self.processed_crash.raw = output
-        self._parse_modules(content['Modules'])
+        self.processed_crash.set_modules_to_model(content['Modules'])
         self._parse_threads(content['Thread'])
         self._parse_os(content['OS'])
         self._parse_cpu(content['CPU'])
@@ -68,20 +68,6 @@ class MinidumpProcessor(object):
         os_detail = parsed_line.group('os_detail')
         self.processed_crash.os_detail = os_detail
         self.processed_crash.set_view_os_name_to_model(os_name)
-
-
-    def _parse_modules(self, modules):
-        # Module|libsaxlo.so||libsaxlo.so|B384C3D90638B60EACDEC122A3C1E38B0|0x7fd53dd7a000|0x7fd53dfc3fff|0
-        module_pattern = re.compile(r'^Module\|(?P<module_name>[^|]+)\|')
-        module_list = set()
-        for module in modules:
-            parsed_line = module_pattern.search(module)
-            if parsed_line:
-                module_name = parsed_line.group('module_name')
-                module_list.add(module_name)
-
-        # TODO: moggi: remove all entries that are not libraries
-        self.processed_crash.set_modules_to_model(module_list)
 
     def _parse_frames(self, frames):
         frame_pattern = re.compile(r'^(?P<thread_id>\d+)\|(?P<frame_id>\d+)\|(?P<lib_name>[^|]+)\|(?P<function_name>[^!]*)\|(?P<file>[^|]*)\|(?P<line_number>\d*)\|(?P<offset>[^|]*)')
@@ -102,7 +88,6 @@ class MinidumpProcessor(object):
                         'line': line_number, 'offset': offset})
 
         return frame_list
-
 
     def _parse_threads(self, threads):
         # 0|0|libsclo.so|crash|/home/moggi/devel/libo9/sc/source/ui/docshell/docsh.cxx|434|0x4

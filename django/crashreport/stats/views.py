@@ -17,7 +17,7 @@ def main(request):
 def crash_details(request, crash_id):
 
     crash = get_object_or_404(ProcessedCrash, crash_id=crash_id)
-    modules = ['one module', 'another module']
+    modules = crash.get_split_module_list()
     return render(request, 'stats/detail.html', {'crash': crash, 'modules':modules})
 
 def signature(request, signature):

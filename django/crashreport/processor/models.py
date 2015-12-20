@@ -173,9 +173,21 @@ class ProcessedCrash(models.Model):
         self.threads = text
 
     def set_modules_to_model(self, modules):
-        text = ""
+        self.modules = "\n".join(modules)
+
+    def get_split_module_list(self):
+        print(self.modules)
+        modules = self.modules.splitlines()
+        ret = []
         for module in modules:
-            text += "%s\n"%(module)
-        self.modules = text
+            line = module.split('|')
+            module_name = line[1]
+            if module_name.startswith('LC_'):
+                continue
+            version = line[2]
+            debug_id = line[4]
+            ret.append({'name':module_name,
+                'version':version, 'id':debug_id})
+        return ret
 
 # vim:set shiftwidth=4 softtabstop=4 expandtab: */
