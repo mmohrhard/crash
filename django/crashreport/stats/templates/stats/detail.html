@@ -10,6 +10,7 @@
 <link rel="stylesheet" type="text/css" href="{% static 'stats/css/lib/jquery-ui.structure.css' %}" media="screen" />
 <link rel="stylesheet" type="text/css" href="{% static 'stats/css/lib/jquery-ui.theme.css' %}" media="screen" />
 <link rel="stylesheet" type="text/less" href="{% static 'stats/css/tables.less' %}" media="screen" />
+<link rel="stylesheet" type="text/less" href="{% static 'stats/css/common.less' %}" media="screen" />
 {% endcompress %}
 {% endblock %}
 
@@ -170,7 +171,7 @@
         </table>
     </div>
 
-
+    <div id="rawdump" class="code">{{ crash.raw }}</div>
 
 </div>
 
