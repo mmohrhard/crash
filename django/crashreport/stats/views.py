@@ -26,8 +26,18 @@ def signature(request, signature):
     return render(request, 'stats/signature.html', {'signature':signature_obj, 'crashes':crashes})
 
 
+def handle_parameter_or_default(data, param_name, default):
+    if param_name in data:
+        return data[param_name]
+
+    return default
+
 def top_crashes(request):
-    return HttpResponse('top crashes')
+    days = int(handle_parameter_or_default(request.GET, 'days', 1))
+    limit = int(handle_parameter_or_default(request.GET, 'limit', 10))
+    version = handle_parameter_or_default(request.GET, 'version', None)
+    data = ProcessedCrash.objects.get_top_crashes(time=days, limit=limit, version=version)
+    return render(request, 'stats/version.html', {'signatures':data})
 
 def crashes_by_version(request, version):
     data = ProcessedCrash.objects.get_top_crashes(version='5.1', limit=10)
