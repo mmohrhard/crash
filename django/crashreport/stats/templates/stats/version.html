@@ -9,6 +9,7 @@
 <link rel="stylesheet" type="text/css" href="{% static 'stats/css/lib/jquery-ui.css' %}" media="screen" />
 <link rel="stylesheet" type="text/css" href="{% static 'stats/css/lib/jquery-ui.structure.css' %}" media="screen" />
 <link rel="stylesheet" type="text/css" href="{% static 'stats/css/lib/jquery-ui.theme.css' %}" media="screen" />
+<link rel="stylesheet" type="text/less" href="{% static 'stats/css/tables.less' %}" media="screen" />
 {% endcompress %}
 {% endblock %}
 
@@ -24,7 +25,7 @@
 <body>
     <h1>Crash report for Version:</h1>
     <div>
-        <table>
+        <table class="data-table">
             <thead>
                 <tr>
                     <th scope="col">Crash ID</th>
