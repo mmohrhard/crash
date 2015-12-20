@@ -82,6 +82,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'crashreport.wsgi.application'
 
+COMPRESS_PRECOMPILERS = (
+        ('text/less', 'lesscpy {infile}'),
+)
+
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
