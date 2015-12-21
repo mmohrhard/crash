@@ -49,8 +49,8 @@ def split_version_string(version_string):
     return parameters[0], parameters[1], parameters[2], parameters[3]
 
 def handle_uploaded_file(f):
+    # TODO: moggi: get the path from the config
     file_path = os.path.join('/tmp/x', f.name)
-    print(file_path)
     with open(file_path, 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
@@ -65,8 +65,6 @@ def create_database_entry(file, form):
     version = form.cleaned_data['Version']
     product = form.cleaned_data['ProductName']
 
-    print(version)
-    print(product)
     model_product = Product.objects.get(product_name=product)
     if not model_product:
         raise InvalidProductException(product)
@@ -106,7 +104,6 @@ def upload_file(request):
     try:
         crash_id = create_database_entry(file, form)
     except (InvalidVersionException, InvalidProductException) as e:
-        print(str(e))
         return HttpResponseServerError(str(e))
 
     return HttpResponseRedirect(reverse('process', args=(str(crash_id))))
