@@ -102,10 +102,10 @@ def upload_file(request):
         return HttpResponseNotAllowed()
 
     try:
-        crash_id = create_database_entry(file, form)
+        crash_id = str(create_database_entry(file, form))
     except (InvalidVersionException, InvalidProductException) as e:
         return HttpResponseServerError(str(e))
 
-    return HttpResponseRedirect(reverse('process', args=(str(crash_id))))
+    return HttpResponseRedirect('Crash-ID=%s'%(crash_id))
 
 # vim:set shiftwidth=4 softtabstop=4 expandtab: */
