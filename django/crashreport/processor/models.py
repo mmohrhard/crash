@@ -111,7 +111,6 @@ class ProcessedCrash(models.Model):
             default=0,
             help_text='The id of the thread that caused the crash')
 
-    # TODO: moggi: look for better solutions
     # modules
     modules = models.TextField()
 
@@ -149,6 +148,7 @@ class ProcessedCrash(models.Model):
                 text = "%s+%s" % (function,frame['offset'])
             else:
                 text = "%s+%s" % (frame['lib_name'], frame['offset'])
+
         signature = Signature.objects.get(signature=text)
         upload_time = self.crash_id.upload_time
         if signature is None:
@@ -159,7 +159,6 @@ class ProcessedCrash(models.Model):
             signature.last_observed = upload_time
         signature.save()
         self.signature = signature
-
 
     def set_thread_to_model(self, threads, crash_thread):
         main_text = ""
