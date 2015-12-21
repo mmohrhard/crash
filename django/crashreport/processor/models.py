@@ -150,11 +150,13 @@ class ProcessedCrash(models.Model):
             else:
                 text = "%s+%s" % (frame['lib_name'], frame['offset'])
         signature = Signature.objects.get(signature=text)
+        upload_time = self.crash_id.upload_time
         if signature is None:
             signature = Signature()
             signature.signature = text
-            signature.first_observed = timezone.now()
-        signature.last_observed = timezone.now()
+            signature.first_observed = upload_time
+        if signature.last_observed < upload_time:
+            signature.last_observed = upload_time
         signature.save()
         self.signature = signature
 
