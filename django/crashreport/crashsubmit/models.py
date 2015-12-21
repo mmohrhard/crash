@@ -31,7 +31,10 @@ class Version(models.Model):
             default=False)
 
     def __str__(self):
-        return str(self.product) + " Version: " + str(self.major_version) + "." + \
+        return str(self.product) + " Version: " + self.str_without_product()
+
+    def str_without_product(self):
+        return str(self.major_version) + "." + \
                 str(self.minor_version) + "." + str(self.micro_version) + "." + str(self.patch_version)
 
     class Meta:
