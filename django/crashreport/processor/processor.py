@@ -63,9 +63,9 @@ class MinidumpProcessor(object):
     def _parse_os(self, os):
         # ['OS|Linux|0.0.0 Linux 3.16.7-24-desktop #1 SMP PREEMPT Mon Aug 3 14:37:06 UTC 2015 (ec183cc) x86_64']
         assert(len(os) == 1)
-        parsed_line = re.search(r'^OS\|(?P<os_name>\w+)\|(?P<os_detail>.*)$', os[0])
-        os_name = parsed_line.group('os_name')
-        os_detail = parsed_line.group('os_detail')
+        parsed_line = os[0].split('|')
+        os_name = parsed_line[1]
+        os_detail = parsed_line[2]
         self.processed_crash.os_detail = os_detail
         self.processed_crash.set_view_os_name_to_model(os_name)
 
@@ -101,26 +101,23 @@ class MinidumpProcessor(object):
 
     def _parse_cpu(self, cpu):
         # CPU|amd64|family 6 model 30 stepping 5|4
-        cpu_pattern = re.compile(r'^CPU\|(?P<architecture>\w+)\|(?P<cpu_info>[^|]*)\|')
         assert(len(cpu) == 1)
-        parsed_line = cpu_pattern.search(cpu[0])
-        if parsed_line:
-            architecture = parsed_line.group('architecture')
-            cpu_info = parsed_line.group('cpu_info')
-            self.processed_crash.cpu_info = cpu_info
-            self.processed_crash.cpu_architecture = architecture
+        parsed_line = cpu[0].split['|']
+        architecture = parsed_line[1]
+        cpu_info = parsed_line[2]
+        self.processed_crash.cpu_info = cpu_info
+        self.processed_crash.cpu_architecture = architecture
 
     def _parse_crash(self, crash):
         # Crash|SIGSEGV|0x0|0
-        crash_pattern = re.compile(r'^Crash\|(?P<cause>[^|]*)\|(?P<address>[^|]*)\|(?P<thread_id>\d+)$')
         assert(len(crash) == 1)
-        parsed_line = crash_pattern.search(crash[0])
-        if parsed_line:
-            cause = parsed_line.group('cause')
-            address = parsed_line.group('address')
-            thread_id = parsed_line.group('thread_id')
-            self.processed_crash.crash_cause = cause
-            self.processed_crash.crash_address = address
-            self.processed_crash.crash_thread = thread_id
+        parsed_line = crash[0].split['|']
+
+        cause = parsed_line[1]
+        address = parsed_line[2]
+        thread_id = parsed_line[3]
+        self.processed_crash.crash_cause = cause
+        self.processed_crash.crash_address = address
+        self.processed_crash.crash_thread = thread_id
 
 # vim:set shiftwidth=4 softtabstop=4 expandtab: */
