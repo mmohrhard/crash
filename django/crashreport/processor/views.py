@@ -10,7 +10,17 @@ from django.http import HttpResponse
 
 from processor import MinidumpProcessor
 
-# Create your views here.
+from crashsubmit import models
+
+def process_all(request):
+    # move that to a Manager
+    crashes = models.UploadedCrash.objects.filter(processedcrash__isnull=True)
+    done = []
+    for crash in crashes:
+        procescor = MinidumpProcessor()
+        procescor.process(crash.crash_id)
+        done.append(crash.crash_id)
+    return HttpResponse("\n".join(done))
 
 def process(request, crash_id):
     processor = MinidumpProcessor()
