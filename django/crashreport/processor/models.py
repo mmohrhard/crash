@@ -176,7 +176,6 @@ class ProcessedCrash(models.Model):
         self.modules = "\n".join(modules)
 
     def get_split_module_list(self):
-        print(self.modules)
         modules = self.modules.splitlines()
         ret = []
         for module in modules:
