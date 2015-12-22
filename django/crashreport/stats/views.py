@@ -23,6 +23,7 @@ def generate_data_for_version(version, x_values, crashes):
             values.append(None)
     data = {}
     data['label'] = version
+    # TODO: moggi: generate colors for each series
     data['fillColor'] = "rgba(220, 220, 220, 0.2)"
     data['strokeColor'] = "rgba(220, 220, 220, 1)"
     data['pointColor'] = "rgba(220, 220, 220, 1)"
