@@ -22,7 +22,6 @@ def generate_data_for_version(version, x_values, crashes):
         else:
             values.append(None)
     data = {}
-    data['data'] = ["1", "2", "3"]
     data['label'] = version
     data['fillColor'] = "rgba(220, 220, 220, 0.2)"
     data['strokeColor'] = "rgba(220, 220, 220, 1)"
