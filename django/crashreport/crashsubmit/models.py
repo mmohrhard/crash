@@ -23,12 +23,26 @@ class Product(models.Model):
 class VersionManager(models.Manager):
     def get_by_version_string(self, version):
         res = self.get_queryset()
-        # TODO: moggi: make this generic
-        res.filter(major_version=5, minor_version=1, \
-                micro_version=0, patch_version=0)
+        major_version, minor_version, micro_version, patch_version = \
+                self._split_version_string(version)
+
+        if major_version:
+            res = res.filter(major_version=major_version)
+
+        if minor_version:
+            res = res.filter(minor_version=minor_version)
+
+        if micro_version:
+            res = res.filter(micro_version=micro_version)
+
+        if patch_version:
+            res = res.filter(patch_version=patch_version)
+
         return res
 
-
+    def _split_version_string(self, version):
+        split_version = version.split('.')
+        return split_version
 
 class Version(models.Model):
     product = models.ForeignKey(Product)
