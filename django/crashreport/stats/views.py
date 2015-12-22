@@ -39,8 +39,8 @@ def generate_chart_data():
     keys, values = CrashCount.objects.get_crash_count_processed()
     data['labels'] = keys
     data['datasets'] = []
-    # TODO: moggi: make this generic
-    data['datasets'].append(generate_data_for_version("5.1.0.0", keys, values['5.1.0.0']))
+    for version in values.keys():
+        data['datasets'].append(generate_data_for_version(version, keys, values[version]))
     return data
 
 def main(request):
