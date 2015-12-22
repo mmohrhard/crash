@@ -27,7 +27,7 @@ class CrashCountManager(models.Manager):
             if version_string not in data:
                 data[version_string] = {}
             data[version_string][date] = entry.count
-        return list(keys), data
+        return sorted(list(keys)), data
 
     def get_crash_count(self, versions=None, time=None):
         res = self.get_queryset()
