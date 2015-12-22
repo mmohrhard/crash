@@ -33,9 +33,6 @@ def generate_data_for_version(version, x_values, crashes):
     data['data'] = values
     return data
 
-def extract_x_values(crashes):
-    return [str(s) for s in crashes.dates('date', 'day')]
-
 def generate_chart_data():
     data = {}
     # TODO: moggi: how to handle dates without entries
