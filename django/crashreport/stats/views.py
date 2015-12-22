@@ -33,10 +33,10 @@ def generate_data_for_version(version, x_values, crashes):
     data['data'] = values
     return data
 
-def generate_chart_data():
+def generate_chart_data(featured):
     data = {}
     # TODO: moggi: how to handle dates without entries
-    keys, values = CrashCount.objects.get_crash_count_processed()
+    keys, values = CrashCount.objects.get_crash_count_processed(versions=featured)
     data['labels'] = keys
     data['datasets'] = []
     for version in values.keys():
@@ -45,10 +45,8 @@ def generate_chart_data():
 
 def main(request):
     featured = Version.objects.filter(featured=True)
-    generated_chart_data = generate_chart_data()
-    print(generated_chart_data)
+    generated_chart_data = generate_chart_data(featured)
     chart_data = json.dumps(generated_chart_data)
-    print(chart_data)
     return render(request, 'stats/main.html', {'featured':featured, 'chart_data': chart_data})
 
 def crash_details(request, crash_id):
