@@ -20,6 +20,16 @@ class Product(models.Model):
     def __str__(self):
         return self.product_name
 
+class VersionManager(models.Manager):
+    def get_by_version_string(self, version):
+        res = self.get_queryset()
+        # TODO: moggi: make this generic
+        res.filter(major_version=5, minor_version=1, \
+                micro_version=0, patch_version=0)
+        return res
+
+
+
 class Version(models.Model):
     product = models.ForeignKey(Product)
     major_version = models.SmallIntegerField()
@@ -36,6 +46,9 @@ class Version(models.Model):
     def str_without_product(self):
         return str(self.major_version) + "." + \
                 str(self.minor_version) + "." + str(self.micro_version) + "." + str(self.patch_version)
+
+    # custom manager
+    objects = VersionManager()
 
     class Meta:
         unique_together = ('product', 'major_version',
