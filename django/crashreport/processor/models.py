@@ -15,6 +15,31 @@ from datetime import timedelta
 
 from crashsubmit import models as submit_models
 
+class CrashCountManager(models.Manager):
+    def get_crash_count(self, versions=None, time=None):
+        res = self.get_queryset()
+        if versions is not None:
+            res = res.filter(version__in=versions)
+
+        if time is not None:
+            now = timezone.now()
+            before = timezone.now() - timedelta(days=time)
+            res = res.filter(date__range=[before, now])
+
+        return res
+
+class CrashCount(models.Model):
+    version = models.ForeignKey(submit_models.Version)
+    date = models.DateField()
+    count = models.IntegerField()
+
+    # custom manager
+    objects = CrashCountManager()
+
+    class Meta:
+        unique_together = ('version', 'date')
+
+
 class Signature(models.Model):
     signature = models.CharField(max_length=100,
             primary_key=True)
