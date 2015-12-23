@@ -102,7 +102,7 @@ class MinidumpProcessor(object):
     def _parse_cpu(self, cpu):
         # CPU|amd64|family 6 model 30 stepping 5|4
         assert(len(cpu) == 1)
-        parsed_line = cpu[0].split['|']
+        parsed_line = cpu[0].split('|')
         architecture = parsed_line[1]
         cpu_info = parsed_line[2]
         self.processed_crash.cpu_info = cpu_info
@@ -111,7 +111,7 @@ class MinidumpProcessor(object):
     def _parse_crash(self, crash):
         # Crash|SIGSEGV|0x0|0
         assert(len(crash) == 1)
-        parsed_line = crash[0].split['|']
+        parsed_line = crash[0].split('|')
 
         cause = parsed_line[1]
         address = parsed_line[2]
