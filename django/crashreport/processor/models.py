@@ -153,9 +153,10 @@ class ProcessedCrash(models.Model):
     # modules
     modules = models.TextField()
 
-    # TODO: moggi: check if it makes sense to split the crashing thread out
     # TODO: moggi: look for better solutions
     # threads
+    crashing_thread = models.TextField()
+
     threads = models.TextField()
 
     raw = models.TextField()
@@ -201,16 +202,14 @@ class ProcessedCrash(models.Model):
 
     def set_thread_to_model(self, threads, crash_thread):
         main_text = ""
-        crash_thread_text = "Crashing Thread (Thread %d):\n" % (crash_thread)
         for thread_id, frame_list in threads.iteritems():
             if int(thread_id) == crash_thread:
                 self._set_signature(frame_list)
-                crash_thread_text += self._convert_frames(frame_list)
+                self.crashing_thread = self._convert_frames(frame_list)
             else:
                 main_text += "\n\nThread %s:\n"%(thread_id) + self._convert_frames(frame_list)
 
-        text = crash_thread_text + "\n\n" + main_text
-        self.threads = text
+        self.threads = main_text
 
     def set_modules_to_model(self, modules):
         self.modules = "\n".join(modules)
