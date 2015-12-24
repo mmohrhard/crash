@@ -12,9 +12,12 @@ class VersionModeltest(TestCase):
     def setUp(self):
         self.product = Product(product_name="TestProduct")
         self.product.save()
-
-    def test_version_string(self):
-        version = Version(product=self.product, major_version=1,
+        self.version = Version(product=self.product, major_version=1,
                 minor_version=2, micro_version=3,
                 patch_version=4)
-        self.assertEqual(str(version), "TestProduct Version: 1.2.3.4")
+
+    def test_version_string(self):
+        self.assertEqual(str(self.version), "TestProduct Version: 1.2.3.4")
+
+    def test_version_string_without_product(self):
+        self.assertEqual(self.version.str_without_product(), "1.2.3.4")
