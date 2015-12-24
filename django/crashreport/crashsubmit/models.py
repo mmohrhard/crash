@@ -23,20 +23,20 @@ class Product(models.Model):
 class VersionManager(models.Manager):
     def get_by_version_string(self, version):
         res = self.get_queryset()
-        major_version, minor_version, micro_version, patch_version = \
+        split_versions = \
                 self._split_version_string(version)
 
-        if major_version:
-            res = res.filter(major_version=major_version)
+        if len(split_versions) >= 1:
+            res = res.filter(major_version=split_versions[0])
 
-        if minor_version:
-            res = res.filter(minor_version=minor_version)
+        if len(split_versions) >= 2:
+            res = res.filter(minor_version=split_versions[1])
 
-        if micro_version:
-            res = res.filter(micro_version=micro_version)
+        if len(split_versions) >= 3:
+            res = res.filter(micro_version=split_versions[2])
 
-        if patch_version:
-            res = res.filter(patch_version=patch_version)
+        if len(split_versions) >= 4:
+            res = res.filter(patch_version=split_versions[3])
 
         return res
 
