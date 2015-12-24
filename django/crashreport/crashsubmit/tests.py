@@ -35,6 +35,10 @@ class VersionManagerTest(TestCase):
         res = Version.objects.get_by_version_string("2.3.4.5")
         self.assertEqual(len(res), 0)
 
+    def test_short_version_string(self):
+        res = Version.objects.get_by_version_string("1.2.3")
+        self.assertEqual(len(res), 1)
+
     def test_full_version_string(self):
         res = Version.objects.get_by_version_string("1.2.3.4")
         self.assertEqual(len(res), 1)
