@@ -27,8 +27,7 @@ class SymbolsUploadHandler(object):
 
         upload = SymbolsUpload()
         upload.files = file_names
-        # TODO: moggi: handle the comment
-        upload.comment = "" #data['comment']
+        upload.comment = data['comment']
         upload.upload_time = timezone.now()
         upload.save()
 
