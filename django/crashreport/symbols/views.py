@@ -21,7 +21,6 @@ class UploadSymbolsForm(forms.Form):
 def handle_uploaded_file(f):
     # TODO: moggi: get the symbols localtion from the configuration
     file_path = os.path.join('/tmp/symbols_upload', f.name)
-    print(file_path)
     with open(file_path, 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
@@ -36,8 +35,6 @@ def upload_symbols(request):
         return HttpResponseNotAllowed('Only POST here')
 
     form = UploadSymbolsForm(request.POST, request.FILES)
-
-    print(form.fields)
 
     if not form.is_valid():
         return HttpResponseNotAllowed('Invalid data')
