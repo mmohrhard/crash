@@ -16,7 +16,7 @@ import os
 
 class UploadSymbolsForm(forms.Form):
     symbols = forms.FileField()
-    comment = forms.TextInput()
+    comment = forms.CharField()
 
 def handle_uploaded_file(f):
     # TODO: moggi: get the symbols localtion from the configuration
