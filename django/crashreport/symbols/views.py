@@ -28,6 +28,7 @@ def handle_uploaded_file(f):
 
     return file_path
 
+# TODO: this needs to be limited to logged in users
 @csrf_exempt
 def upload_symbols(request):
 
@@ -44,6 +45,8 @@ def upload_symbols(request):
     path = handle_uploaded_file(request.FILES['symbols'])
     upload = SymbolsUploadHandler()
     upload.process(form.cleaned_data, path)
+
+    # TODO: moggi: maybe report the zipfile.BadZipfile exception
 
     return HttpResponse("Success")
 
