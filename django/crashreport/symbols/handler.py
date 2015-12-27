@@ -20,7 +20,6 @@ class SymbolsUploadHandler(object):
         pass
 
     def process(self, data, path):
-        print(data)
         zip_file = ZipFile(path)
         file_names = "\n".join(zip_file.namelist())
         zip_file.extractall(SymbolsUploadHandler.symbol_location)
