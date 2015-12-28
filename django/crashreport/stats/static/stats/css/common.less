@@ -13,3 +13,46 @@ div.content {
     position: relative;
     left: 5%;
 }
+
+.version-nav {
+    position: relative;
+    background-color: #18A303;
+    color: #edf1f3;
+    padding: 0 20px;
+    padding-left: 124px;
+    border-bottom: 1px solid #c0c0c0;
+    line-height: 32px;
+    a {
+        color: #edf1f3;
+    }
+    .filter {
+        display: inline;
+        li {
+            display: inline;
+            padding: .25em 1em;
+            border-left: 1px solid #7393A3;
+        }
+        li.version_select {
+            padding-left:0;
+            border-left: 0;
+        }
+        li:first-child {
+            padding-left: 0;
+            border-left: 0;
+        }
+        optgroup {
+            border-top: 1px solid #ccc;
+            padding: .5em 0;
+        }
+        optgroup:first-child {
+            border-top: 0;
+            padding-top: 0;
+        }
+        optgroup:last-child {
+            padding-bottom: 0;
+        }
+        option {
+            padding-left: 0;
+        }
+    }
+}

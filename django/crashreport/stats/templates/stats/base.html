@@ -22,8 +22,8 @@
 {% endcompress %}
 </head>
 <body>
-    <header>
-        <ul>
+    <div class="version-nav">
+        <ul class="filter">
             <li>
                 <label for="product_select">Select Product:</label>
                 <select id="product_select">
@@ -32,7 +32,7 @@
                     {% endfor %}
                 </select>
             </li>
-            <li>
+            <li class"version_select">
                 <label for="version_select">Select Version:</label>
                 <select id="version_select">
                     {% for v in versions %}
@@ -41,7 +41,7 @@
                 </select>
             </li>
         </ul>
-    </header>
+    </div>
     <div class="content">
     {% block content %}
     {% endblock %}
