@@ -119,11 +119,11 @@ class ProcessedCrash(models.Model):
     ANDROID = 'android'
     IOS = 'ios'
     OS_NAMES = (
-            (LINUX, 'linux'),
-            (WINDOWS, 'windows'),
-            (OSX, 'osx'),
-            (ANDROID, 'android'),
-            (IOS, 'ios')
+            (LINUX, 'Linux'),
+            (WINDOWS, 'Windows'),
+            (OSX, 'OSX'),
+            (ANDROID, 'Android'),
+            (IOS, 'IOS')
             )
     os_name = models.CharField(max_length=10,
             choices=OS_NAMES)
