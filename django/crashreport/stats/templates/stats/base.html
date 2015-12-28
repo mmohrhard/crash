@@ -1,0 +1,26 @@
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+{% load staticfiles %}
+{% load compress %}
+{% load static from staticfiles %}
+
+{% compress css %}
+<link rel="stylesheet" type="text/css" href="{% static 'stats/css/lib/jquery-ui.css' %}" media="screen" />
+<link rel="stylesheet" type="text/css" href="{% static 'stats/css/lib/jquery-ui.structure.css' %}" media="screen" />
+<link rel="stylesheet" type="text/css" href="{% static 'stats/css/lib/jquery-ui.theme.css' %}" media="screen" />
+<link rel="stylesheet" type="text/less" href="{% static 'stats/css/tables.less' %}" media="screen" />
+<link rel="stylesheet" type="text/less" href="{% static 'stats/css/common.less' %}" media="screen" />
+{% endcompress %}
+
+{% compress js %}
+<script src="{% static 'stats/js/jquery/jquery-2.0.3.min.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static 'stats/js/jquery/plugins/jquery-ui.js' %}"></script>
+<script src="{% static 'stats/js/jquery/plugins/jquery.tablesorter.js' %}"></script>
+{% endcompress %}
+</head>
+<body>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

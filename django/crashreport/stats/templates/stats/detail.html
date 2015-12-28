@@ -1,31 +1,7 @@
-<html>
-<head>
-{% load staticfiles %}
-{% load compress %}
-{% load static from staticfiles %}
+{% extends 'stats/base.html' %}
+{% block title %}Details for crash report: {{ crash.crash_id }}{% endblock %}
 
-{% block site_css %}
-{% compress css %}
-<link rel="stylesheet" type="text/css" href="{% static 'stats/css/lib/jquery-ui.css' %}" media="screen" />
-<link rel="stylesheet" type="text/css" href="{% static 'stats/css/lib/jquery-ui.structure.css' %}" media="screen" />
-<link rel="stylesheet" type="text/css" href="{% static 'stats/css/lib/jquery-ui.theme.css' %}" media="screen" />
-<link rel="stylesheet" type="text/less" href="{% static 'stats/css/tables.less' %}" media="screen" />
-<link rel="stylesheet" type="text/less" href="{% static 'stats/css/common.less' %}" media="screen" />
-{% endcompress %}
-{% endblock %}
-
-{% block site_js %}
-{% compress js %}
-<script src="{% static 'stats/js/jquery/jquery-2.0.3.min.js' %}" type="text/javascript" charset="utf-8"></script>
-<script src="{% static 'stats/js/jquery/plugins/jquery-ui.js' %}"></script>
-<script src="{% static 'stats/js/jquery/plugins/jquery.tablesorter.js' %}"></script>
-{% endcompress %}
-{% endblock %}
-
-</head>
-<body>
-
-<h1>Details for crash report: {{ crash.crash_id.crash_id }}</h1>
+{% block content %}
 <div id="tabs" class="no-border ui-tabs ui-widget ui-widget-content ui-corner-all">
     <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
         <li class="ui-state-default ui-corner-top">
@@ -178,5 +154,4 @@
 <script>
     $("#tabs").tabs();
 </script>
-</body>
-</html>
+{% endblock %}
