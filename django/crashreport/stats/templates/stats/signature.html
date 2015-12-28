@@ -52,15 +52,15 @@
                     {% for crash in crashes %}
                     <tr>
                         <td>
-                            <a href="{% url 'crash_details' crash.crash_id.crash_id %}">
-                                {{ crash.crash_id.crash_id }}
+                            <a href="{% url 'crash_details' crash.crash_id %}">
+                                {{ crash.crash_id }}
                             </a>
                         </td>
                         <td>
-                            {{ crash.crash_id.upload_time }}
+                            {{ crash.upload_time }}
                         </td>
                         <td>
-                            {{ crash.crash_id.version }}
+                            {{ crash.version }}
                         </td>
                         <td>
                             {{ crash.os_name }}

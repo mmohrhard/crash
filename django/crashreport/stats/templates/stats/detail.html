@@ -64,19 +64,19 @@
                 <tr>
                     <th scope="row">UUID</th>
                     <td>
-                        {{ crash.crash_id.crash_id }}
+                        {{ crash.crash_id }}
                     </td>
                 </tr>
                 <tr>
                     <th scope="row">Version</th>
                     <td>
-                        {{ crash.crash_id.version }}
+                        {{ crash.version }}
                     </td>
                 </tr>
                 <tr>
                     <th scope="row">Upload Time</th>
                     <td>
-                        {{ crash.crash_id.upload_time }}
+                        {{ crash.upload_time }}
                     </td>
                 </tr>
                 <tr>
@@ -128,19 +128,19 @@
     <div id="metadata" class="ui-tabs-hide">
         <table class="record data-table vertical">
             <tbody>
-                {% if crash.crash_id.device_id %}
+                {% if crash.device_id %}
                 <tr>
                     <th scope="row">Graphic Device Id</th>
                     <td>
-                        {{ crash.crash_id.device_id }}
+                        {{ crash.device_id }}
                     </td>
                 </tr>
                 {% endif %}
-                {% if crash.crash_id.vendor_id %}
+                {% if crash.vendor_id %}
                 <tr>
                     <th scope="row">Graphic Vendor Id</th>
                     <td>
-                        {{ crash.crash_id.vendor_id }}
+                        {{ crash.vendor_id }}
                     </td>
                 </tr>
                 {% endif %}

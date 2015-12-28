@@ -15,6 +15,8 @@ from datetime import timedelta
 
 from crashsubmit import models as submit_models
 
+from base.models import Version
+
 class CrashCountManager(models.Manager):
     def get_crash_count_processed(self, versions=None, time=None):
         query_set = self.get_crash_count(versions=versions, time=time)
@@ -109,8 +111,23 @@ class ProcessedCrash(models.Model):
     # custom manager
     objects = ProcessedCrashManager()
 
-    crash_id = models.OneToOneField(submit_models.UploadedCrash,
-            to_field = 'crash_id')
+    crash_id = models.CharField(max_length=100,
+            unique=True)
+
+    upload_time = models.DateTimeField()
+
+    process_time = models.DateTimeField(auto_now_add=True)
+
+    version = models.ForeignKey(Version,
+            null=True)
+
+    # Look for better solution to store dictionary
+    device_id = models.CharField(max_length=100,
+            null=True,
+            default=None)
+    vendor_id = models.CharField(max_length=100,
+            null=True,
+            default=None)
 
     # OS info
     LINUX = 'linux'

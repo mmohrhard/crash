@@ -23,8 +23,9 @@ class MinidumpProcessor(object):
 
         original_crash_report = submit_model.UploadedCrash.objects.get(crash_id=crash_id)
         path = original_crash_report.crash_path
-        if len(ProcessedCrash.objects.filter(crash_id= original_crash_report)) != 0:
+        if len(ProcessedCrash.objects.filter(crash_id=original_crash_report)) != 0:
             raise IntegrityError('object already in db')
+
         output = subprocess.check_output([self.minidump_stackwalker, "-m", path, self.symbol_path])
 
         content = {}
@@ -49,7 +50,15 @@ class MinidumpProcessor(object):
                 content['Thread'][thread_id].append(line)
 
         self.processed_crash = ProcessedCrash()
-        self.processed_crash.crash_id = original_crash_report
+
+        # Upload the original info from the UploadedCrash model
+        # We might want to delete the UploadedCrash entry
+        self.processed_crash.crash_id = original_crash_report.crash_id
+        self.processed_crash.version = original_crash_report.version
+        self.processed_crash.device_id = original_crash_report.device_id
+        self.processed_crash.vendor_id = original_crash_report.vendor_id
+        self.processed_crash.upload_time = original_crash_report.upload_time
+
         self.processed_crash.raw = output
         self.processed_crash.set_modules_to_model(content['Modules'])
         self._parse_threads(content['Thread'])
