@@ -9,7 +9,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 
 from processor.models import ProcessedCrash, Signature, CrashCount
-from crashsubmit.models import Version
+from base.models import Version
 from django.contrib.staticfiles import finders
 
 import json, itertools

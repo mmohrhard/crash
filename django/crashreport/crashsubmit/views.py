@@ -9,7 +9,8 @@ from django import forms
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
-from .models import UploadedCrash, Product, Version
+from .models import UploadedCrash
+from base.models import Product, Version
 
 import os, uuid
 import string

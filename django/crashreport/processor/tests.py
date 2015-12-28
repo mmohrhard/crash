@@ -2,7 +2,7 @@ from django.test import TestCase
 
 from .models import CrashCount
 
-from crashsubmit.models import Version, Product
+from base.models import Version, Product
 
 import datetime
 from django.utils import timezone

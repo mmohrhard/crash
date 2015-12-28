@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'processor.apps.ProcessorConfig',
     'symbols.apps.SymbolsConfig',
     'stats.apps.StatsConfig',
+    'base.apps.BaseConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
