@@ -82,11 +82,12 @@ class ProcessedCrashManager(models.Manager):
         res = self.get_queryset()
 
         if version is not None:
-            res = res.filter(crash_id__version__major_version=5, crash_id__version__minor_version=1)
+            # TODO: moggi: make this generic
+            res = res.filter(version__major_version=5, version__minor_version=1)
 
         if time is not None:
             target = timezone.now() - timedelta(days=time)
-            res = res.filter(crash_id__upload_time__gte=target)
+            res = res.filter(upload_time__gte=target)
 
         res = res.values('os_name', 'signature').annotate(Count('os_name'))
 
