@@ -6,21 +6,33 @@
 #
 
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 
 from processor.models import ProcessedCrash, Signature, CrashCount
 from base.models import Version, Product
 from django.contrib.staticfiles import finders
 
+from django.views.generic import ListView
+
 import json, itertools
 
-# TODO: moggi: maybe switch to a class based view
-def generate_product_version_data():
-    res = {}
-    res['products'] = Product.objects.all()
-    # TODO: moggi: only export current versions
-    res['versions'] = Version.objects.all()
-    return res
+class ViewBase(ListView):
+    # this is an abstract class, each subclass needs to set at least the template_name and base_url
+
+    def generate_product_version_data(self, data):
+        data['products'] = Product.objects.all()
+        # TODO: moggi: only export current versions
+        data['versions'] = Version.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super(ListView, self).get_context_data(**kwargs)
+        self.generate_product_version_data(context)
+        return context
+
+    def post(self, request, *args, **kwargs):
+        product = 'LibreOffice'
+        version = '5.1.0.0'
+        return HttpResponseRedirect(reverse(base_url, {'product': product, 'version': version}))
 
 def generate_data_for_version(version, x_values, crashes):
     values = []
@@ -68,14 +80,19 @@ def crash_details(request, crash_id):
     data['modules'] = modules
     return render(request, 'stats/detail.html', data)
 
-def signature(request, signature):
-    signature_obj = get_object_or_404(Signature, signature=signature)
-    crashes = signature_obj.processedcrash_set.all()
-    data = generate_product_version_data()
-    data['signature'] = signature_obj
-    data['crashes'] = crashes
-    return render(request, 'stats/signature.html', data)
+class SignatureView(ViewBase):
+    template_name = 'stats/signature.html'
+    context_object_name = 'crashes'
 
+    def get_context_data(self, **kwargs):
+        context = super(SignatureView, self).get_context_data(**kwargs)
+        context['signature'] = self.kwargs['signature']
+        return context
+
+    def get_queryset(self):
+        self.signature_obj = get_object_or_404(Signature, signature=self.kwargs['signature'])
+        crashes = self.signature_obj.processedcrash_set.all()
+        return crashes
 
 def handle_parameter_or_default(data, param_name, default):
     if param_name in data:

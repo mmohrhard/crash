@@ -13,7 +13,7 @@ urlpatterns = [
         url(r'crash_details/(?P<crash_id>.+)$', views.crash_details, name='crash_details'),
         url(r'top_crashes$', views.top_crashes),
         url(r'version/(?P<version>.+)$', views.crashes_by_version, name='crash_version'),
-        url(r'signature/(?P<signature>.+)$', views.signature, name='signature_details'),
+        url(r'signature/(?P<signature>.+)$', views.SignatureView.as_view(), name='signature_details'),
         url(r'^$', views.main),
         ]
 
