@@ -22,6 +22,26 @@
 {% endcompress %}
 </head>
 <body>
+    <header>
+        <ul>
+            <li>
+                <label for="product_select">Select Product:</label>
+                <select id="product_select">
+                    {% for p in products %}
+                    <option value="{{p}}"/>{{p}}</Test>
+                    {% endfor %}
+                </select>
+            </li>
+            <li>
+                <label for="version_select">Select Version:</label>
+                <select id="version_select">
+                    {% for v in versions %}
+                    <option value="{{v}}"/>{{v}}</Test>
+                    {% endfor %}
+                </select>
+            </li>
+        </ul>
+    </header>
     <div class="content">
     {% block content %}
     {% endblock %}

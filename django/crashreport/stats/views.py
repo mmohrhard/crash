@@ -9,10 +9,18 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 
 from processor.models import ProcessedCrash, Signature, CrashCount
-from base.models import Version
+from base.models import Version, Product
 from django.contrib.staticfiles import finders
 
 import json, itertools
+
+# TODO: moggi: maybe switch to a class based view
+def generate_product_version_data():
+    res = {}
+    res['products'] = Product.objects.all()
+    # TODO: moggi: only export current versions
+    res['versions'] = Version.objects.all()
+    return res
 
 def generate_data_for_version(version, x_values, crashes):
     values = []
@@ -47,18 +55,26 @@ def main(request):
     featured = Version.objects.filter(featured=True)
     generated_chart_data = generate_chart_data(featured)
     chart_data = json.dumps(generated_chart_data)
-    return render(request, 'stats/main.html', {'featured':featured, 'chart_data': chart_data})
+    data = generate_product_version_data()
+    data['featured'] = featured
+    data['chart_data'] = chart_data
+    return render(request, 'stats/main.html', data)
 
 def crash_details(request, crash_id):
-
     crash = get_object_or_404(ProcessedCrash, crash_id=crash_id)
     modules = crash.get_split_module_list()
-    return render(request, 'stats/detail.html', {'crash': crash, 'modules':modules})
+    data = generate_product_version_data()
+    data['crash'] = crash
+    data['modules'] = modules
+    return render(request, 'stats/detail.html', data)
 
 def signature(request, signature):
     signature_obj = get_object_or_404(Signature, signature=signature)
     crashes = signature_obj.processedcrash_set.all()
-    return render(request, 'stats/signature.html', {'signature':signature_obj, 'crashes':crashes})
+    data = generate_product_version_data()
+    data['signature'] = signature_obj
+    data['crashes'] = crashes
+    return render(request, 'stats/signature.html', data)
 
 
 def handle_parameter_or_default(data, param_name, default):
@@ -71,11 +87,17 @@ def top_crashes(request):
     days = int(handle_parameter_or_default(request.GET, 'days', 1))
     limit = int(handle_parameter_or_default(request.GET, 'limit', 10))
     version = handle_parameter_or_default(request.GET, 'version', None)
-    data = ProcessedCrash.objects.get_top_crashes(time=days, limit=limit, version=version)
-    return render(request, 'stats/version.html', {'signatures':data})
+    top_crash = ProcessedCrash.objects.get_top_crashes(time=days, limit=limit, version=version)
+    data = generate_product_version_data()
+    data['signatures'] = top_crash
+    return render(request, 'stats/version.html', data)
 
 def crashes_by_version(request, version):
-    data = ProcessedCrash.objects.get_top_crashes(version='5.1', limit=10)
-    return render(request, 'stats/version.html', {'signatures':data, 'version':version})
+    # TODO: moggi: remove hard coded version entry
+    top_crash = ProcessedCrash.objects.get_top_crashes(version='5.1', limit=10)
+    data = generate_product_version_data()
+    data['signatures'] = top_crash
+    data['version'] = version
+    return render(request, 'stats/version.html', data)
 
 # vim:set shiftwidth=4 softtabstop=4 expandtab: */
