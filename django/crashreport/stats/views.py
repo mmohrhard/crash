@@ -16,7 +16,7 @@ from django.views.generic import ListView
 
 import json, itertools
 
-class ViewBase(ListView):
+class ListViewBase(ListView):
     # this is an abstract class, each subclass needs to set at least the template_name and base_url
 
     def generate_product_version_data(self, data):
@@ -80,7 +80,7 @@ def crash_details(request, crash_id):
     data['modules'] = modules
     return render(request, 'stats/detail.html', data)
 
-class SignatureView(ViewBase):
+class SignatureView(ListViewBase):
     template_name = 'stats/signature.html'
     context_object_name = 'crashes'
 
@@ -100,21 +100,25 @@ def handle_parameter_or_default(data, param_name, default):
 
     return default
 
-def top_crashes(request):
-    days = int(handle_parameter_or_default(request.GET, 'days', 1))
-    limit = int(handle_parameter_or_default(request.GET, 'limit', 10))
-    version = handle_parameter_or_default(request.GET, 'version', None)
-    top_crash = ProcessedCrash.objects.get_top_crashes(time=days, limit=limit, version=version)
-    data = generate_product_version_data()
-    data['signatures'] = top_crash
-    return render(request, 'stats/version.html', data)
+class TopCrashesView(ListViewBase):
+    template_name = 'stats/version.html'
+    context_object_name = 'signatures'
 
-def crashes_by_version(request, version):
-    # TODO: moggi: remove hard coded version entry
-    top_crash = ProcessedCrash.objects.get_top_crashes(version='5.1', limit=10)
-    data = generate_product_version_data()
-    data['signatures'] = top_crash
-    data['version'] = version
-    return render(request, 'stats/version.html', data)
+    def get_context_data(self, **kwargs):
+        context = super(TopCrashesView, self).get_context_data(**kwargs)
+        if 'version' in self.kwargs:
+            context['version'] = self.kwargs['version']
+        return context
+
+    def get_queryset(self):
+        days = int(handle_parameter_or_default(self.request.GET, 'days', 1))
+        limit = int(handle_parameter_or_default(self.request.GET, 'limit', 10))
+        print(self.kwargs)
+        if 'version' in self.kwargs:
+            version = self.kwargs['version']
+        else:
+            version = handle_parameter_or_default(self.request.GET, 'version', None)
+        top_crash = ProcessedCrash.objects.get_top_crashes(time=days, limit=limit, version=version)
+        return top_crash
 
 # vim:set shiftwidth=4 softtabstop=4 expandtab: */
