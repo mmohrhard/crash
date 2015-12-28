@@ -207,7 +207,9 @@ class ProcessedCrash(models.Model):
                 self._set_signature(frame_list)
                 self.crashing_thread = self._convert_frames(frame_list)
             else:
-                main_text += "\n\nThread %s:\n"%(thread_id) + self._convert_frames(frame_list)
+                if len(main_text) > 0:
+                    main_text += "\n\n"
+                main_text += "Thread %s:\n"%(thread_id) + self._convert_frames(frame_list)
 
         self.threads = main_text
 
