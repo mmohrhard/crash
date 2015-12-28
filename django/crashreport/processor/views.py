@@ -11,10 +11,13 @@ from django.http import HttpResponse
 from processor import MinidumpProcessor
 
 from crashsubmit import models
+from .models import ProcessedCrash
 
 def process_all(request):
     # move that to a Manager
-    crashes = models.UploadedCrash.objects.filter(processedcrash__isnull=True)
+    processed_crashes = ProcessedCrash.objects.values_list('crash_id')
+    print(processed_crashes)
+    crashes = models.UploadedCrash.objects.exclude(crash_id__in=processed_crashes)
     done = []
     for crash in crashes:
         procescor = MinidumpProcessor()
