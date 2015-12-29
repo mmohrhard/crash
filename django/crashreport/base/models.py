@@ -19,26 +19,9 @@ class Product(models.Model):
 class VersionManager(models.Manager):
     def get_by_version_string(self, version):
         res = self.get_queryset()
-        split_versions = \
-                self._split_version_string(version)
-
-        if len(split_versions) >= 1:
-            res = res.filter(major_version=split_versions[0])
-
-        if len(split_versions) >= 2:
-            res = res.filter(minor_version=split_versions[1])
-
-        if len(split_versions) >= 3:
-            res = res.filter(micro_version=split_versions[2])
-
-        if len(split_versions) >= 4:
-            res = res.filter(patch_version=split_versions[3])
-
+        filter_params = Version.get_filter_params(version)
+        res = res.filter(**filter_params)
         return res
-
-    def _split_version_string(self, version):
-        split_version = version.split('.')
-        return split_version
 
 class Version(models.Model):
     product = models.ForeignKey(Product)
@@ -56,6 +39,23 @@ class Version(models.Model):
     def str_without_product(self):
         return str(self.major_version) + "." + \
                 str(self.minor_version) + "." + str(self.micro_version) + "." + str(self.patch_version)
+    @staticmethod
+    def get_filter_params(version, prefix=''):
+        split_versions = version.split('.')
+        res = {}
+        if len(split_versions) >= 1:
+            res[prefix + 'major_version'] = split_versions[0]
+
+        if len(split_versions) >= 2:
+            res[prefix + 'minor_version'] = split_versions[1]
+
+        if len(split_versions) >= 3:
+            res[prefix + 'micro_version'] = split_versions[2]
+
+        if len(split_versions) >= 4:
+            res[prefix + 'patch_version'] = split_versions[3]
+
+        return res
 
     # custom manager
     objects = VersionManager()

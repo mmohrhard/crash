@@ -50,4 +50,12 @@ class VersionManagerTest(TestCase):
         res = Version.objects.get_by_version_string("1.2.3.4")
         self.assertEqual(len(res), 1)
 
+class VersionTest(TestCase):
+
+    def test_get_filter_params(self):
+        filter_params = Version.get_filter_params('1.2.3', prefix='test_')
+        self.assertEqual(filter_params['test_major_version'], '1')
+        self.assertEqual(filter_params['test_minor_version'], '2')
+        self.assertEqual(filter_params['test_micro_version'], '3')
+
 # vim:set shiftwidth=4 softtabstop=4 expandtab: */
