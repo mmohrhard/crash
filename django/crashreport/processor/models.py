@@ -82,8 +82,8 @@ class ProcessedCrashManager(models.Manager):
         res = self.get_queryset()
 
         if version is not None:
-            # TODO: moggi: make this generic
-            res = res.filter(version__major_version=5, version__minor_version=1)
+            version_filter_params = Version.get_filter_params(version, prefix='version__')
+            res = res.filter(**version_filter_params)
 
         if time is not None:
             target = timezone.now() - timedelta(days=time)
