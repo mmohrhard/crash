@@ -61,10 +61,10 @@ class MinidumpProcessor(object):
 
         self.processed_crash.raw = output
         self.processed_crash.set_modules_to_model(content['Modules'])
+        self._parse_crash(content['Crash'])
         self._parse_threads(content['Thread'])
         self._parse_os(content['OS'])
         self._parse_cpu(content['CPU'])
-        self._parse_crash(content['Crash'])
 
         self.processed_crash.save()
         self.processed_crash = None
@@ -105,8 +105,7 @@ class MinidumpProcessor(object):
             parsed_frames = self._parse_frames(frames)
             thread_list[thread_id] = parsed_frames
 
-        # TODO: moggi: fix the wrong crash_thread parameter
-        self.processed_crash.set_thread_to_model(thread_list, 0)
+        self.processed_crash.set_thread_to_model(thread_list)
 
     def _parse_cpu(self, cpu):
         # CPU|amd64|family 6 model 30 stepping 5|4

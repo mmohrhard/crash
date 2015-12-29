@@ -218,10 +218,10 @@ class ProcessedCrash(models.Model):
         signature.save()
         self.signature = signature
 
-    def set_thread_to_model(self, threads, crash_thread):
+    def set_thread_to_model(self, threads):
         main_text = ""
         for thread_id, frame_list in threads.iteritems():
-            if int(thread_id) == crash_thread:
+            if int(thread_id) == self.crash_thread:
                 self._set_signature(frame_list)
                 self.crashing_thread = self._convert_frames(frame_list)
             else:
