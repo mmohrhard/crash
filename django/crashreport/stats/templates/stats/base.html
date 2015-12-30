@@ -35,9 +35,20 @@
             <li class"version_select">
                 <label for="version_select">Select Version:</label>
                 <select id="version_select">
-                    {% for v in versions %}
-                    <option value="{{v}}"/>{{v}}</Test>
-                    {% endfor %}
+                    <optgroup label=" ">
+                        {% for v in versions %}
+                        {% if v.featured %}
+                        <option value="{{v}}"/>{{v}}</Test>
+                        {% endif %}
+                        {% endfor %}
+                    </optgroup>
+                    <optgroup label=" ">
+                        {% for v in versions %}
+                        {% if not v.featured %}
+                        <option value="{{v}}"/>{{v}}</Test>
+                        {% endif %}
+                        {% endfor %}
+                    </optgroup>
                 </select>
             </li>
         </ul>
@@ -45,6 +56,8 @@
     <div class="content">
     {% block content %}
     {% endblock %}
+    </div>
+    <div class="footer">
     </div>
 </body>
 </html>
