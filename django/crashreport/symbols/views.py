@@ -9,6 +9,7 @@ from django.shortcuts import render
 from django import forms
 from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseServerError
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 
 from .handler import SymbolsUploadHandler
 
@@ -29,6 +30,7 @@ def handle_uploaded_file(f):
 
 # TODO: this needs to be limited to logged in users
 @csrf_exempt
+@login_required
 def upload_symbols(request):
 
     if request.method != 'POST':

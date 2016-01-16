@@ -33,6 +33,7 @@ urlpatterns = [
     url(r'^upload/', include('symbols.urls')),
     url(r'^stats/', include('stats.urls')),
     url(r'^admin/', admin.site.urls),
+    url(r'^accounts/', include('django.contrib.auth.urls')),
 ]
 
 # vim:set shiftwidth=4 softtabstop=4 expandtab: */
