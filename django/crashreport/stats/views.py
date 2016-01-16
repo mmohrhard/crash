@@ -16,6 +16,13 @@ from django.views.generic import ListView
 
 import json, itertools
 
+def generate_product_version_data():
+    data = {}
+    data['products'] = Product.objects.all()
+    # TODO: moggi: only export current versions
+    data['versions'] = Version.objects.all()
+    return data
+
 class ListViewBase(ListView):
     # this is an abstract class, each subclass needs to set at least the template_name and base_url
 
