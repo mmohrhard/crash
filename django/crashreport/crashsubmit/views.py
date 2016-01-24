@@ -10,7 +10,7 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
 from .models import UploadedCrash
-from base.models import Product, Version
+from base.models import Version
 
 import os, uuid
 import string
@@ -24,15 +24,6 @@ class UploadFileForm(forms.Form):
     AdapterDeviceId = forms.CharField(required = False)
     AdapterVendorId = forms.CharField(required = False)
     Version = forms.CharField()
-    ProductName = forms.CharField()
-
-
-class InvalidProductException(Exception):
-    def __init__(self, product):
-        self.product = product
-
-    def __str__(self):
-        return "Invalid ProductName: " + self.product
 
 class InvalidVersionException(Exception):
     def __init__(self, version, product):
@@ -40,7 +31,7 @@ class InvalidVersionException(Exception):
         self.product = product
 
     def __str__(self):
-        return "Invalid Version: " + self.version + " for Product: " + self.product
+        return "Invalid Version: " + self.version
 
 def split_version_string(version_string):
     parameters = string.split(version_string, '.')
@@ -64,15 +55,10 @@ def create_database_entry(file, form):
     crash_id = uuid.uuid4()
 
     version = form.cleaned_data['Version']
-    product = form.cleaned_data['ProductName']
-
-    model_product = Product.objects.get(product_name=product)
-    if not model_product:
-        raise InvalidProductException(product)
 
     major, minor, micro, patch = split_version_string(version)
     try:
-        model_version = Version.objects.get(product=model_product,
+        model_version = Version.objects.get(
                 major_version = major, minor_version = minor,
                 micro_version = micro, patch_version = patch)
     except:
@@ -104,7 +90,7 @@ def upload_file(request):
 
     try:
         crash_id = str(create_database_entry(file, form))
-    except (InvalidVersionException, InvalidProductException) as e:
+    except (InvalidVersionException) as e:
         return HttpResponseServerError(str(e))
 
     return HttpResponseRedirect('Crash-ID=%s'%(crash_id))

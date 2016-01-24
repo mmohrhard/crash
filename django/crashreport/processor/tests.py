@@ -2,7 +2,7 @@ from django.test import TestCase
 
 from .models import CrashCount
 
-from base.models import Version, Product
+from base.models import Version
 
 import datetime
 from django.utils import timezone
@@ -13,10 +13,9 @@ def get_date_n_days_ago(num_days):
 class CrashCountManagerTest(TestCase):
 
     def setUp(self):
-        self.product = Product.objects.create(product_name="Product")
-        self.version1 = Version.objects.create(product=self.product,
+        self.version1 = Version.objects.create(
                 major_version=1, minor_version=2, micro_version=3, patch_version=4)
-        self.version2 = Version.objects.create(product=self.product,
+        self.version2 = Version.objects.create(
                 major_version=2, minor_version=2, micro_version=3, patch_version=4)
 
         yesterday = get_date_n_days_ago(1)

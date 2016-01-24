@@ -9,7 +9,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 
 from processor.models import ProcessedCrash, Signature, CrashCount
-from base.models import Version, Product
+from base.models import Version
 from django.contrib.staticfiles import finders
 
 from django.views.generic import ListView
@@ -18,8 +18,6 @@ import json, itertools
 
 def generate_product_version_data():
     data = {}
-    data['products'] = Product.objects.all()
-    # TODO: moggi: only export current versions
     data['versions'] = Version.objects.all()
     return data
 
@@ -27,8 +25,6 @@ class ListViewBase(ListView):
     # this is an abstract class, each subclass needs to set at least the template_name and base_url
 
     def generate_product_version_data(self, data):
-        data['products'] = Product.objects.all()
-        # TODO: moggi: only export current versions
         data['versions'] = Version.objects.all()
 
     def get_context_data(self, **kwargs):

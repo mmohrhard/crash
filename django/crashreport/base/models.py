@@ -7,15 +7,6 @@
 
 from django.db import models
 
-class Product(models.Model):
-    product_name = models.CharField(max_length=50,
-            unique=True,
-            primary_key=True,
-            help_text='The name of the product.')
-
-    def __str__(self):
-        return self.product_name
-
 class VersionManager(models.Manager):
     def get_by_version_string(self, version):
         res = self.get_queryset()
@@ -24,7 +15,6 @@ class VersionManager(models.Manager):
         return res
 
 class Version(models.Model):
-    product = models.ForeignKey(Product)
     major_version = models.SmallIntegerField()
     minor_version = models.SmallIntegerField()
     micro_version = models.SmallIntegerField()
@@ -34,11 +24,12 @@ class Version(models.Model):
             default=False)
 
     def __str__(self):
-        return str(self.product) + " Version: " + self.str_without_product()
+        return "Version: " + self.str_without_product()
 
     def str_without_product(self):
         return str(self.major_version) + "." + \
                 str(self.minor_version) + "." + str(self.micro_version) + "." + str(self.patch_version)
+
     @staticmethod
     def get_filter_params(version, prefix=''):
         split_versions = version.split('.')
@@ -61,7 +52,7 @@ class Version(models.Model):
     objects = VersionManager()
 
     class Meta:
-        unique_together = ('product', 'major_version',
-                'minor_version', 'micro_version', 'patch_version')
+        unique_together = ('major_version', 'minor_version',
+                'micro_version', 'patch_version')
 
 # vim:set shiftwidth=4 softtabstop=4 expandtab: */from __future__ import unicode_literals
