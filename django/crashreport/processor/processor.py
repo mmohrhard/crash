@@ -82,19 +82,17 @@ class MinidumpProcessor(object):
         frame_pattern = re.compile(r'^(?P<thread_id>\d+)\|(?P<frame_id>\d+)\|(?P<lib_name>[^|]+)\|(?P<function_name>[^!]*)\|(?P<file>[^|]*)\|(?P<line_number>\d*)\|(?P<offset>[^|]*)')
         frame_list = []
         for frame in frames:
-            parsed_line = frame_pattern.search(frame)
-            if not parsed_line:
-                print(frame)
-            else:
-                lib_name = parsed_line.group('lib_name')
-                frame_id = parsed_line.group('frame_id')
-                function_name = parsed_line.group('function_name')
-                file_name = parsed_line.group('file')
-                line_number = parsed_line.group('line_number')
-                offset = parsed_line.group('offset')
-                frame_list.append({'lib_name': lib_name, 'frame_id': frame_id, \
-                        'function': function_name, 'file': file_name, \
-                        'line': line_number, 'offset': offset})
+            parsed_line = frame.split('|')
+
+            frame_id = parsed_line[1]
+            lib_name = parsed_line[2]
+            function_name = parsed_line[3]
+            file_name = parsed_line[4]
+            line_number = parsed_line[5]
+            offset = parsed_line[6]
+            frame_list.append({'lib_name': lib_name, 'frame_id': frame_id, \
+                    'function': function_name, 'file': file_name, \
+                    'line': line_number, 'offset': offset})
 
         return frame_list
 
