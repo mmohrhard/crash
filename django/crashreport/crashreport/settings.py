@@ -30,6 +30,8 @@ SYMBOL_LOCATION = os.environ.get('SYMBOL_LOCATION', '/tmp/symbols/')
 
 SYMBOL_UPLOAD_DIR = os.environ.get('SYMBOL_UPLOAD_DIR', '/tmp/symbol_upload/')
 
+MINIDUMP_STACKWALK = os.environ.get('MINIDUMP_STACKWALK', 'minidump_stackwalk')
+
 ALLOWED_HOSTS = []
 
 APPEND_SLASH = True

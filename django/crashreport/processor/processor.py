@@ -15,9 +15,8 @@ from crashsubmit import models as submit_model
 
 class MinidumpProcessor(object):
     def __init__(self):
-        # TODO: moggi: get these values from the config
-        self.minidump_stackwalker = 'minidump_stackwalk'
-        self.symbol_path = '/home/moggi/devel/libo9/instdir/program/symbols/'
+        self.minidump_stackwalker = setting.MINIDUMP_STACKWALK
+        self.symbol_path = setting.SYMBOL_LOCATION
 
     def process(self, crash_id):
 
