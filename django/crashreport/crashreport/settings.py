@@ -26,7 +26,7 @@ DEBUG = bool(os.environ.get('DEBUG', False))
 
 ALLOWED_HOSTS = []
 
-APPEND_SLASH = False
+APPEND_SLASH = True
 
 # Application definition
 
