@@ -207,12 +207,15 @@ class ProcessedCrash(models.Model):
             else:
                 text = "%s+%s" % (frame['lib_name'], frame['offset'])
 
-        signature = Signature.objects.get(signature=text)
-        if signature is None:
+        signatures = Signature.objects.filter(signature=text)
+        if len(signatures) < 1:
             signature = Signature()
             signature.signature = text
             signature.first_observed = self.upload_time
             signature.last_observed = self.upload_time
+        else:
+            signature = signatures[0]
+
         if signature.last_observed < self.upload_time:
             signature.last_observed = self.upload_time
         signature.save()
@@ -221,7 +224,7 @@ class ProcessedCrash(models.Model):
     def set_thread_to_model(self, threads):
         main_text = ""
         for thread_id, frame_list in threads.iteritems():
-            if int(thread_id) == self.crash_thread:
+            if int(thread_id) == int(self.crash_thread):
                 self._set_signature(frame_list)
                 self.crashing_thread = self._convert_frames(frame_list)
             else:
