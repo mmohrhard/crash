@@ -42,7 +42,7 @@ def split_version_string(version_string):
     return parameters[0], parameters[1], parameters[2], parameters[3]
 
 def handle_uploaded_file(f):
-    tmp_upoad_path = settings.TEMP_UPLOAD_DIR
+    tmp_upload_path = settings.TEMP_UPLOAD_DIR
     file_path = os.path.join(tmp_upload_path, f.name)
     with open(file_path, 'wb+') as destination:
         for chunk in f.chunks():

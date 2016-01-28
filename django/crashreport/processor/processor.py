@@ -10,13 +10,14 @@ import subprocess, re
 from .models import ProcessedCrash
 
 from django.db import IntegrityError
+from django.conf import settings
 
 from crashsubmit import models as submit_model
 
 class MinidumpProcessor(object):
     def __init__(self):
-        self.minidump_stackwalker = setting.MINIDUMP_STACKWALK
-        self.symbol_path = setting.SYMBOL_LOCATION
+        self.minidump_stackwalker = settings.MINIDUMP_STACKWALK
+        self.symbol_path = settings.SYMBOL_LOCATION
 
     def process(self, crash_id):
 
