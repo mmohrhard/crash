@@ -26,6 +26,10 @@ DEBUG = bool(os.environ.get('DEBUG', False))
 
 TEMP_UPLOAD_DIR = os.environ.get('TEMP_UPLOAD_DIR', '/tmp/upload_dir')
 
+SYMBOL_LOCATION = os.environ.get('SYMBOL_LOCATION', '/tmp/symbols/')
+
+SYMBOL_UPLOAD_DIR = os.environ.get('SYMBOL_UPLOAD_DIR', '/tmp/symbol_upload/')
+
 ALLOWED_HOSTS = []
 
 APPEND_SLASH = True

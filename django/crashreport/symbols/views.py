@@ -10,6 +10,7 @@ from django import forms
 from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseServerError
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 
 from .handler import SymbolsUploadHandler
 
@@ -20,15 +21,13 @@ class UploadSymbolsForm(forms.Form):
     comment = forms.CharField()
 
 def handle_uploaded_file(f):
-    # TODO: moggi: get the symbols localtion from the configuration
-    file_path = os.path.join('/tmp/symbols_upload', f.name)
+    file_path = os.path.join(settings.SYMBOL_UPLOAD_DIR, f.name)
     with open(file_path, 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
 
     return file_path
 
-# TODO: this needs to be limited to logged in users
 @csrf_exempt
 @login_required
 def upload_symbols(request):

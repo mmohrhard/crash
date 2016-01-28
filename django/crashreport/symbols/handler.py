@@ -10,11 +10,11 @@ from zipfile import ZipFile
 from .models import SymbolsUpload
 
 from django.utils import timezone
+from django.conf import settings
 
 class SymbolsUploadHandler(object):
 
-    # TODO: moggi: get symbol location from configuration
-    symbol_location = "/tmp/symbols/"
+    symbol_location = settings.SYMBOL_LOCATION
 
     def __init__(self):
         pass
