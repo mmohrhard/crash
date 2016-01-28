@@ -24,6 +24,8 @@ SECRET_KEY = 'at_4nc!x(m=v2dxwzr*kdsvzz_()r+jt^5usmzexh^jvaaj9iz'
 
 DEBUG = bool(os.environ.get('DEBUG', False))
 
+TEMP_UPLOAD_DIR = os.environ.get('TEMP_UPLOAD_DIR', '/tmp/upload_dir')
+
 ALLOWED_HOSTS = []
 
 APPEND_SLASH = True

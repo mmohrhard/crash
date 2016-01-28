@@ -8,6 +8,7 @@
 from django import forms
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from django.conf import settings
 
 from .models import UploadedCrash
 from base.models import Version
@@ -41,8 +42,8 @@ def split_version_string(version_string):
     return parameters[0], parameters[1], parameters[2], parameters[3]
 
 def handle_uploaded_file(f):
-    # TODO: moggi: get the path from the config
-    file_path = os.path.join('/tmp/x', f.name)
+    tmp_upoad_path = settings.TEMP_UPLOAD_DIR
+    file_path = os.path.join(tmp_upload_path, f.name)
     with open(file_path, 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
