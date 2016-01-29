@@ -5,7 +5,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 
-import subprocess, re
+import subprocess, re, json
 
 from .models import ProcessedCrash
 
@@ -79,7 +79,6 @@ class MinidumpProcessor(object):
         self.processed_crash.set_view_os_name_to_model(os_name)
 
     def _parse_frames(self, frames):
-        frame_pattern = re.compile(r'^(?P<thread_id>\d+)\|(?P<frame_id>\d+)\|(?P<lib_name>[^|]+)\|(?P<function_name>[^!]*)\|(?P<file>[^|]*)\|(?P<line_number>\d*)\|(?P<offset>[^|]*)')
         frame_list = []
         for frame in frames:
             parsed_line = frame.split('|')
@@ -94,7 +93,7 @@ class MinidumpProcessor(object):
                     'function': function_name, 'file': file_name, \
                     'line': line_number, 'offset': offset})
 
-        return frame_list
+        return json.dumps(frame_list)
 
     def _parse_threads(self, threads):
         # 0|0|libsclo.so|crash|/home/moggi/devel/libo9/sc/source/ui/docshell/docsh.cxx|434|0x4

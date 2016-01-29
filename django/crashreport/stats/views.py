@@ -81,6 +81,8 @@ def crash_details(request, crash_id):
     data = generate_product_version_data()
     data['crash'] = crash
     data['modules'] = modules
+    data['crashing_thread'] = {'frames': json.loads(crash.crashing_thread)}
+    data['threads'] = json.loads(crash.threads)
     return render(request, 'stats/detail.html', data)
 
 class SignatureView(ListViewBase):

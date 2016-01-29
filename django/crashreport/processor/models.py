@@ -13,6 +13,8 @@ from django.utils import timezone
 
 from datetime import timedelta
 
+import json
+
 from crashsubmit import models as submit_models
 
 from base.models import Version
@@ -187,10 +189,6 @@ class ProcessedCrash(models.Model):
         elif view_os_name.lower() == ProcessedCrash.OSX:
             self.os_name = ProcessedCrash.OSX
 
-    def _convert_frame(self, frame):
-        text = "Frame: %s, Module: %s, Method: %s, File: %s:%s" %  (frame['frame_id'], frame['lib_name'], frame['function'], frame['file'], frame['line'])
-        return text
-
     def _convert_frames(self, frame_list):
         text = ""
         for frame in frame_list:
@@ -199,8 +197,9 @@ class ProcessedCrash(models.Model):
 
     def _set_signature(self, frame_list):
         text = ""
-        if len(frame_list) > 0:
-            frame = frame_list[0]
+        json_frame_list = json.loads(frame_list)
+        if len(json_frame_list) > 0:
+            frame = json_frame_list[0]
             function = frame['function']
             if len(function) > 0:
                 text = "%s+%s" % (function,frame['offset'])
@@ -222,17 +221,16 @@ class ProcessedCrash(models.Model):
         self.signature = signature
 
     def set_thread_to_model(self, threads):
-        main_text = ""
+        other_threads = {}
         for thread_id, frame_list in threads.iteritems():
             if int(thread_id) == int(self.crash_thread):
                 self._set_signature(frame_list)
-                self.crashing_thread = self._convert_frames(frame_list)
+                self.crashing_thread = frame_list
             else:
-                if len(main_text) > 0:
-                    main_text += "\n\n"
-                main_text += "Thread %s:\n"%(thread_id) + self._convert_frames(frame_list)
+                other_threads[thread_id] = json.loads(frame_list)
 
-        self.threads = main_text
+        self.threads = json.dumps(other_threads)
+        print(self.threads)
 
     def set_modules_to_model(self, modules):
         self.modules = "\n".join(modules)

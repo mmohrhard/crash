@@ -1,4 +1,15 @@
 {% extends 'stats/base.html' %}
+
+{% load staticfiles %}
+{% load compress %}
+{% load static from staticfiles %}
+
+{% block additional_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'stats/css/details.css' %}" media="screen" />
+{% endblock %}
+{% block additional_js %}
+<script src="{% static 'stats/js/details.js' %}"></script>
+{% endblock %}
 {% block title %}Details for crash report: {{ crash.crash_id }}{% endblock %}
 
 {% block content %}
@@ -99,6 +110,69 @@
                 </tr>
             </tbody>
         </table>
+
+        <div id="frames">
+            <h2>Crashing Thread</h2>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Frame</th>
+                        <th scope="col">Module</th>
+                        <th class="signature-column" scope="col">Signature</th>
+                        <th scope="col">Source</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for frame in crashing_thread.frames %}
+                    <tr>
+                        <td>
+                            {{ frame.frame_id }}
+                        </td>
+                        <td>{{ frame.lib_name }}</td>
+                        <td> {% if frame.function == "" %} {{ frame.offset }} {% else %} {{ frame.function }} {% endif %}</td>
+                        <td>
+                            {% if frame.file %} {{ frame.file }}:{{ frame.line }} {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <p>
+                <a href="#allthreads" data-show="Show other threads" data-hide="Hide other threads">Show other threads</a>
+            </p>
+
+
+            <div id="allthreads">
+                {% for thread_id, thread_frames in threads.items %}
+                <h2>Thread: {{ thread_id }}</h2>
+                <table  class="data-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Frame</th>
+                            <th scope="col">Module</th>
+                            <th class="signature-column" scope="col">Signature</th>
+                            <th scope="col">Source</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for frame in thread_frames %}
+                        <tr>
+                            <td>
+                                {{ frame.frame_id }}
+                            </td>
+                            <td>{{ frame.lib_name }}</td>
+                            <td> {% if frame.function == "" %} {{ frame.offset }} {% else %} {{ frame.function }} {% endif %}</td>
+                            <td>
+                                {% if frame.file %} {{ frame.file }}:{{ frame.line }} {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 
     <div id="metadata" class="ui-tabs-hide">
