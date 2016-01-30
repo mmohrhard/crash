@@ -116,7 +116,7 @@ class TopCrashesView(ListViewBase):
         return context
 
     def get_queryset(self):
-        days = int(handle_parameter_or_default(self.request.GET, 'days', 1))
+        days = int(handle_parameter_or_default(self.request.GET, 'days', 7))
         limit = int(handle_parameter_or_default(self.request.GET, 'limit', 10))
         print(self.kwargs)
         if 'version' in self.kwargs:
