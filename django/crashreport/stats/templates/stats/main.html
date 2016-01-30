@@ -11,7 +11,7 @@
     <script>
         var data = {{chart_data|safe}};
         var chart = document.getElementById('chart').getContext('2d');
-        new Chart(chart).Line(data, {multiTooltipTemplate: "<%= datasetLabel %> - <%= value %>"});
+        new Chart(chart).Line(data, {scaleBeginAtZero : true, multiTooltipTemplate: "<%= datasetLabel %> - <%= value %>"});
     </script>
 
     <table>
