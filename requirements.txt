@@ -1,0 +1,10 @@
+Django==1.9.2
+argparse==1.2.1
+django-appconf==1.0.1
+django-compressor==2.0
+lesscpy==0.10.2
+ply==3.8
+rcssmin==1.0.6
+rjsmin==1.0.12
+six==1.10.0
+wsgiref==0.1.2
