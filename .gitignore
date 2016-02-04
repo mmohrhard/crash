@@ -2,3 +2,4 @@
 *.un~
 
 venv
+django/crashreport/static
