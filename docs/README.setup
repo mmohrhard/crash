@@ -1,0 +1,40 @@
+* dependencies:
+
+** package manager
+nginx
+gcc
+python
+python-devel
+pip
+
+** pip
+django
+django-compressor
+uwsgi
+lesscpy
+
+* Installation
+
+* clone https://github.com/mmohrhard/crash
+
+** set environment variables for the following properties
+*** SECRET_KEY (a secret key, changing the key might make access to the data impossible)
+*** TEMP_UPLOAD_DIR (the directory temporarily storing the uploaded crashes until they are processed)
+*** SYMBOL_LOCATION (the directory storing the symbol files)
+*** SYMBOL_UPLOAD_DIR (the directory storing temporarily the uploaded zip files for symbols)
+*** MINIDUMP_STACKWALK (the location of the minidump_stackwalk application; the minidump_stackwalk executable should be built independently)
+*** ALLOWED_HOSTS (the allowed hosts for requests)
+*** STATIC_ROOT  (the directory with the static data that will be accessed directly by nginx, see nginx/crashreport.conf)
+
+** configure uwsgi in emperor mode with systemd
+*** use the uwsgi.ini file and place it in /etc/uwsgi/sites
+*** install the uwsgi systemd file in /etc/systemd/system
+*** make sure that /var/log/uwsgi exists and is writable by the correct users
+
+** configure nginx
+*** see nginx/crashreport.conf
+*** uwsgi_params needs to be found (check the default location in /etc/nginx/uswgi_params)
+
+** handle selinux
+*** for example by disabling selinux
+
