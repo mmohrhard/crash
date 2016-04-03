@@ -23,7 +23,7 @@ class VersionModelTest(TestCase):
 
 class VersionManagerTest(TestCase):
     def setUp(self):
-        self.version = Version(product=self.product, major_version=1,
+        self.version = Version(major_version=1,
                 minor_version=2, micro_version=3,
                 patch_version=4)
         self.version.save()
