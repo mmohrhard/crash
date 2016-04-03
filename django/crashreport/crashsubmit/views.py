@@ -22,6 +22,8 @@ import traceback
 
 class UploadFileForm(forms.Form):
     upload_file_minidump = forms.FileField()
+    # TODO: moggi: make this part generic, we don't want to add one for field
+    #           for each new info that we might upload
     AdapterDeviceId = forms.CharField(required = False)
     AdapterVendorId = forms.CharField(required = False)
     Version = forms.CharField()
