@@ -29,9 +29,8 @@ class UploadFileForm(forms.Form):
     Version = forms.CharField()
 
 class InvalidVersionException(Exception):
-    def __init__(self, version, product):
+    def __init__(self, version):
         self.version = version
-        self.product = product
 
     def __str__(self):
         return "Invalid Version: " + self.version
@@ -39,7 +38,7 @@ class InvalidVersionException(Exception):
 def split_version_string(version_string):
     parameters = string.split(version_string, '.')
     if len(parameters) != 4:
-        raise InvalidVersionException(version_string, '')
+        raise InvalidVersionException(version_string)
 
     return parameters[0], parameters[1], parameters[2], parameters[3]
 
@@ -68,7 +67,7 @@ def create_database_entry(file, form):
         traceback.print_exc()
 
     if not model_version:
-        raise InvalidVersionException(version, product)
+        raise InvalidVersionException(version)
 
     new_crash = UploadedCrash(crash_path=file_path, crash_id=str(crash_id),
            version=model_version )
