@@ -69,6 +69,7 @@ def generate_chart_data(featured):
 def main(request):
     featured = Version.objects.filter(featured=True)
     generated_chart_data = generate_chart_data(featured)
+    # TODO: moggi: load the chart data through a rest api dynamically
     chart_data = json.dumps(generated_chart_data)
     data = generate_product_version_data()
     data['featured'] = featured
