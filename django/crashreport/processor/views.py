@@ -7,12 +7,14 @@
 
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 
 from processor import MinidumpProcessor
 
 from crashsubmit import models
 from .models import ProcessedCrash
 
+@login_required
 def process_all(request):
     # move that to a Manager
     processed_crashes = ProcessedCrash.objects.values_list('crash_id')
@@ -25,6 +27,7 @@ def process_all(request):
         done.append(crash.crash_id)
     return HttpResponse("\n".join(done))
 
+@login_required
 def process(request, crash_id):
     processor = MinidumpProcessor()
     processor.process(crash_id)
