@@ -29,16 +29,17 @@
                 <label for="version_select">Select Version:</label>
                 <select id="version_select">
                     <optgroup label=" ">
+                        <option value="Current">Current</option>
                         {% for v in versions %}
                         {% if v.featured %}
-                        <option value="{{v}}"/>{{v}}</Test>
+                        <option value="{{v}}">{{v}}</option>
                         {% endif %}
                         {% endfor %}
                     </optgroup>
                     <optgroup label=" ">
                         {% for v in versions %}
                         {% if not v.featured %}
-                        <option value="{{v}}"/>{{v}}</Test>
+                        <option value="{{v}}">{{v}}</option>
                         {% endif %}
                         {% endfor %}
                     </optgroup>
