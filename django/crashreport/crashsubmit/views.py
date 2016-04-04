@@ -60,7 +60,7 @@ def create_database_entry(file, form):
                 major_version = major, minor_version = minor,
                 micro_version = micro, patch_version = patch)
     except:
-        traceback.print_exc()
+        raise InvalidVersionException(version)
 
     if not model_version:
         raise InvalidVersionException(version)
