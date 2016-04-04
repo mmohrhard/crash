@@ -6,7 +6,7 @@
 #
 
 from django import forms
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.core.urlresolvers import reverse
 from django.conf import settings
 
@@ -84,12 +84,10 @@ def upload_file(request):
 
     form = UploadFileForm(request.POST, request.FILES)
 
-    file = request.FILES['upload_file_minidump']
-    if file is None:
-        return HttpResponseNotAllowed()
-
     if not form.is_valid():
-        return HttpResponseNotAllowed()
+        return HttpResponseBadRequest()
+
+    file = request.FILES['upload_file_minidump']
 
     try:
         crash_id = str(create_database_entry(file, form))
