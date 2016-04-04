@@ -52,10 +52,6 @@ def handle_uploaded_file(f):
 
 
 def create_database_entry(file, form):
-    file_path = handle_uploaded_file(file)
-
-    crash_id = uuid.uuid4()
-
     version = form.cleaned_data['Version']
 
     major, minor, micro, patch = split_version_string(version)
@@ -68,6 +64,11 @@ def create_database_entry(file, form):
 
     if not model_version:
         raise InvalidVersionException(version)
+
+    file_path = handle_uploaded_file(file)
+
+    crash_id = uuid.uuid4()
+
 
     new_crash = UploadedCrash(crash_path=file_path, crash_id=str(crash_id),
            version=model_version )
