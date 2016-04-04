@@ -6,7 +6,7 @@
 #
 
 from django import forms
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 from django.conf import settings
 
@@ -95,6 +95,6 @@ def upload_file(request):
     except (InvalidVersionException) as e:
         return HttpResponseServerError(str(e))
 
-    return HttpResponseRedirect('Crash-ID=%s'%(crash_id))
+    return HttpResponse('Crash-ID=%s'%(crash_id))
 
 # vim:set shiftwidth=4 softtabstop=4 expandtab: */
