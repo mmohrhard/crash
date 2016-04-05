@@ -38,3 +38,7 @@ lesscpy
 ** handle selinux
 *** for example by disabling selinux
 
+** setup the django app
+*** switch to the django app (the django/crashreport directory of the cloned repo)
+*** call ./manage.py migrate
+*** call ./manage.py createsuperuser to generate one admin (rest can be done in the UI)
