@@ -19,7 +19,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'at_4nc!x(m=v2dxwzr*kdsvzz_()r+jt^5usmzexh^jvaaj9iz'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'at_4nc!x(m=v2dxwzr*kdsvzz_()r+jt^5usmzexh^jvaaj9iz')
 
 DEBUG = bool(os.environ.get('DEBUG', False))
 
@@ -31,7 +31,7 @@ SYMBOL_UPLOAD_DIR = os.environ.get('SYMBOL_UPLOAD_DIR', '/tmp/symbol_upload/')
 
 MINIDUMP_STACKWALK = os.environ.get('MINIDUMP_STACKWALK', 'minidump_stackwalk')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', [])
 
 APPEND_SLASH = True
 
