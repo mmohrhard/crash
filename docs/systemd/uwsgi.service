@@ -1,0 +1,15 @@
+[Unit]
+Description=uWSGI Emperor
+After=syslog.target
+
+[Service]
+ExecStartPre=/usr/bin/bash -c 'mkdir -p /run/uwsgi; chown moggi:nginx /run/uwsgi; chmod -R a+rw /run/uwsgi'
+ExecStart=/usr/bin/uwsgi --emperor /etc/uwsgi/sites
+Restart=always
+KillSignal=SIGQUIT
+Type=notify
+StandardError=syslog
+NotifyAccess=all
+
+[Install]
+WantedBy=multi-user.target
