@@ -145,4 +145,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.environ.get('STATIC_URL', '/srv/www/static')
+STATIC_ROOT = os.environ.get('STATIC_ROOT', '/srv/www/static')
