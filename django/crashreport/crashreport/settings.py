@@ -98,15 +98,11 @@ COMPRESS_PRECOMPILERS = (
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
 
+# TODO: moggi: change to postgresql
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.environ.get('DB_NAME', 'crashreport'),
-
-        'USER': os.environ.get('DB_USER', 'moggi'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
-        'HOST': os.environ.get('DB_HOST', '127.0.0.1'),                      # Empty for localhost through domain sockets or           '127.0.0.1' for localhost through TCP.
-        'PORT': os.environ.get('DB_PORT', ''),                      # Set to empty string for default.
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db2.sqlite3'),
     }
 }
 
