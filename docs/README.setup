@@ -49,3 +49,4 @@ lesscpy
 *** switch to the django app (the django/crashreport directory of the cloned repo)
 *** call ./manage.py migrate
 *** call ./manage.py createsuperuser to generate one admin (rest can be done in the UI)
+*** call ./manage.py collectstatic to collect the static files that are served directly by nginx
