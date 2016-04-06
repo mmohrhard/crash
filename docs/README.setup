@@ -17,6 +17,8 @@ lesscpy
 
 * clone https://github.com/mmohrhard/crash
 
+* install postgresql and create a user and a database
+
 ** set environment variables for the following properties
 *** SECRET_KEY (a secret key, changing the key might make access to the data impossible)
 *** TEMP_UPLOAD_DIR (the directory temporarily storing the uploaded crashes until they are processed)
@@ -25,6 +27,11 @@ lesscpy
 *** MINIDUMP_STACKWALK (the location of the minidump_stackwalk application; the minidump_stackwalk executable should be built independently)
 *** ALLOWED_HOSTS (the allowed hosts for requests)
 *** STATIC_ROOT  (the directory with the static data that will be accessed directly by nginx, see nginx/crashreport.conf)
+*** DB_NAME (database name)
+*** DB_USER (database user)
+*** DB_PASSWORD (password for database user)
+*** DB_HOST (default 127.0.0.1)
+*** DB_PORT (optional)
 
 ** configure uwsgi in emperor mode with systemd
 *** use the uwsgi.ini file and place it in /etc/uwsgi/sites
