@@ -5,6 +5,7 @@ nginx
 gcc
 python
 python-devel
+python-psycopg2
 pip
 
 ** pip
