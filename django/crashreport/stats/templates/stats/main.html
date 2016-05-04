@@ -14,22 +14,18 @@
         new Chart(chart).Line(data, {scaleBeginAtZero : true, multiTooltipTemplate: "<%= datasetLabel %> - <%= value %>"});
     </script>
 
-    <table>
-        <thead>
-            <tr>
-                {% for version in featured %}
-                <th scope="col">{{ version }}</th>
-                {% endfor %}
-            <tr>
-        </thead>
-        <tbody> 
-            <tr>
-                {% for version in featured %}
-                <td>
-                    <a href="{% url 'crash_version' version.str_without_product %}">Top Crashes</a>
-                </td>
-                {% endfor %}
-            </tr>
-        </tbody>
-    </table>
+    <script>
+        function dropdown() {
+        var x = document.getElementById("versions").value;
+        window.location.href = x;
+       }
+    </script>
+
+    <br>
+    <select name='versions' id="versions" onchange="dropdown()">
+    <option class='head'>VERSIONS</option>
+        {% for version in featured %}
+        <option value="{% url 'crash_version' version.str_without_product %}">{{ version }}</option>
+        {% endfor %}
+    </select>
 {% endblock %}
