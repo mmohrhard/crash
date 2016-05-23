@@ -26,7 +26,8 @@ class SymbolsUploadHandler(object):
 
         upload = SymbolsUpload()
         upload.files = file_names
-        upload.comment = data['comment']
+        upload.comment = data['version'] + " " + data['platform']
+        upload.comment
         upload.upload_time = timezone.now()
         upload.save()
 
