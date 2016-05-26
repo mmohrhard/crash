@@ -7,7 +7,6 @@
 
 from django import forms
 from django.http import HttpResponse, HttpResponseBadRequest
-from django.core.urlresolvers import reverse
 from django.conf import settings
 
 from .models import UploadedCrash
@@ -19,7 +18,6 @@ import json
 
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseServerError
-import traceback
 
 class UploadFileForm(forms.Form):
     upload_file_minidump = forms.FileField()
