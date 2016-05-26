@@ -74,6 +74,7 @@ def main(request):
     data = generate_product_version_data()
     data['featured'] = featured
     data['chart_data'] = chart_data
+    data['version'] = 'current'
     return render(request, 'stats/main.html', data)
 
 def crash_details(request, crash_id):
@@ -84,6 +85,7 @@ def crash_details(request, crash_id):
     data['modules'] = modules
     data['crashing_thread'] = {'frames': json.loads(crash.crashing_thread)}
     data['threads'] = json.loads(crash.threads)
+    data['version'] = 'current'
     return render(request, 'stats/detail.html', data)
 
 class SignatureView(ListViewBase):
@@ -114,6 +116,8 @@ class TopCrashesView(ListViewBase):
         context = super(TopCrashesView, self).get_context_data(**kwargs)
         if 'version' in self.kwargs:
             context['version'] = self.kwargs['version']
+        else:
+            context['version'] = handle_parameter_or_default(self.request.GET, 'version', None)
         return context
 
     def get_queryset(self):

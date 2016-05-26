@@ -14,15 +14,8 @@
         new Chart(chart).Line(data, {scaleBeginAtZero : true, multiTooltipTemplate: "<%= datasetLabel %> - <%= value %>"});
     </script>
 
-    <script>
-        function dropdown() {
-        var x = document.getElementById("versions").value;
-        window.location.href = x;
-       }
-    </script>
-
     <br>
-    <select name='versions' id="versions" onchange="dropdown()">
+    <select name='version_select' id="version_select" onchange="version_dropdown()">
     <option class='head'>VERSIONS</option>
         {% for version in featured %}
         <option value="{% url 'crash_version' version.str_without_product %}">{{ version }}</option>

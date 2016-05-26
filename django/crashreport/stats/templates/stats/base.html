@@ -18,6 +18,7 @@
 <script src="{% static 'stats/js/jquery/jquery-2.0.3.min.js' %}" type="text/javascript" charset="utf-8"></script>
 <script src="{% static 'stats/js/jquery/plugins/jquery-ui.js' %}"></script>
 <script src="{% static 'stats/js/jquery/plugins/jquery.tablesorter.js' %}"></script>
+<script src="{% static 'stats/js/base.js' %}"></script>
 
 {% block additional_js %}{% endblock %}
 {% endcompress %}
@@ -27,19 +28,19 @@
         <ul class="filter">
             <li class"version_select">
                 <label for="version_select">Select Version:</label>
-                <select id="version_select">
+		<select name='version_select' id="version_select" onchange="version_dropdown()">
                     <optgroup label=" ">
-                        <option value="Current">Current</option>
+                        <option value="{% url 'main'%}" {% if version = "current" %}selected{% endif %}>Current Versions</option>
                         {% for v in versions %}
                         {% if v.featured %}
-                        <option value="{{v}}">{{v}}</option>
+			<option value="{% url 'crash_version' v.str_without_product %}" {% if version = v.str_without_product %}selected="selected"{% endif %}>{{ v }}</option>
                         {% endif %}
                         {% endfor %}
                     </optgroup>
                     <optgroup label=" ">
                         {% for v in versions %}
                         {% if not v.featured %}
-                        <option value="{{v}}">{{v}}</option>
+			<option value="{% url 'crash_version' v.str_without_product %}" {% if version = v.str_without_product %}selected="selected"{% endif %}>{{ v }}</option>
                         {% endif %}
                         {% endfor %}
                     </optgroup>
