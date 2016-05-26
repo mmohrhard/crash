@@ -39,13 +39,6 @@ class InvalidVersionException(Exception):
     def __str__(self):
         return "Invalid Version: " + self.version
 
-def split_version_string(version_string):
-    parameters = string.split(version_string, '.')
-    if len(parameters) != 4:
-        raise InvalidVersionException(version_string)
-
-    return parameters[0], parameters[1], parameters[2], parameters[3]
-
 def handle_uploaded_file(f):
     tmp_upload_path = settings.TEMP_UPLOAD_DIR
     file_path = os.path.join(tmp_upload_path, f.name)
@@ -58,11 +51,12 @@ def handle_uploaded_file(f):
 def create_database_entry(file, form):
     version = form.cleaned_data['Version']
 
-    major, minor, micro, patch = split_version_string(version)
     try:
-        model_version = Version.objects.get(
-                major_version = major, minor_version = minor,
-                micro_version = micro, patch_version = patch)
+        model_versions = Version.objects.get_by_version_string(version)
+        if len(model_versions) != 1:
+            raise InvalidVersionException(str(model_versions))
+
+        model_version = model_versions[0]
     except:
         raise InvalidVersionException(version)
 
