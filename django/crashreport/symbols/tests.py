@@ -29,15 +29,15 @@ class TestSimpleSymbolsUpload(TestCase):
         remove_dir(self.tmp_dir)
 
     def test_symbols_upload_valid_zip(self):
-        comment = 'Test Comment'
+        version = '1.2.3.4'
+        platform = 'linux'
         with self.settings(SYMBOL_UPLOAD_DIR=self.tmp_dir):
             with open(get_test_file_path("valid.zip")) as f:
-                response = self.c.post('/upload/', {'symbols':f, 'comment': comment})
+                response = self.c.post('/upload/', {'symbols':f, 'version': version, 'platform':platform})
         self.assertEqual(response.status_code, 200)
         uploaded_symbols = SymbolsUpload.objects.all()
         self.assertEqual(len(uploaded_symbols), 1)
         uploaded_symbol = uploaded_symbols[0]
-        self.assertEqual(uploaded_symbol.comment, comment)
         self.assertListEqual(uploaded_symbol.files.splitlines(), ['file1', 'file2'])
 
     def test_sybols_upload_invalid_zip(self):
