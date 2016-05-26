@@ -3,8 +3,11 @@ from django.test import Client
 
 from base.models import Version
 
+from models import UploadedCrash
+
 import os
 import tempfile
+import json
 
 def get_test_file_path(file_name):
     dir = os.path.dirname(__file__)
@@ -16,6 +19,15 @@ def remove_dir(top):
             os.remove(os.path.join(root, name))
         for name in dirs:
             os.rmdir(os.path.join(root, name))
+
+def find_crash_id(response):
+    crash_id_split = response.content.split('=')
+    return crash_id_split[1]
+
+def find_crash(response):
+    id = find_crash_id(response)
+    upload_crash = UploadedCrash.objects.get(crash_id=id)
+    return upload_crash
 
 class TestCrashUpload(TestCase):
 
@@ -66,3 +78,7 @@ class TestCrashUpload(TestCase):
             with open(get_test_file_path("test")) as f:
                 response = c.post('/submit/', {'upload_file_minidump':f, 'Version': '1.2.3.4', 'AdditionalData': '{ "key1" : "val1", "key2" : "val2"}'})
         self.assertEqual(response.status_code, 200)
+        upload_crash = find_crash(response)
+        self.assertIsNotNone(upload_crash)
+        json_data = json.loads(upload_crash.additional_data)
+        self.assertDictEqual(json_data, { 'key1': 'val1', 'key2': 'val2'})
