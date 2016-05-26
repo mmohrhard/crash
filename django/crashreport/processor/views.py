@@ -18,7 +18,6 @@ from .models import ProcessedCrash
 def process_all(request):
     # move that to a Manager
     processed_crashes = ProcessedCrash.objects.values_list('crash_id')
-    print(processed_crashes)
     crashes = models.UploadedCrash.objects.exclude(crash_id__in=processed_crashes)
     done = []
     for crash in crashes:
