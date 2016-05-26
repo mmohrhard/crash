@@ -44,7 +44,7 @@ class TestSimpleSymbolsUpload(TestCase):
         with self.settings(SYMBOL_UPLOAD_DIR=self.tmp_dir):
             with open(get_test_file_path("invalid.zip")) as f:
                 with self.assertRaises(zipfile.BadZipfile):
-                    response = self.c.post('/upload/', {'symbols': f, 'comment': 'Test Comment'})
+                    response = self.c.post('/upload/', {'symbols': f, 'version': '1.2.3.4', 'platform': 'linux'})
 
     def test_missing_comment(self):
         with self.settings(SYMBOL_UPLOAD_DIR=self.tmp_dir):
