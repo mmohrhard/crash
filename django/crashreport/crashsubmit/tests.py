@@ -51,3 +51,15 @@ class TestCrashUpload(TestCase):
         with open(get_test_file_path("test")) as f:
             response = c.post('/submit/', {'upload_file_minidump':f, 'Version': '1.2.3.4'})
         self.assertEqual(response.status_code, 200)
+
+    def test_uploadDeprecatedAttribs(self):
+        c = Client()
+        with open(get_test_file_path("test")) as f:
+            response = c.post('/submit/', {'upload_file_minidump':f, 'Version': '1.2.3.4', 'AdapterDeviceId': 'Device1', 'AdapterVendorId': 'Vendor1'})
+        self.assertEqual(response.status_code, 200)
+
+    def test_uploadJsonAttribs(self):
+        c = Client()
+        with open(get_test_file_path("test")) as f:
+            response = c.post('/submit/', {'upload_file_minidump':f, 'Version': '1.2.3.4', 'AdditionalData': '{ "key1" : "val1", "key2" : "val2"}'})
+        self.assertEqual(response.status_code, 200)
