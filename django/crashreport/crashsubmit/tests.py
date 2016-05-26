@@ -43,8 +43,7 @@ class TestCrashUpload(TestCase):
 
     def test_uploadInvalidFile(self):
         c = Client()
-        with open(get_test_file_path("test")) as f:
-            response = c.post('/submit/', {'Version': self.version})
+        response = c.post('/submit/', {'Version': self.version})
         self.assertEqual(response.status_code, 400)
 
     def test_uploadMetadata(self):
