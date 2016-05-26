@@ -19,9 +19,7 @@ class UploadedCrash(models.Model):
     crash_path = models.CharField(max_length=200, help_text='The path to the original crash report on the file system.')
     upload_time = models.DateTimeField(auto_now_add=True)
     version = models.ForeignKey(Version)
-    device_id = models.CharField(max_length=100,
-            null=True)
-    vendor_id = models.CharField(max_length=100,
-            null=True)
+
+    additional_data = models.TextField(default="{}")
 
 # vim:set shiftwidth=4 softtabstop=4 expandtab: */

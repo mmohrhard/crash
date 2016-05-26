@@ -55,8 +55,7 @@ class MinidumpProcessor(object):
         # We might want to delete the UploadedCrash entry
         self.processed_crash.crash_id = original_crash_report.crash_id
         self.processed_crash.version = original_crash_report.version
-        self.processed_crash.device_id = original_crash_report.device_id
-        self.processed_crash.vendor_id = original_crash_report.vendor_id
+        self.processed_crash.additional_data = original_crash_report.additional_data
         self.processed_crash.upload_time = original_crash_report.upload_time
 
         self.processed_crash.raw = output

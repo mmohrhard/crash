@@ -15,6 +15,7 @@ from base.models import Version
 
 import os, uuid
 import string
+import json
 
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseServerError
@@ -22,10 +23,13 @@ import traceback
 
 class UploadFileForm(forms.Form):
     upload_file_minidump = forms.FileField()
-    # TODO: moggi: make this part generic, we don't want to add one for field
-    #           for each new info that we might upload
+
+    # These two attributes are deprecated
     AdapterDeviceId = forms.CharField(required = False)
     AdapterVendorId = forms.CharField(required = False)
+
+    # Only use the new AdditionalData field which would require json data
+    AdditionalData = forms.CharField(required = False)
     Version = forms.CharField()
 
 class InvalidVersionException(Exception):
@@ -69,9 +73,24 @@ def create_database_entry(file, form):
 
     crash_id = uuid.uuid4()
 
+    json_data = {}
+
+    try:
+        if form.cleaned_data['AdditionalData'] != "":
+            json_data = json.loads(form.cleaned_data['AdditionalData'])
+    except:
+        pass
+
+    try:
+        if form.cleaned_data['AdapterDeviceId'] != "":
+            json_data['Grahic Device ID'] = form.cleaned_data['AdapterDeviceId']
+        if form.cleaned_data["AdapterVendorId"] != "":
+            json_data['Graphic Vendor ID'] = form.cleaned_data['AdapterVendorId']
+    except:
+        pass
 
     new_crash = UploadedCrash(crash_path=file_path, crash_id=str(crash_id),
-           version=model_version )
+           version=model_version, additional_data = json.dumps(json_data) )
     new_crash.save()
     return crash_id
 

@@ -178,22 +178,14 @@
     <div id="metadata" class="ui-tabs-hide">
         <table class="record data-table vertical">
             <tbody>
-                {% if crash.device_id %}
+                {% for key, value in additional_data %}
                 <tr>
-                    <th scope="row">Graphic Device Id</th>
+                    <th scope="row">{{ key }}</th>
                     <td>
-                        {{ crash.device_id }}
+                        {{ value }}
                     </td>
                 </tr>
-                {% endif %}
-                {% if crash.vendor_id %}
-                <tr>
-                    <th scope="row">Graphic Vendor Id</th>
-                    <td>
-                        {{ crash.vendor_id }}
-                    </td>
-                </tr>
-                {% endif %}
+                {% endfor %}
             </tbody>
         </table>
     </div>

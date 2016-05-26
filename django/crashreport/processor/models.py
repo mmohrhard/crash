@@ -125,12 +125,7 @@ class ProcessedCrash(models.Model):
             null=True)
 
     # Look for better solution to store dictionary
-    device_id = models.CharField(max_length=100,
-            null=True,
-            default=None)
-    vendor_id = models.CharField(max_length=100,
-            null=True,
-            default=None)
+    additional_data = models.TextField(default='{}')
 
     # OS info
     LINUX = 'linux'

@@ -82,6 +82,7 @@ def crash_details(request, crash_id):
     modules = crash.get_split_module_list()
     data = generate_product_version_data()
     data['crash'] = crash
+    data['additional_data'] = json.loads(crash.additional_data)
     data['modules'] = modules
     data['crashing_thread'] = {'frames': json.loads(crash.crashing_thread)}
     data['threads'] = json.loads(crash.threads)
