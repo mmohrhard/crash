@@ -21,10 +21,11 @@ class MinidumpProcessor(object):
 
     def process(self, crash_id):
 
-        original_crash_report = submit_model.UploadedCrash.objects.get(crash_id=crash_id)
-        path = original_crash_report.crash_path
         if len(ProcessedCrash.objects.filter(crash_id=crash_id)) != 0:
             raise IntegrityError('object already in db')
+
+        original_crash_report = submit_model.UploadedCrash.objects.get(crash_id=crash_id)
+        path = original_crash_report.crash_path
 
         output = subprocess.check_output([self.minidump_stackwalker, "-m", path, self.symbol_path])
 
