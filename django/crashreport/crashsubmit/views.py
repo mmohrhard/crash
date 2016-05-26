@@ -19,6 +19,7 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseServerError
 
+# TODO: moggi: implement validation logic for the version field
 class UploadFileForm(forms.Form):
     upload_file_minidump = forms.FileField()
 
