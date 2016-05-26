@@ -36,8 +36,9 @@ class TestCrashUpload(TestCase):
 
     def test_uploadInvalidVersion(self):
         c = Client()
-        with open(get_test_file_path("test")) as f:
-            response = c.post('/submit/', {'upload_file_minidump':f, 'Version': '2.3.4.5'})
+        with self.settings(TEMP_UPLOAD_DIR=self.tmp_dir):
+            with open(get_test_file_path("test")) as f:
+                response = c.post('/submit/', {'upload_file_minidump':f, 'Version': '2.3.4.5'})
         self.assertEqual(response.status_code, 500)
 
     def test_uploadInvalidFile(self):
@@ -48,18 +49,21 @@ class TestCrashUpload(TestCase):
 
     def test_uploadMetadata(self):
         c = Client()
-        with open(get_test_file_path("test")) as f:
-            response = c.post('/submit/', {'upload_file_minidump':f, 'Version': '1.2.3.4'})
+        with self.settings(TEMP_UPLOAD_DIR=self.tmp_dir):
+            with open(get_test_file_path("test")) as f:
+                response = c.post('/submit/', {'upload_file_minidump':f, 'Version': '1.2.3.4'})
         self.assertEqual(response.status_code, 200)
 
     def test_uploadDeprecatedAttribs(self):
         c = Client()
-        with open(get_test_file_path("test")) as f:
-            response = c.post('/submit/', {'upload_file_minidump':f, 'Version': '1.2.3.4', 'AdapterDeviceId': 'Device1', 'AdapterVendorId': 'Vendor1'})
+        with self.settings(TEMP_UPLOAD_DIR=self.tmp_dir):
+            with open(get_test_file_path("test")) as f:
+                response = c.post('/submit/', {'upload_file_minidump':f, 'Version': '1.2.3.4', 'AdapterDeviceId': 'Device1', 'AdapterVendorId': 'Vendor1'})
         self.assertEqual(response.status_code, 200)
 
     def test_uploadJsonAttribs(self):
         c = Client()
-        with open(get_test_file_path("test")) as f:
-            response = c.post('/submit/', {'upload_file_minidump':f, 'Version': '1.2.3.4', 'AdditionalData': '{ "key1" : "val1", "key2" : "val2"}'})
+        with self.settings(TEMP_UPLOAD_DIR=self.tmp_dir):
+            with open(get_test_file_path("test")) as f:
+                response = c.post('/submit/', {'upload_file_minidump':f, 'Version': '1.2.3.4', 'AdditionalData': '{ "key1" : "val1", "key2" : "val2"}'})
         self.assertEqual(response.status_code, 200)
