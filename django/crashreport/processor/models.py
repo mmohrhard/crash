@@ -179,7 +179,7 @@ class ProcessedCrash(models.Model):
     def set_view_os_name_to_model(self, view_os_name):
         if view_os_name.lower() == ProcessedCrash.LINUX:
             self.os_name = ProcessedCrash.LINUX
-        elif view_os_name.lower() == ProcessedCrash.WINDOWS:
+        elif view_os_name.lower().startswith(ProcessedCrash.WINDOWS):
             self.os_name = ProcessedCrash.WINDOWS
         elif view_os_name.lower() == ProcessedCrash.OSX:
             self.os_name = ProcessedCrash.OSX
