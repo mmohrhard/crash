@@ -225,7 +225,6 @@ class ProcessedCrash(models.Model):
                 other_threads[thread_id] = json.loads(frame_list)
 
         self.threads = json.dumps(other_threads)
-        print(self.threads)
 
     def set_modules_to_model(self, modules):
         self.modules = "\n".join(modules)
