@@ -14,10 +14,13 @@ from django.utils import timezone
 from datetime import timedelta
 
 import json
+import logging
 
 from crashsubmit import models as submit_models
 
 from base.models import Version
+
+logger = logging.getLogger(__name__)
 
 class CrashCountManager(models.Manager):
     def get_crash_count_processed(self, versions=None, time=None):
@@ -183,6 +186,8 @@ class ProcessedCrash(models.Model):
             self.os_name = ProcessedCrash.WINDOWS
         elif view_os_name.lower() == ProcessedCrash.OSX:
             self.os_name = ProcessedCrash.OSX
+        else:
+            logger.warning("could not determine the os: " + view_is_name)
 
     def _convert_frames(self, frame_list):
         text = ""

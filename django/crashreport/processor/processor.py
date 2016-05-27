@@ -6,6 +6,7 @@
 #
 
 import subprocess, re, json
+import logging
 
 from .models import ProcessedCrash
 
@@ -13,6 +14,9 @@ from django.db import IntegrityError
 from django.conf import settings
 
 from crashsubmit import models as submit_model
+
+
+logger = logging.getLogger(__name__)
 
 class MinidumpProcessor(object):
     def __init__(self):
@@ -22,6 +26,7 @@ class MinidumpProcessor(object):
     def process(self, crash_id):
 
         if len(ProcessedCrash.objects.filter(crash_id=crash_id)) != 0:
+            logger.error("trying to process teh same uploaded crash twice")
             raise IntegrityError('object already in db')
 
         original_crash_report = submit_model.UploadedCrash.objects.get(crash_id=crash_id)
