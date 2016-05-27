@@ -143,6 +143,57 @@ USE_L10N = True
 
 USE_TZ = True
 
+LOGGING_DIR = os.environ.get('LOGGING_DIR', '/home/moggi/django_logs/')
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'crashsubmit': {
+            'level': 'WARNING',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(LOGGING_DIR, 'crashsubmit.log'),
+            },
+        'processor': {
+            'level': 'WARNING',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(LOGGING_DIR, 'processor.log'),
+            },
+        'stats': {
+            'level': 'WARNING',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(LOGGING_DIR, 'stats.log'),
+            },
+        'symbols': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(LOGGING_DIR, 'symbols.log'),
+            },
+        },
+    'loggers': {
+        'crashsubmit': {
+            'handlers': ['crashsubmit'],
+            'level': 'WARNING',
+            'propagate': True,
+            },
+        'processor': {
+            'handlers': ['processor'],
+            'level': 'WARNING',
+            'propagate': True,
+            },
+        'stats': {
+            'handlers': ['stats'],
+            'level': 'WARNING',
+            'propagate': True,
+            },
+        'symbols': {
+            'handlers': ['symbols'],
+            'level': 'INFO',
+            'propagate': True,
+            },
+        },
+}
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
