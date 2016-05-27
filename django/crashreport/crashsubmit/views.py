@@ -15,9 +15,12 @@ from base.models import Version
 import os, uuid
 import string
 import json
+import logging
 
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, HttpResponseNotAllowed, HttpResponseServerError
+
+logger = logging.getLogger(__name__)
 
 # TODO: moggi: implement validation logic for the version field
 class UploadFileForm(forms.Form):
@@ -97,6 +100,7 @@ def upload_file(request):
     form = UploadFileForm(request.POST, request.FILES)
 
     if not form.is_valid():
+        logger.error("form is invalid with error: " + str(form.errors))
         return HttpResponseBadRequest()
 
     file = request.FILES['upload_file_minidump']
@@ -104,8 +108,10 @@ def upload_file(request):
     try:
         crash_id = str(create_database_entry(file, form))
     except (InvalidVersionException) as e:
+        logger.error("invalid version exception " + str(e))
         return HttpResponseServerError(str(e))
 
+    logger.info("uploaded crash: " + crash_id)
     return HttpResponse('Crash-ID=%s'%(crash_id))
 
 # vim:set shiftwidth=4 softtabstop=4 expandtab: */
