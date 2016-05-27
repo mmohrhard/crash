@@ -33,6 +33,7 @@ lesscpy
 *** DB_PASSWORD (password for database user)
 *** DB_HOST (default 127.0.0.1)
 *** DB_PORT (optional)
+*** LOGGING_DIR (the directory that will contain the production logs for the django app)
 
 ** configure uwsgi in emperor mode with systemd
 *** use the uwsgi.ini file and place it in /etc/uwsgi/sites
