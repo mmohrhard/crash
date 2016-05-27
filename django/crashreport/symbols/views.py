@@ -14,6 +14,9 @@ from django.conf import settings
 from .handler import SymbolsUploadHandler
 
 import os
+import logging
+
+logger = logging.getLogger(__name__)
 
 class UploadSymbolsForm(forms.Form):
     symbols = forms.FileField()
@@ -38,6 +41,7 @@ def upload_symbols(request):
     form = UploadSymbolsForm(request.POST, request.FILES)
 
     if not form.is_valid():
+        logger.error("form is invalid with error: " + str(form.errors))
         return HttpResponseNotAllowed('Invalid data')
 
     path = handle_uploaded_file(request.FILES['symbols'])
