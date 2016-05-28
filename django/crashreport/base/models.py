@@ -35,16 +35,16 @@ class Version(models.Model):
         split_versions = version.split('.')
         res = {}
         if len(split_versions) >= 1:
-            res[prefix + 'major_version'] = split_versions[0]
+            res[prefix + 'major_version'] = int(split_versions[0])
 
         if len(split_versions) >= 2:
-            res[prefix + 'minor_version'] = split_versions[1]
+            res[prefix + 'minor_version'] = int(split_versions[1])
 
         if len(split_versions) >= 3:
-            res[prefix + 'micro_version'] = split_versions[2]
+            res[prefix + 'micro_version'] = int(split_versions[2])
 
         if len(split_versions) >= 4:
-            res[prefix + 'patch_version'] = split_versions[3]
+            res[prefix + 'patch_version'] = int(split_versions[3])
 
         return res
 
