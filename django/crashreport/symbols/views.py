@@ -48,8 +48,6 @@ def upload_symbols(request):
     upload = SymbolsUploadHandler()
     upload.process(form.cleaned_data, path)
 
-    # TODO: moggi: maybe report the zipfile.BadZipfile exception
-
     return HttpResponse("Success")
 
 # vim:set shiftwidth=4 softtabstop=4 expandtab: */
