@@ -40,6 +40,27 @@ class VersionManagerTest(TestCase):
         res = Version.objects.get_by_version_string("1.2.3.4")
         self.assertEqual(len(res), 1)
 
+    def test_create_from_string(self):
+        res = Version.objects.create_from_string("3.4.5.6")
+        self.assertIsNotNone(res)
+        self.assertEqual(res.major_version, 3)
+        self.assertEqual(res.minor_version, 4)
+        self.assertEqual(res.micro_version, 5)
+        self.assertEqual(res.patch_version, 6)
+
+    def test_create_from_string_featured(self):
+        res = Version.objects.create_from_string("4.5.6.7", featured=True)
+        self.assertIsNotNone(res)
+        self.assertEqual(res.major_version, 4)
+        self.assertEqual(res.minor_version, 5)
+        self.assertEqual(res.micro_version, 6)
+        self.assertEqual(res.patch_version, 7)
+        self.assertEqual(res.featured, True)
+
+    def test_create_from_string_short_version(self):
+        with self.assertRaises(Exception):
+            Version.objects.create_from_string("5.6.7")
+
 class VersionTest(TestCase):
 
     def test_get_filter_params(self):
