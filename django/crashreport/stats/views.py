@@ -37,22 +37,37 @@ class ListViewBase(ListView):
         version = '5.1.0.0'
         return HttpResponseRedirect(reverse(base_url, {'product': product, 'version': version}))
 
-def generate_data_for_version(version, x_values, crashes):
+class ChartColorMap(object):
+
+    color_list = [ "rgba(141, 211, 199, {0})", "rgba(255, 255, 171, {0})",
+                "rgba(190, 186, 218, {0})", "rgba(251, 128, 114, {0})", "rgba(128, 177, 211, {0})",
+                "rgba(253, 180, 98, {0})", "rgba(179, 222, 105, {0})", "rgba(252, 205, 229, {0})",
+                "rgba(217, 217, 217, {0})", "rgba(188, 128, 189, {0})" ]
+
+    @classmethod
+    def get_color_by_index(cls, index, alpha = 1):
+        return cls.color_list[index].format(alpha)
+
+def generate_data_for_version(id, version, x_values, crashes):
     values = []
     for x in x_values:
         if x in crashes:
             values.append(crashes[x])
         else:
             values.append(None)
+
     data = {}
     data['label'] = version
-    # TODO: moggi: generate colors for each series
-    data['fillColor'] = "rgba(220, 220, 220, 0.2)"
-    data['strokeColor'] = "rgba(220, 220, 220, 1)"
-    data['pointColor'] = "rgba(220, 220, 220, 1)"
+
+    color = ChartColorMap.get_color_by_index(id, 1)
+    color_with_alpha = ChartColorMap.get_color_by_index(id, 0.2)
+    data['fillColor'] = color_with_alpha
+    data['strokeColor'] = color
+    data['pointColor'] = color
     data['pointStrokeColor'] = "#fff"
     data['pointHighlightFill'] = "#fff"
     data['pointHighlightStroke'] = "#fff"
+
     data['data'] = values
     return data
 
@@ -62,8 +77,8 @@ def generate_chart_data(featured):
     keys, values = CrashCount.objects.get_crash_count_processed(versions=featured)
     data['labels'] = keys
     data['datasets'] = []
-    for version in values.keys():
-        data['datasets'].append(generate_data_for_version(version, keys, values[version]))
+    for id, version in enumerate(values.keys()):
+        data['datasets'].append(generate_data_for_version(id, version, keys, values[version]))
     return data
 
 def main(request):
