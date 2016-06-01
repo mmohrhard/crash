@@ -14,6 +14,16 @@ class VersionManager(models.Manager):
         res = res.filter(**filter_params)
         return res
 
+    def create_from_string(self, version_string, **kwargs):
+        params = Version.get_filter_params(version_string)
+        if len(params) != 4:
+            raise Exception('invalid version string: ' + version_string)
+
+        if kwargs is not None:
+            params.update(kwargs)
+
+        return self.create(**params)
+
 class Version(models.Model):
     major_version = models.SmallIntegerField()
     minor_version = models.SmallIntegerField()
