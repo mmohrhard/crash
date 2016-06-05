@@ -113,6 +113,10 @@ class ProcessedCrashManager(models.Manager):
             values = values[0:limit]
         return values
 
+    def get_crashes_to_process(self):
+        processed = ProcessedCrash.objects.values_list('crash_id')
+        return submit_models.UploadedCrash.objects.exclude(crash_id__in=processed)
+
 class ProcessedCrash(models.Model):
     # custom manager
     objects = ProcessedCrashManager()
