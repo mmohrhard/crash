@@ -1,0 +1,11 @@
+Extract Windows system library symbols.
+
+* Installation *
+** Wine
+** msdia120.dll (the 32bit version for 32bit wine)
+*** register with: wine regsvr32 msdia120.dll
+
+* Usage *
+** Download the file containing the missing symbols info
+** Run script
+** Upload symbols to crash report server
