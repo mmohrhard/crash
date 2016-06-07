@@ -113,6 +113,14 @@ class ProcessedCrashManager(models.Manager):
             values = values[0:limit]
         return values
 
+    def get_crashes_for_day(self, day):
+        res = self.get_queryset()
+
+        if day is None:
+            return res
+
+        return res.filter(process_time = day)
+
 class ProcessedCrash(models.Model):
     # custom manager
     objects = ProcessedCrashManager()

@@ -10,6 +10,7 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
+        url(r'missing$', views.find_missing_symbols, name='missing_symbols'),
         url(r'^$', views.upload_symbols, name='symbols'),
         ]
 

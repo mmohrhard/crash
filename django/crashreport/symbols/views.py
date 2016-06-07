@@ -13,6 +13,8 @@ from django.conf import settings
 
 from .handler import SymbolsUploadHandler
 
+from processor.models import ProcessedCrash
+
 import os
 import logging
 
@@ -49,5 +51,40 @@ def upload_symbols(request):
     upload.process(form.cleaned_data, path)
 
     return HttpResponse("Success")
+
+def add_missing_symbols(missing_symbols, module_list):
+    modules = module_list.splitlines()
+    # Module|actxprxy.dll|6.1.7601.17514|ActXPrxy.pdb|C674D3ABFBB34B75BC59063E6B68ABA12|0x6a710000|0x6a75dfff|0
+    for module in modules:
+        module_entries = module.split('|')
+        if len(module_entries) < 5:
+            continue
+
+        symbol_file = module_entries[3]
+        debug_id = module_entries[4]
+
+        dir_path = os.path.join(settings.SYMBOL_LOCATION, symbol_file)
+        if not os.path.exists(dir_path):
+            missing_symbols.add(symbol_file + "," + debug_id)
+            continue
+
+        symbol_file_dir = os.path.join(settings.SYMBOL_LOCATION, debug_id)
+
+        if not os.path.exists(symbol_file_dir):
+            missing_symbols.add(symbol_file + "," + debug_id)
+
+@csrf_exempt
+@login_required
+def find_missing_symbols(request):
+
+    if request.method != 'GET':
+        return HttpResponseNotAllowed("Only GET here")
+
+    crashes = ProcessedCrash.objects.get_crashes_for_day(None)
+    missing_symbols = []
+    for crash in crashes:
+        add_missing_symbols(missing_symbols, crash.modules)
+
+    return HttpResponse("\n".join(missing_symbols))
 
 # vim:set shiftwidth=4 softtabstop=4 expandtab: */
