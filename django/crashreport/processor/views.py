@@ -11,7 +11,6 @@ from django.contrib.auth.decorators import login_required
 
 from processor import MinidumpProcessor
 
-from crashsubmit import models
 from .models import ProcessedCrash
 
 import logging
@@ -20,9 +19,7 @@ logger = logging.getLogger(__name__)
 
 @login_required
 def process_all(request):
-    # move that to a Manager
-    processed_crashes = ProcessedCrash.objects.values_list('crash_id')
-    crashes = models.UploadedCrash.objects.exclude(crash_id__in=processed_crashes)
+    crashes = ProcessedCrash.get_crashes_to_process()
     done = []
     for crash in crashes:
         procescor = MinidumpProcessor()

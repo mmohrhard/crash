@@ -8,8 +8,17 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from base.models import Version
+
+from uwsgidecoratorsfallback import spool
+
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 class UploadedCrash(models.Model):
     # TODO: moggi: change to UUIDField
@@ -21,5 +30,16 @@ class UploadedCrash(models.Model):
     version = models.ForeignKey(Version)
 
     additional_data = models.TextField(default="{}")
+
+@receiver(post_save, sender=UploadedCrash)
+def process_uploaded_crash(sender, **kwargs):
+    do_process_uploaded_crash.spool({'crash_id': sender.crash_id})
+
+@spool
+def do_process_uploaded_crash(env):
+    from processor.processor import MinidumpProcessor
+    minproc = MinidumpProcessor()
+    minproc.process(env['crash_id'])
+    logger.info('processed: %s' % (env['crash_id']))
 
 # vim:set shiftwidth=4 softtabstop=4 expandtab: */
