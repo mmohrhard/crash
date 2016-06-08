@@ -1,0 +1,3 @@
+_CxxThrowException
+RaiseException
+std::_Xout_of_range(char const *)

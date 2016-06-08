@@ -15,12 +15,18 @@ from datetime import timedelta
 
 import json
 import logging
+import os
 
 from crashsubmit import models as submit_models
 
 from base.models import Version
 
 logger = logging.getLogger(__name__)
+
+frame_blacklist = set()
+
+with open(os.path.join(os.path.dirname(__file__),'frame_blacklist.txt'), 'r') as blacklist:
+    frame_blacklist = blacklist.read().splitlines()
 
 class CrashCountManager(models.Manager):
     def get_crash_count_processed(self, versions=None, time=None):
@@ -214,11 +220,19 @@ class ProcessedCrash(models.Model):
             text += self._convert_frame(frame) + "\n"
         return text
 
+    def _find_frame(self, json_frame_list):
+        for frame in json_frame_list:
+            function = frame['function']
+            if function not in frame_blacklist:
+                return frame
+
+        return json_frame_list[0]
+
     def _set_signature(self, frame_list):
         text = ""
         json_frame_list = json.loads(frame_list)
         if len(json_frame_list) > 0:
-            frame = json_frame_list[0]
+            frame = self._find_frame(json_frame_list)
             function = frame['function']
             if len(function) > 0:
                 text = "%s+%s" % (function,frame['offset'])
