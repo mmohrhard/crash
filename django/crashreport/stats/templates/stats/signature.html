@@ -49,6 +49,23 @@
         </div>
 
         <div id="summary" class="ui-tabs-hide">
+            <table class="record data-table vertical">
+                <thead>
+                    <tr>
+                        <th scope="col">Key</th>
+                        <th scope="col">Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Bug report</td>
+                        <td><ul>{% for bug in signature.bugs.all %}
+                                <li><a href="{{ bug.get_url }}">{{ bug }}</a></li>
+                                {% endfor %}
+                            </ul></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 

@@ -110,7 +110,7 @@ class SignatureView(ListViewBase):
 
     def get_context_data(self, **kwargs):
         context = super(SignatureView, self).get_context_data(**kwargs)
-        context['signature'] = self.kwargs['signature']
+        context['signature'] = get_object_or_404(Signature, signature=self.kwargs['signature'])
         return context
 
     def get_queryset(self):

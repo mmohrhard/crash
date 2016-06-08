@@ -60,6 +60,15 @@ class CrashCount(models.Model):
     class Meta:
         unique_together = ('version', 'date')
 
+class BugReport(models.Model):
+    # TODO: moggi: support different bug trackers
+    bug_nr = models.IntegerField()
+
+    def __str__(self):
+        return "tdf#" + str(self.bug_nr)
+
+    def get_url(self):
+        return "https://bugs.documentfoundation.org/show_bug.cgi?id=" + str(self.bug_nr)
 
 class Signature(models.Model):
     signature = models.CharField(max_length=100,
@@ -68,6 +77,8 @@ class Signature(models.Model):
     first_observed = models.DateTimeField()
 
     last_observed = models.DateTimeField()
+
+    bugs = models.ManyToManyField(BugReport)
 
     def __str__(self):
         return self.signature
