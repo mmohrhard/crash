@@ -7,6 +7,7 @@
 
 import subprocess, re, json
 import logging
+import os
 
 from .models import ProcessedCrash
 
@@ -32,7 +33,8 @@ class MinidumpProcessor(object):
         original_crash_report = submit_model.UploadedCrash.objects.get(crash_id=crash_id)
         path = original_crash_report.crash_path
 
-        output = subprocess.check_output([self.minidump_stackwalker, "-m", path, self.symbol_path])
+        with open(os.devnull, 'w') as devnull:
+            output = subprocess.check_output([self.minidump_stackwalker, "-m", path, self.symbol_path], stderr=devnull)
 
         content = {}
         content['Modules'] = []
