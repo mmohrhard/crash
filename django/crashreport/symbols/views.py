@@ -65,13 +65,13 @@ def add_missing_symbols(missing_symbols, module_list):
 
         dir_path = os.path.join(settings.SYMBOL_LOCATION, symbol_file)
         if not os.path.exists(dir_path):
-            missing_symbols.add(symbol_file + "," + debug_id)
+            missing_symbols.append(symbol_file + "," + debug_id)
             continue
 
         symbol_file_dir = os.path.join(settings.SYMBOL_LOCATION, debug_id)
 
         if not os.path.exists(symbol_file_dir):
-            missing_symbols.add(symbol_file + "," + debug_id)
+            missing_symbols.append(symbol_file + "," + debug_id)
 
 @csrf_exempt
 @login_required
