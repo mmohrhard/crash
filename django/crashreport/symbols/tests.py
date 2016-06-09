@@ -69,7 +69,7 @@ class TestMissingSymbols(TestCase):
         self.signature.last_observed = timezone.now()
 
         self.crash = ProcessedCrash()
-        self.crash.modules = "Module|soffice.bin|5.3.0.0|soffice.bin|4B253D6CB7E740A997444A61FE6E511C2|0x010d0000|0x01178fff|1\nModule|mergedlo.dll|5.3.0.0|mergedlo.pdb|6C797FEC36EF447699D43D58FE1486102|0x66290000|0x6a401fff|0\nModule|actxprxy.dll|6.1.7601.17514|ActXPrxy.pdb|C674D3ABFBB34B75BC59063E6B68ABA12|0x6a710000|0x6a75dfff|0"
+        self.crash.modules = "Module|passwd|0|passwd|000000000000000000000000000000000|0x010d0000|0x01178fff|1\nModule|soffice.bin|5.3.0.0|soffice.bin|4B253D6CB7E740A997444A61FE6E511C2|0x010d0000|0x01178fff|1\nModule|mergedlo.dll|5.3.0.0|mergedlo.pdb|6C797FEC36EF447699D43D58FE1486102|0x66290000|0x6a401fff|0\nModule|actxprxy.dll|6.1.7601.17514|ActXPrxy.pdb|C674D3ABFBB34B75BC59063E6B68ABA12|0x6a710000|0x6a75dfff|0"
         self.crash.upload_time = timezone.now()
         self.crash.signature = self.signature
         self.crash.save()
@@ -91,3 +91,4 @@ class TestMissingSymbols(TestCase):
         self.assertIn("ActXPrxy.pdb,C674D3ABFBB34B75BC59063E6B68ABA12", content_split)
         self.assertIn("soffice.bin,4B253D6CB7E740A997444A61FE6E511C2", content_split)
         self.assertIn("mergedlo.pdb,6C797FEC36EF447699D43D58FE1486102", content_split)
+        self.assertEqual(len(content_split), 3)

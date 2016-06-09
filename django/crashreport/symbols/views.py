@@ -63,6 +63,10 @@ def add_missing_symbols(missing_symbols, module_list):
         symbol_file = module_entries[3]
         debug_id = module_entries[4]
 
+        # this is not a code module
+        if debug_id == "000000000000000000000000000000000":
+            continue
+
         dir_path = os.path.join(settings.SYMBOL_LOCATION, symbol_file)
         if not os.path.exists(dir_path):
             missing_symbols.append(symbol_file + "," + debug_id)
