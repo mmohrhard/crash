@@ -71,7 +71,7 @@ class BugReport(models.Model):
         return "https://bugs.documentfoundation.org/show_bug.cgi?id=" + str(self.bug_nr)
 
 class Signature(models.Model):
-    signature = models.CharField(max_length=100,
+    signature = models.CharField(max_length=255,
             primary_key=True)
 
     first_observed = models.DateTimeField()
