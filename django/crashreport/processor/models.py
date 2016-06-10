@@ -23,10 +23,10 @@ from base.models import Version
 
 logger = logging.getLogger(__name__)
 
-frame_blacklist = set()
+module_blacklist = set()
 
-with open(os.path.join(os.path.dirname(__file__),'frame_blacklist.txt'), 'r') as blacklist:
-    frame_blacklist = blacklist.read().splitlines()
+with open(os.path.join(os.path.dirname(__file__), 'module_blacklist.txt'), 'r') as blacklist:
+    module_blacklist = blacklist.read().splitlines()
 
 class CrashCountManager(models.Manager):
     def get_crash_count_processed(self, versions=None, time=None):
@@ -222,8 +222,8 @@ class ProcessedCrash(models.Model):
 
     def _find_frame(self, json_frame_list):
         for frame in json_frame_list:
-            function = frame['function']
-            if function not in frame_blacklist:
+            function = frame['lib_name']
+            if function not in module_blacklist:
                 return frame
 
         return json_frame_list[0]
@@ -235,7 +235,7 @@ class ProcessedCrash(models.Model):
             frame = self._find_frame(json_frame_list)
             function = frame['function']
             if len(function) > 0:
-                text = "%s+%s" % (function,frame['offset'])
+                text = "%s+%s" % (function, frame['offset'])
             else:
                 text = "%s+%s" % (frame['lib_name'], frame['offset'])
 

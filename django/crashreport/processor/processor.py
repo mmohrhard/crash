@@ -16,7 +16,6 @@ from django.conf import settings
 
 from crashsubmit import models as submit_model
 
-
 logger = logging.getLogger(__name__)
 
 class MinidumpProcessor(object):
