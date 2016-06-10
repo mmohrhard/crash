@@ -72,7 +72,7 @@ def add_missing_symbols(missing_symbols, module_list):
             missing_symbols.append(symbol_file + "," + debug_id)
             continue
 
-        symbol_file_dir = os.path.join(settings.SYMBOL_LOCATION, debug_id)
+        symbol_file_dir = os.path.join(dir_path, debug_id)
 
         if not os.path.exists(symbol_file_dir):
             missing_symbols.append(symbol_file + "," + debug_id)
