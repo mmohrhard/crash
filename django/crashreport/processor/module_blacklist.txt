@@ -3,3 +3,5 @@ kernel32.dll
 msvcr120.dll
 KERNELBASE.dll
 msvcp120.dll
+nvoglv32.dll
+nvoglv64.dll
