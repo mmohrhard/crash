@@ -69,13 +69,13 @@ def add_missing_symbols(missing_symbols, module_list):
 
         dir_path = os.path.join(settings.SYMBOL_LOCATION, symbol_file)
         if not os.path.exists(dir_path):
-            missing_symbols.append(symbol_file + "," + debug_id)
+            missing_symbols.add(symbol_file + "," + debug_id)
             continue
 
         symbol_file_dir = os.path.join(dir_path, debug_id)
 
         if not os.path.exists(symbol_file_dir):
-            missing_symbols.append(symbol_file + "," + debug_id)
+            missing_symbols.add(symbol_file + "," + debug_id)
 
 @csrf_exempt
 @login_required
@@ -85,7 +85,7 @@ def find_missing_symbols(request):
         return HttpResponseNotAllowed("Only GET here")
 
     crashes = ProcessedCrash.objects.get_crashes_for_day(None)
-    missing_symbols = []
+    missing_symbols = set()
     for crash in crashes:
         add_missing_symbols(missing_symbols, crash.modules)
 
