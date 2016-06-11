@@ -95,6 +95,6 @@ class ProcessCrashTest(TestCase):
                 crash_id='some other id', version = self.version1,
                 crash_path=get_test_file_path("testdata/test.dmp"),
                 additional_data='{ "key1": "value1" }')
-        crashes = ProcessedCrash.objects.get_crashed_to_process()
+        crashes = ProcessedCrash.objects.get_crashes_to_process()
         crashes_ids = list(crashes.values_list('crash_id'))
         self.assertIn('some other id', crashes_ids)

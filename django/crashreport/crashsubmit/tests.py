@@ -1,9 +1,10 @@
 from django.test import TestCase
 from django.test import Client
+from django.db.models import signals
 
 from base.models import Version
 
-from models import UploadedCrash
+from models import UploadedCrash, process_uploaded_crash
 
 import os
 import tempfile
@@ -35,6 +36,7 @@ class TestCrashUpload(TestCase):
         self.version = Version.objects.create(major_version = 1,
                 minor_version = 2, micro_version = 3, patch_version = 4)
         self.tmp_dir = tempfile.mkdtemp()
+        signals.post_save.disconnect(process_uploaded_crash, sender=UploadedCrash)
 
     def tearDown(self):
         remove_dir(self.tmp_dir)
