@@ -26,7 +26,7 @@ class MinidumpProcessor(object):
     def process(self, crash_id):
 
         if len(ProcessedCrash.objects.filter(crash_id=crash_id)) != 0:
-            logger.error("trying to process teh same uploaded crash twice")
+            logger.error("trying to process the same uploaded crash twice")
             raise IntegrityError('object already in db')
 
         original_crash_report = submit_model.UploadedCrash.objects.get(crash_id=crash_id)
