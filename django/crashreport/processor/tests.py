@@ -97,6 +97,14 @@ class ProcessCrashTest(TestCase):
         processed_crash = ProcessedCrash.objects.get(crash_id = 'some id')
         self.assertIsNotNone(processed_crash)
 
+    def test_process_all(self):
+        user = User.objects.create_user('test user')
+        c = Client()
+        c.force_login(user)
+        crash = self._create_uploaded_crash('some new id')
+        response = c.post('/process/all')
+        self.assertEqual(response.status_code, 200)
+
     def test_manager_get_crashes_to_process(self):
         unprocessed_crash = UploadedCrash.objects.create(
                 crash_id='some other id', version = self.version1,
