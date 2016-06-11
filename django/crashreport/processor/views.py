@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 @login_required
 def process_all(request):
-    crashes = ProcessedCrash.get_crashes_to_process()
+    crashes = ProcessedCrash.objects.get_crashes_to_process()
     done = []
     for crash in crashes:
         procescor = MinidumpProcessor()
