@@ -1,10 +1,12 @@
-from django.test import TestCase
+from django.test import TestCase, Client
+from django.contrib.auth.models import User
+from django.db.models import signals
 
 from .models import CrashCount, ProcessedCrash
 from .processor import MinidumpProcessor
 
 from base.models import Version
-from crashsubmit.models import UploadedCrash
+from crashsubmit.models import UploadedCrash, process_uploaded_crash
 
 import datetime
 import os
@@ -68,18 +70,23 @@ class CrashCountManagerTest(TestCase):
 
 class ProcessCrashTest(TestCase):
 
+    def _create_uploaded_crash(self, id):
+        return UploadedCrash.objects.create(
+                crash_id = id, version = self.version1,
+                crash_path = get_test_file_path("testdata/test.dmp"),
+                additional_data = '{ "key1": "value1" }')
+
     def setUp(self):
+        signals.post_save.disconnect(process_uploaded_crash, sender=UploadedCrash)
         self.version1 = Version.objects.create(
                 major_version=1, minor_version=2, micro_version=3, patch_version=4)
 
-        self.submitted_crash = UploadedCrash.objects.create(
-                crash_id = 'some id', version = self.version1,
-                crash_path = get_test_file_path("testdata/test.dmp"),
-                additional_data = '{ "key1": "value1" }')
+        self.submitted_crash = self._create_uploaded_crash('some id')
 
         self.tmp_dir = tempfile.mkdtemp()
 
     def tearDown(self):
+        ProcessedCrash.objects.all().delete()
         remove_dir(self.tmp_dir)
 
     def test_process_crash(self):
@@ -95,6 +102,7 @@ class ProcessCrashTest(TestCase):
                 crash_id='some other id', version = self.version1,
                 crash_path=get_test_file_path("testdata/test.dmp"),
                 additional_data='{ "key1": "value1" }')
+
         crashes = ProcessedCrash.objects.get_crashes_to_process()
-        crashes_ids = list(crashes.values_list('crash_id'))
+        crashes_ids = crashes.values_list('crash_id', flat=True)
         self.assertIn('some other id', crashes_ids)
