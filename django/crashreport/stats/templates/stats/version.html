@@ -1,8 +1,17 @@
 {% extends 'stats/base.html' %}
+
+{% load compress %}
+{% load static from staticfiles %}
+
+{% block additional_js %}
+<script src="{% static 'stats/js/version.js' %}"></script>
+{% endblock %}
+
 {% block title %}Reports for version: {{ version }}{% endblock %}
+
 {% block content %}
     <div>
-        <table class="data-table">
+        <table id="data-table" class="tablesorter data-table">
             <thead>
                 <tr>
                     <th scope="col">Signature</th>
