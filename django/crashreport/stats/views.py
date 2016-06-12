@@ -6,15 +6,20 @@
 #
 
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
 
-from processor.models import ProcessedCrash, Signature, CrashCount
+from processor.models import ProcessedCrash, Signature, CrashCount, BugReport
 from base.models import Version
 from django.contrib.staticfiles import finders
+from django.core.urlresolvers import reverse
 
 from django.views.generic import ListView
+from django import forms
 
 import json, itertools
+import logging
+
+logger = logging.getLogger(__name__)
 
 def generate_product_version_data():
     data = {}
@@ -104,6 +109,9 @@ def crash_details(request, crash_id):
     data['version'] = 'current'
     return render(request, 'stats/detail.html', data)
 
+class BugNumberForm(forms.Form):
+    bug_nr = forms.DecimalField(min_value=1)
+
 class SignatureView(ListViewBase):
     template_name = 'stats/signature.html'
     context_object_name = 'crashes'
@@ -111,12 +119,28 @@ class SignatureView(ListViewBase):
     def get_context_data(self, **kwargs):
         context = super(SignatureView, self).get_context_data(**kwargs)
         context['signature'] = get_object_or_404(Signature, signature=self.kwargs['signature'])
+        context['bug_form'] = BugNumberForm()
         return context
 
     def get_queryset(self):
         self.signature_obj = get_object_or_404(Signature, signature=self.kwargs['signature'])
         crashes = self.signature_obj.processedcrash_set.all()
         return crashes
+
+    def post(self, request, *args, **kwargs):
+
+        bug_nr_form = BugNumberForm(request.POST)
+        if not bug_nr_form.is_valid():
+            logger.warning("invalid bug number form data: " + str(bug_nr_form.errors))
+            return HttpResponseBadRequest()
+
+        bug_nr = bug_nr_form.cleaned_data['bug_nr']
+        signature = kwargs['signature']
+        bug = BugReport.objects.get_or_create(bug_nr=bug_nr)
+        sig = Signature.objects.get(signature=signature)
+        sig.bugs.add(bug[0])
+
+        return HttpResponseRedirect(reverse('signature_details', args=[signature]))
 
 def handle_parameter_or_default(data, param_name, default):
     if param_name in data:

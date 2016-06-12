@@ -62,6 +62,12 @@
                         <td><ul>{% for bug in signature.bugs.all %}
                                 <li><a href="{{ bug.get_url }}">{{ bug }}</a></li>
                                 {% endfor %}
+                                {% if user.is_authenticated %}
+                                <li><form method="POST" class="post-form">{% csrf_token %}
+                                    {{ bug_form.as_p }}
+                                    <button type="submit" class="save btn btn-default">Save</button>
+                                    </form></li>
+                                {% endif %}
                             </ul></td>
                     </tr>
                 </tbody>
