@@ -35,26 +35,25 @@ class MinidumpProcessor(object):
         with open(os.devnull, 'w') as devnull:
             output = subprocess.check_output([self.minidump_stackwalker, "-m", path, self.symbol_path], stderr=devnull)
 
-        content = {}
-        content['Modules'] = []
-        content['Thread'] = {}
+        modules = []
+        os_version = []
+        cpu = []
+        crash = []
+        frames = []
         thread_pattern = re.compile(r'^(?P<thread_id>\d+)\|')
         for line in output.splitlines():
             if line.startswith('OS'):
-                content['OS'] = [line]
+                os_version.append(line)
             elif line.startswith('CPU'):
-                content['CPU'] = [line]
+                cpu.append(line)
             elif line.startswith('Crash'):
-                content['Crash'] = [line]
+                crash.append(line)
             elif line.startswith('Module'):
-                content['Modules'].append(line)
-            elif len(line.strip()) == 0:
-                pass
-            elif thread_pattern.search(line) != None:
-                thread_id = thread_pattern.search(line).group('thread_id')
-                if thread_id not in content['Thread']:
-                    content['Thread'][thread_id] = []
-                content['Thread'][thread_id].append(line)
+                modules.append(line)
+            elif line is '':
+                continue
+            else:
+                frames.append(line)
 
         self.processed_crash = ProcessedCrash()
 
@@ -66,47 +65,52 @@ class MinidumpProcessor(object):
         self.processed_crash.upload_time = original_crash_report.upload_time
 
         self.processed_crash.raw = output
-        self.processed_crash.set_modules_to_model(content['Modules'])
-        self._parse_crash(content['Crash'])
-        self._parse_threads(content['Thread'])
-        self._parse_os(content['OS'])
-        self._parse_cpu(content['CPU'])
+        self.processed_crash.set_modules_to_model(modules)
+        self._parse_crash(crash)
+        self._parse_threads(frames)
+        self._parse_os(os_version)
+        self._parse_cpu(cpu)
 
         self.processed_crash.save()
         self.processed_crash = None
 
-    def _parse_os(self, os):
+    def _parse_os(self, os_version):
         # ['OS|Linux|0.0.0 Linux 3.16.7-24-desktop #1 SMP PREEMPT Mon Aug 3 14:37:06 UTC 2015 (ec183cc) x86_64']
-        assert(len(os) == 1)
-        parsed_line = os[0].split('|')
+        assert(len(os_version) == 1)
+        parsed_line = os_version[0].split('|')
         os_name = parsed_line[1]
         os_detail = parsed_line[2]
         self.processed_crash.os_detail = os_detail
         self.processed_crash.set_view_os_name_to_model(os_name)
 
     def _parse_frames(self, frames):
-        frame_list = []
+        threads = {}
         for frame in frames:
             parsed_line = frame.split('|')
-
+            thread_id = parsed_line[0]
             frame_id = parsed_line[1]
             lib_name = parsed_line[2]
             function_name = parsed_line[3]
             file_name = parsed_line[4]
             line_number = parsed_line[5]
             offset = parsed_line[6]
-            frame_list.append({'lib_name': lib_name, 'frame_id': frame_id, \
+
+            if thread_id not in threads:
+                threads[thread_id] = []
+
+            threads[thread_id].append({'lib_name': lib_name, 'frame_id': frame_id, \
                     'function': function_name, 'file': file_name, \
                     'line': line_number, 'offset': offset})
 
-        return json.dumps(frame_list)
+        return threads
 
-    def _parse_threads(self, threads):
+    def _parse_threads(self, frames):
         # 0|0|libsclo.so|crash|/home/moggi/devel/libo9/sc/source/ui/docshell/docsh.cxx|434|0x4
         thread_list = {}
-        for thread_id, frames in threads.iteritems():
-            parsed_frames = self._parse_frames(frames)
-            thread_list[thread_id] = parsed_frames
+        threads = self._parse_frames(frames)
+
+        for thread_id, thread in threads.iteritems():
+            thread_list[thread_id] = json.dumps(thread)
 
         self.processed_crash.set_thread_to_model(thread_list)
 
