@@ -227,7 +227,7 @@ class ProcessedCrash(models.Model):
     def _find_frame(self, json_frame_list):
         for frame in json_frame_list:
             function = frame['lib_name']
-            if function not in module_blacklist:
+            if function not in module_blacklist and function is not "":
                 return frame
 
         return json_frame_list[0]
