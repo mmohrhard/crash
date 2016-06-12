@@ -4,7 +4,8 @@ from django.db.models import signals
 
 from base.models import Version
 
-from models import UploadedCrash, process_uploaded_crash
+from models import UploadedCrash
+from signals import process_uploaded_crash
 
 import os
 import tempfile

@@ -6,7 +6,8 @@ from .models import CrashCount, ProcessedCrash
 from .processor import MinidumpProcessor
 
 from base.models import Version
-from crashsubmit.models import UploadedCrash, process_uploaded_crash
+from crashsubmit.models import UploadedCrash
+from crashsubmit.signals import process_uploaded_crash
 
 import datetime
 import os
