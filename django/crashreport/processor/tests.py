@@ -2,7 +2,7 @@ from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from django.db.models import signals
 
-from .models import CrashCount, ProcessedCrash
+from .models import CrashCount, ProcessedCrash, Signature
 from .processor import MinidumpProcessor
 
 from base.models import Version
@@ -115,3 +115,32 @@ class ProcessCrashTest(TestCase):
         crashes = ProcessedCrash.objects.get_crashes_to_process()
         crashes_ids = crashes.values_list('crash_id', flat=True)
         self.assertIn('some other id', crashes_ids)
+
+class ProcessorManagerTest(TestCase):
+
+    def _create_crashes(self, num_crashes, signature):
+        self.signature = Signature()
+        self.signature.signature = signature
+        self.signature.first_observed = timezone.now()
+        self.signature.last_observed = timezone.now()
+        self.signature.save()
+        for num in range(0, num_crashes):
+            ProcessedCrash.objects.create(upload_time=timezone.now(),
+                    signature = self.signature,
+                    crash_id = signature + str(num))
+
+
+    def setUp(self):
+        pass
+
+    def tearDown(self):
+        pass
+
+    def test_get_top_crashes(self):
+        self._create_crashes(3, "sig1")
+        self._create_crashes(1, "sig2")
+
+        top_crashes = ProcessedCrash.objects.get_top_crashes(limit=1)
+        self.assertEqual(len(top_crashes), 1)
+        self.assertEqual(top_crashes[0].all, 3)
+        self.assertEqual(top_crashes[0].id.signature, "sig1")
