@@ -18,6 +18,7 @@
                     <th scope="col">All</th>
                     <th scope="col">Windows</th>
                     <th scope="col">Linux</th>
+                    <th scope="col">Bugs</th>
                     <th scope="col">First Reported</th>
                     <th scope="col">Last Reported</th>
                 </tr>
@@ -38,6 +39,11 @@
                     </td>
                     <td>
                         {{ signature.lin }}
+                    </td>
+                    <td>
+                        {% for bug in signature.id.bugs.all %}
+                        <a href="{{bug.get_url}}">{{bug}}</a>
+                        {% endfor %}
                     </td>
                     <td>
                         {{ signature.id.first_observed }}
