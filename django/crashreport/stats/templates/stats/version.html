@@ -3,6 +3,10 @@
 {% load compress %}
 {% load static from staticfiles %}
 
+{% block additional_css %}
+<link rel="stylesheet" type="text/less" href="{% static 'stats/css/versions.less' %}" media="screen" />
+{% endblock %}
+
 {% block additional_js %}
 <script src="{% static 'stats/js/version.js' %}"></script>
 {% endblock %}
@@ -11,6 +15,12 @@
 
 {% block content %}
     <div>
+        <ul class="tc-result-count tc-filter">
+            <li class="tc-selector-heading">Result Count:</li>
+            <li><a href="{% url 'crash_version' version %}?limit=50">50</a></li>
+            <li><a href="{% url 'crash_version' version %}?limit=100">100</a></li>
+            <li><a href="{% url 'crash_version' version %}?limit=200">200</a></li>
+        </ul>
         <table id="data-table" class="tablesorter data-table">
             <thead>
                 <tr>
