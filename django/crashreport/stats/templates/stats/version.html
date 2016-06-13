@@ -16,10 +16,18 @@
 {% block content %}
     <div>
         <ul class="tc-result-count tc-filter">
+            <li class="tc-selector-heading">Days:</li>
+            <li><a {% if days == 1 %}class="selected"{% endif %} href="{% url 'crash_version' version %}?limit={{limit}}&days=1">1</a></li>
+            <li><a {% if days == 3 %}class="selected"{% endif %} href="{% url 'crash_version' version %}?limit={{limit}}&days=3">3</a></li>
+            <li><a {% if days == 7 %}class="selected"{% endif %} href="{% url 'crash_version' version %}?limit={{limit}}&days=7">7</a></li>
+            <li><a {% if days == 14 %}class="selected"{% endif %} href="{% url 'crash_version' version %}?limit={{limit}}&days=14">14</a></li>
+            <li><a {% if days == 28 %}class="selected"{% endif %} href="{% url 'crash_version' version %}?limit={{limit}}&days=28">28</a></li>
+        </ul>
+        <ul class="tc-result-count tc-filter">
             <li class="tc-selector-heading">Result Count:</li>
-            <li><a {% if limit == 50 %}class="selected"{% endif %} href="{% url 'crash_version' version %}?limit=50">50</a></li>
-            <li><a {% if limit == 100 %}class="selected"{% endif %} href="{% url 'crash_version' version %}?limit=100">100</a></li>
-            <li><a {% if limit == 200 %}class="selected"{% endif %} href="{% url 'crash_version' version %}?limit=200">200</a></li>
+            <li><a {% if limit == 50 %}class="selected"{% endif %} href="{% url 'crash_version' version %}?limit=50&days={{days}}">50</a></li>
+            <li><a {% if limit == 100 %}class="selected"{% endif %} href="{% url 'crash_version' version %}?limit=100&days={{days}}">100</a></li>
+            <li><a {% if limit == 200 %}class="selected"{% endif %} href="{% url 'crash_version' version %}?limit=200&days={{days}}">200</a></li>
         </ul>
         <table id="data-table" class="tablesorter data-table">
             <thead>

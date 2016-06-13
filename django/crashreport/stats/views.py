@@ -156,6 +156,8 @@ class TopCrashesView(ListViewBase):
         context = super(TopCrashesView, self).get_context_data(**kwargs)
         limit = int(handle_parameter_or_default(self.request.GET, 'limit', 50))
         context['limit'] = limit
+        days = int(handle_parameter_or_default(self.request.GET, 'days', 7))
+        context['days'] = days
         if 'version' in self.kwargs:
             context['version'] = self.kwargs['version']
         else:
