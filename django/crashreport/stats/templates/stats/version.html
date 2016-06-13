@@ -17,9 +17,9 @@
     <div>
         <ul class="tc-result-count tc-filter">
             <li class="tc-selector-heading">Result Count:</li>
-            <li><a href="{% url 'crash_version' version %}?limit=50">50</a></li>
-            <li><a href="{% url 'crash_version' version %}?limit=100">100</a></li>
-            <li><a href="{% url 'crash_version' version %}?limit=200">200</a></li>
+            <li><a {% if limit == 50 %}class="selected"{% endif %} href="{% url 'crash_version' version %}?limit=50">50</a></li>
+            <li><a {% if limit == 100 %}class="selected"{% endif %} href="{% url 'crash_version' version %}?limit=100">100</a></li>
+            <li><a {% if limit == 200 %}class="selected"{% endif %} href="{% url 'crash_version' version %}?limit=200">200</a></li>
         </ul>
         <table id="data-table" class="tablesorter data-table">
             <thead>
