@@ -84,7 +84,7 @@ def find_missing_symbols(request):
     if request.method != 'GET':
         return HttpResponseNotAllowed("Only GET here")
 
-    crashes = ProcessedCrash.objects.get_crashes_for_day(None)
+    crashes = ProcessedCrash.objects.get_crashes_for_day(None, None)
     missing_symbols = set()
     for crash in crashes:
         add_missing_symbols(missing_symbols, crash.modules)

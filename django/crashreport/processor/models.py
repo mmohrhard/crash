@@ -135,7 +135,9 @@ class ProcessedCrashManager(models.Manager):
 
     def get_crashes_for_day(self, day, version):
         res = self.get_queryset()
-        res = res.filter(version = version)
+
+        if version is not None:
+            res = res.filter(version = version)
 
         if day is None:
             return res
