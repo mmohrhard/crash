@@ -13,6 +13,7 @@ django
 django-compressor
 uwsgi
 lesscpy
+uwsgidecorators-fallback
 
 * Installation
 
