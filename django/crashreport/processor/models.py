@@ -58,7 +58,7 @@ class CrashCountManager(models.Manager):
 class CrashCount(models.Model):
     version = models.ForeignKey(submit_models.Version)
     date = models.DateField()
-    count = models.IntegerField()
+    count = models.IntegerField(default = 0)
 
     # custom manager
     objects = CrashCountManager()
@@ -133,13 +133,14 @@ class ProcessedCrashManager(models.Manager):
 
         return values
 
-    def get_crashes_for_day(self, day):
+    def get_crashes_for_day(self, day, version):
         res = self.get_queryset()
+        res = res.filter(version = version)
 
         if day is None:
             return res
 
-        return res.filter(process_time = day)
+        return res.filter(process_time__date = day)
 
     def get_crashes_to_process(self):
         processed = ProcessedCrash.objects.values_list('crash_id')
