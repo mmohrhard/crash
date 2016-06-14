@@ -1,4 +1,12 @@
 {% extends 'stats/base.html' %}
+
+{% load compress %}
+{% load static from staticfiles %}
+
+{% block additional_css %}
+<link rel="stylesheet" type="text/less" href="{% static 'stats/css/bugs.less' %}" media="screen" />
+{% endblock %}
+
 {% block title %}Reports for signature: {{ signature }}{% endblock %}
 {% block content %}
     <div id="tabs" class="no-border ui-tabs ui-widget ui-widget-content ui-corner-all">
@@ -6,6 +14,11 @@
             <li class="ui-state-default ui-corner-top">
                 <a href="#reports" class="ui-tabs-anchor">
                     <span>Reports</span>
+                </a>
+            </li>
+            <li class="ui-state-default ui-corner-top">
+                <a href="#bugs" class="ui-tabs-anchor">
+                    <span>Bugs</span>
                 </a>
             </li>
             <li class="ui-state-default ui-corner-top">
@@ -48,30 +61,26 @@
             </table>
         </div>
 
+        <div id="bugs" class="ui-tabs-hide">
+            <div>
+                <h2>Bug reports for <code>{{ signature }}</code>:</h2>
+            </div>
+            <ul class="bugs">
+                {% for bug in signature.bugs.all %}
+                <li>
+                    <a href="{{ bug.get_url }}">{{ bug }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+            {% if user.is_authenticated %}
+            <form method="POST" class="post-form">{% csrf_token %}
+                {{ bug_form.as_p }}
+                <button type="submit" class="save btn btn-default">Save</button>
+            </form>
+            {% endif %}
+        </div>
+
         <div id="summary" class="ui-tabs-hide">
-            <table class="record data-table vertical">
-                <thead>
-                    <tr>
-                        <th scope="col">Key</th>
-                        <th scope="col">Value</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Bug report</td>
-                        <td><ul>{% for bug in signature.bugs.all %}
-                                <li><a href="{{ bug.get_url }}">{{ bug }}</a></li>
-                                {% endfor %}
-                                {% if user.is_authenticated %}
-                                <li><form method="POST" class="post-form">{% csrf_token %}
-                                    {{ bug_form.as_p }}
-                                    <button type="submit" class="save btn btn-default">Save</button>
-                                    </form></li>
-                                {% endif %}
-                            </ul></td>
-                    </tr>
-                </tbody>
-            </table>
         </div>
     </div>
 

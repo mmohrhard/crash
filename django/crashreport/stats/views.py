@@ -140,7 +140,7 @@ class SignatureView(ListViewBase):
         sig = Signature.objects.get(signature=signature)
         sig.bugs.add(bug[0])
 
-        return HttpResponseRedirect(reverse('signature_details', args=[signature]))
+        return HttpResponseRedirect(reverse('signature_details', args=[signature]) + '#bugs')
 
 def handle_parameter_or_default(data, param_name, default):
     if param_name in data:
