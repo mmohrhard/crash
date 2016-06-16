@@ -5,6 +5,11 @@
 
 {% block additional_css %}
 <link rel="stylesheet" type="text/less" href="{% static 'stats/css/bugs.less' %}" media="screen" />
+<link rel="stylesheet" type="text/less" href="{% static 'stats/css/signature.less' %}" media="screen" />
+{% endblock %}
+
+{% block additional_js %}
+<script src="{% static 'stats/js/signature.js' %}"></script>
 {% endblock %}
 
 {% block title %}Reports for signature: {{ signature }}{% endblock %}
@@ -81,10 +86,54 @@
         </div>
 
         <div id="summary" class="ui-tabs-hide">
+            <div class="panel">
+                <header class="title">
+                    <h2>Operating System</h2>
+                </header>
+                <div class="content">
+                    <table id="os_tab" class="data-table">
+                        <thead>
+                            <tr>
+                                <th class="header">Operating System</th>
+                                <th class="header">Count<th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for os, count in os_info.items %}
+                            <tr>
+                                <td>{{os}}</td>
+                                <td>{{count}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="panel">
+                <header class="title">
+                    <h2>CPU architecture</h2>
+                </header>
+                <div class="content">
+                    <table id="cpu_tab" class="data-table">
+                        <thead>
+                            <tr>
+                                <th class="header">CPU Architecture</th>
+                                <th class="header">Count<th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for architecture, count in cpu_info.items %}
+                            <tr>
+                                <td>{{architecture}}</td>
+                                <td>{{count}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
         </div>
     </div>
-
-<script>
-    $("#tabs").tabs();
-</script>
 {% endblock %}

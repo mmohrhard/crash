@@ -15,6 +15,7 @@ from django.core.urlresolvers import reverse
 
 from django.views.generic import ListView
 from django import forms
+from django.db.models import Count
 
 import json, itertools
 import logging
@@ -112,14 +113,36 @@ def crash_details(request, crash_id):
 class BugNumberForm(forms.Form):
     bug_nr = forms.DecimalField(min_value=1)
 
+def get_os_info(crashes):
+    os_info = crashes.values('os_name').annotate(Count('os_name'))
+    data = {}
+    for os in os_info:
+        data[os['os_name']] = os['os_name__count']
+
+    return data
+
+def get_cpu_architecture(crashes):
+    cpu_architecture = crashes.values('cpu_architecture').annotate(Count('cpu_architecture'))
+
+    data = {}
+    for architecture in cpu_architecture:
+        data[architecture['cpu_architecture']] = architecture['cpu_architecture__count']
+
+    return data
+
 class SignatureView(ListViewBase):
     template_name = 'stats/signature.html'
     context_object_name = 'crashes'
 
     def get_context_data(self, **kwargs):
         context = super(SignatureView, self).get_context_data(**kwargs)
-        context['signature'] = get_object_or_404(Signature, signature=self.kwargs['signature'])
+        signature_object = get_object_or_404(Signature, signature = self.kwargs['signature'])
+        context['signature'] = signature_object
         context['bug_form'] = BugNumberForm()
+
+        crashes = ProcessedCrash.objects.filter(signature = signature_object)
+        context['os_info'] = get_os_info(crashes)
+        context['cpu_info'] = get_cpu_architecture(crashes)
         return context
 
     def get_queryset(self):
