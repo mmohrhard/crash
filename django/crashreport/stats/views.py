@@ -80,7 +80,7 @@ def generate_data_for_version(id, version, x_values, crashes):
 def generate_chart_data(featured_versions):
     data = {}
     # TODO: moggi: how to handle dates without entries
-    keys, values = CrashCount.objects.get_crash_count_processed(versions=featured_versions)
+    keys, values = CrashCount.objects.get_crash_count_processed(versions=featured_versions, time=7)
     data['labels'] = keys
     data['datasets'] = []
     for id, version in enumerate(values.keys()):
