@@ -5,6 +5,7 @@
 
 {% block additional_css %}
 <link rel="stylesheet" type="text/less" href="{% static 'stats/css/versions.less' %}" media="screen" />
+<link rel="stylesheet" type="text/less" href="{% static 'stats/css/bugs.less' %}" media="screen" />
 {% endblock %}
 
 {% block additional_js %}
@@ -59,9 +60,13 @@
                         {{ signature.lin }}
                     </td>
                     <td>
+                        <ul class="bugs">
                         {% for bug in signature.id.bugs.all %}
+                        <li>
                         <a href="{{bug.get_url}}">{{bug}}</a>
+                        </li>
                         {% endfor %}
+                        </ul>
                     </td>
                     <td>
                         {{ signature.id.first_observed }}
