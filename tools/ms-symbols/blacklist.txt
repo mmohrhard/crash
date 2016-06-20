@@ -1,5 +1,6 @@
 clewlo.pdb
 clucene.pdb
+configmgrlo.pdb
 cppu3.pdb
 cppuhelper3MSC.pdb
 cuilo.pdb
@@ -10,6 +11,7 @@ expwraplo.pdb
 foruilo.pdb
 ftransl.pdb
 fwllo.pdb
+helplinkerlo.pdb
 hyphenlo.pdb
 introspectionlo.pdb
 invocadaptlo.pdb
@@ -36,6 +38,7 @@ reglo.pdb
 sal3.pdb
 salhelper3MSC.pdb
 sal_textenclo.pdb
+sblo.pdb
 sclo.pdb
 soffice.bin
 spelllo.pdb
