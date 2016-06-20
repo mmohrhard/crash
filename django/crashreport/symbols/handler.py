@@ -14,15 +14,13 @@ from django.conf import settings
 
 class SymbolsUploadHandler(object):
 
-    symbol_location = settings.SYMBOL_LOCATION
-
     def __init__(self):
         pass
 
     def process(self, data, path):
         zip_file = ZipFile(path)
         file_names = "\n".join(zip_file.namelist())
-        zip_file.extractall(SymbolsUploadHandler.symbol_location)
+        zip_file.extractall(settings.SYMBOL_LOCATION)
 
         upload = SymbolsUpload()
         upload.files = file_names
