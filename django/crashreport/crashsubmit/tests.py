@@ -42,6 +42,9 @@ class TestCrashUpload(TestCase):
     def tearDown(self):
         remove_dir(self.tmp_dir)
 
+    def _extrac_crash_id(self, response):
+        return response.split('=')[1]
+
     def test_uploadCorrectCrash(self):
         c = Client()
         with self.settings(TEMP_UPLOAD_DIR=self.tmp_dir):
@@ -85,3 +88,15 @@ class TestCrashUpload(TestCase):
         self.assertIsNotNone(upload_crash)
         json_data = json.loads(upload_crash.additional_data)
         self.assertDictEqual(json_data, { 'key1': 'val1', 'key2': 'val2'})
+
+    def test_delete_report(self):
+        c = Client()
+        with self.settings(TEMP_UPLOAD_DIR=self.tmp_dir):
+            with open(get_test_file_path("test")) as f:
+                response = c.post('/submit/', {'upload_file_minidump': f, 'Version': '1.2.3.4', 'AdditionalData': '{ "key1": "val1", "key2": "val2" }'})
+            crash_id = self._extrac_crash_id(response.content)
+            upload_crash = find_crash(response)
+            path = upload_crash.crash_path
+            self.assertTrue(os.path.exists(path))
+            UploadedCrash.objects.get(crash_id=crash_id).delete()
+            self.assertFalse(os.path.exists(path))
