@@ -5,7 +5,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_delete
 from django.dispatch import receiver
 
 from processor.processor import MinidumpProcessor
@@ -14,6 +14,7 @@ from .models import UploadedCrash
 from uwsgidecoratorsfallback import spool
 
 import logging
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -26,5 +27,13 @@ def do_process_uploaded_crash(env):
     minproc = MinidumpProcessor()
     minproc.process(env['crash_id'])
     logger.info('processed: %s' % (env['crash_id']))
+
+@receiver(pre_delete, sender=UploadedCrash)
+def process_deleted_crash(sender, instance, **kwargs):
+    try:
+        os.remove(instance.crash_path)
+    except:
+        pass
+
 
 # vim:set shiftwidth=4 softtabstop=4 expandtab: */
