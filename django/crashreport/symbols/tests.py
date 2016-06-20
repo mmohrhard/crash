@@ -34,7 +34,7 @@ class TestSimpleSymbolsUpload(TestCase):
     def test_symbols_upload_valid_zip(self):
         version = '1.2.3.4'
         platform = 'linux'
-        with self.settings(SYMBOL_UPLOAD_DIR=self.tmp_dir):
+        with self.settings(SYMBOL_UPLOAD_DIR=self.tmp_dir, SYMBOL_LOCATION=self.tmp_dir):
             with open(get_test_file_path("valid.zip")) as f:
                 response = self.c.post('/upload/', {'symbols':f, 'version': version, 'platform':platform})
         self.assertEqual(response.status_code, 200)
