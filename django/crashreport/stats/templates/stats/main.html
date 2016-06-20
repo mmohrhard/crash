@@ -15,10 +15,4 @@
     </script>
 
     <br>
-    <select name='version_select' id="version_select" onchange="version_dropdown()">
-    <option class='head'>VERSIONS</option>
-        {% for version in featured %}
-        <option value="{% url 'crash_version' version.str_without_product %}">{{ version }}</option>
-        {% endfor %}
-    </select>
 {% endblock %}
