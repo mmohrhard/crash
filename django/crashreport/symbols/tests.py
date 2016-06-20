@@ -43,6 +43,24 @@ class TestSimpleSymbolsUpload(TestCase):
         uploaded_symbol = uploaded_symbols[0]
         self.assertListEqual(uploaded_symbol.files.splitlines(), ['file1', 'file2'])
 
+    def test_delete_symbols(self):
+        version = '1.2.3.4'
+        platform = 'linux'
+        with self.settings(SYMBOL_UPLOAD_DIR=self.tmp_dir, SYMBOL_LOCATION=self.tmp_dir):
+            with open(get_test_file_path("valid.zip")) as f:
+                response = self.c.post('/upload/', {'symbols':f, 'version': version, 'platform':platform})
+            self.assertEqual(response.status_code, 200)
+
+            symbol_file1 = os.path.join(self.tmp_dir, 'file1')
+            symbol_file2 = os.path.join(self.tmp_dir, 'file2')
+            self.assertTrue(os.path.exists(symbol_file1))
+            self.assertTrue(os.path.exists(symbol_file2))
+
+            SymbolsUpload.objects.all().delete()
+
+            self.assertFalse(os.path.exists(symbol_file1))
+            self.assertFalse(os.path.exists(symbol_file2))
+
     def test_sybols_upload_invalid_zip(self):
         with self.settings(SYMBOL_UPLOAD_DIR=self.tmp_dir):
             with open(get_test_file_path("invalid.zip")) as f:
