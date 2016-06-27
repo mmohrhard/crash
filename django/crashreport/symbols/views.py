@@ -52,9 +52,20 @@ def upload_symbols(request):
 
     return HttpResponse("Success")
 
+def create_symbols_entry(module_entries):
+    symbol_file = module_entries[3]
+    debug_id = module_entries[4]
+
+    entry = symbol_file + "," + debug_id
+
+    if len(module_entries) >= 9:
+        entry = entry + "," + module_entries[1] + "," + module_entries[8]
+
+    return entry
+
 def add_missing_symbols(missing_symbols, module_list):
     modules = module_list.splitlines()
-    # Module|actxprxy.dll|6.1.7601.17514|ActXPrxy.pdb|C674D3ABFBB34B75BC59063E6B68ABA12|0x6a710000|0x6a75dfff|0
+    # Module|{code_name}|6.1.7601.17514|{debug_name}|{debug_id}|0x6a710000|0x6a75dfff|{main?}|{Code_id}
     for module in modules:
         module_entries = module.split('|')
         if len(module_entries) < 5:
@@ -69,13 +80,13 @@ def add_missing_symbols(missing_symbols, module_list):
 
         dir_path = os.path.join(settings.SYMBOL_LOCATION, symbol_file)
         if not os.path.exists(dir_path):
-            missing_symbols.add(symbol_file + "," + debug_id)
+            missing_symbols.add(create_symbols_entry(module_entries))
             continue
 
         symbol_file_dir = os.path.join(dir_path, debug_id)
 
         if not os.path.exists(symbol_file_dir):
-            missing_symbols.add(symbol_file + "," + debug_id)
+            missing_symbols.add(create_symbols_entry(module_entries))
 
 @csrf_exempt
 @login_required
