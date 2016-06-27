@@ -16,6 +16,7 @@ from datetime import timedelta
 from processor import MinidumpProcessor
 
 from .models import ProcessedCrash, CrashCount
+from .signals import do_process_uploaded_crash
 from base.models import Version
 
 import logging
@@ -27,18 +28,13 @@ def process_all(request):
     crashes = ProcessedCrash.objects.get_crashes_to_process()
     done = []
     for crash in crashes:
-        procescor = MinidumpProcessor()
-        procescor.process(crash.crash_id)
+        do_process_uploaded_crash.spool({'crash_id': crash.crash_id})
         done.append(crash.crash_id)
-        logger.info('processed: ' + crash.crash_id)
     return HttpResponse("\n".join(done))
 
 @login_required
 def process(request, crash_id):
-    processor = MinidumpProcessor()
-    processor.process(crash_id)
-
-    logger.info('processed: ' + crash.crash_id)
+    do_process_uploaded_crash.spool({'crash_id': crash_id})
     return HttpResponse('CrashID=' + crash_id)
 
 @login_required
