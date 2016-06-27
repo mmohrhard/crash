@@ -245,9 +245,9 @@ class ProcessedCrash(models.Model):
             frame = self._find_frame(json_frame_list)
             function = frame['function']
             if len(function) > 0:
-                text = "%s+%s" % (function, frame['offset'])
+                text = function
             else:
-                text = "%s+%s" % (frame['lib_name'], frame['offset'])
+                text = frame['lib_name']
 
         signatures = Signature.objects.filter(signature=text)
         if len(signatures) < 1:
