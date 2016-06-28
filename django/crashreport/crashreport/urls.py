@@ -33,6 +33,7 @@ urlpatterns = [
     url(r'^symbols/', include('symbols.urls')),
     url(r'^upload/', include('symbols.urls')),
     url(r'^stats/', include('stats.urls')),
+    url(r'^management/', include('management.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('django.contrib.auth.urls')),
 ]
