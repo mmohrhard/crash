@@ -11,6 +11,7 @@ from django import forms
 from django.shortcuts import get_object_or_404
 
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 
 from processor.models import Signature, BugReport
 
@@ -23,6 +24,7 @@ class AddBugForm(forms.Form):
     bug_nr = forms.IntegerField(min_value=1)
 
 @login_required
+@csrf_exempt
 def add_bug_report(request):
     if request.method != 'POST':
         return HttpResponseNotAllowed('Only POST allowed.')
@@ -35,9 +37,6 @@ def add_bug_report(request):
     crash_object = get_object_or_404(Signature, signature = form.cleaned_data['signature'])
 
     bug_report = BugReport.objects.get_or_create(bug_nr = int(form.cleaned_data['bug_nr']))
-    print(bug_report)
-    print(crash_object)
-    print(crash_object.bugs)
 
     crash_object.bugs.add(bug_report[0])
 
