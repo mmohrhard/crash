@@ -7,3 +7,4 @@ nvoglv32.dll
 nvoglv64.dll
 setupapi.dll
 AcLayers.dll
+odbc32.dll
