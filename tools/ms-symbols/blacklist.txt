@@ -53,6 +53,7 @@ ucpdav1.pdb
 ucppkg1.pdb
 unoidllo.pdb
 unordflo.pdb
+unoxmllo.pdb
 updatechklo.pdb
 updatefeedlo.pdb
 updchklo.pdb
