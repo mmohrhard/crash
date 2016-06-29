@@ -33,7 +33,7 @@ def main():
 
     bzapi = bugzilla.Bugzilla(URL)
 
-    query = bzapi.url_to_query("http://bugs.documentfoundation.org/buglist.cgi?f1=cf_crashreport&f2=cf_crashreport&list_id=618562&o1=isnotempty&o2=changedafter&product=LibreOffice&query_format=advanced&resolution=---&v2=2016-01-01")
+    query = bzapi.url_to_query("http://bugs.documentfoundation.org/buglist.cgi?f1=cf_crashreport&f2=cf_crashreport&list_id=618562&o1=isnotempty&o2=changedafter&product=LibreOffice&query_format=advanced&v2=2016-01-01")
 
     bugs = bzapi.query(query)
     for bug in bugs:
