@@ -1,10 +1,10 @@
-ntdll.dll
+AcLayers.dll
 kernel32.dll
-msvcr120.dll
 KERNELBASE.dll
 msvcp120.dll
+msvcr120.dll
+ntdll.dll
 nvoglv32.dll
 nvoglv64.dll
-setupapi.dll
-AcLayers.dll
 odbc32.dll
+setupapi.dll
