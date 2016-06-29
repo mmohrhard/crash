@@ -120,6 +120,12 @@ def fetch_and_dump_symbols(tmpdir, debug_id, debug_file,
                     bin_path = fetch_symbol_and_decompress(tmpdir, code_id, code_file)
                     if bin_path:
                         log.debug('Fetched binary %s', bin_path)
+                        split_bin_path = os.path.splitext(bin_path)
+                        split_pdb_path = os.path.splitext(pdb_path)
+                        if split_bin_path[0] != split_pdb_path[0]:
+                            os.rename(bin_path, split_pdb_path[0] + ".dll")
+                            bin_path = split_pdb_path[0] + ".dll"
+                            log.warn('Renamed binary to %s', bin_path)
                     else:
                         log.warn("Couldn't fetch binary for %s, %s",
                                  code_id, code_file)
