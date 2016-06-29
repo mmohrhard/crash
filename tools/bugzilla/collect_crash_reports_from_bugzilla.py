@@ -9,7 +9,7 @@ URL = "bugs.documentfoundation.org"
 def set_bug_to_report(session, signature, bug):
     url = "http://crashreport.libreoffice.org/management/add-bug"
 
-    data = {'csrftoken': csrftoken, 'signature': signature, 'bug_nr': bug}
+    data = {'signature': signature, 'bug_nr': bug}
     r = session.post(url, data = data)
     if r.status_code != 200:
         print("Error while setting tdf#%d to %s" % (bug, signature))
