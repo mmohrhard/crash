@@ -3,6 +3,7 @@ import json
 import configparser
 import requests
 import sys
+import datetime
 
 URL = "bugs.documentfoundation.org"
 
@@ -33,7 +34,10 @@ def main():
 
     bzapi = bugzilla.Bugzilla(URL)
 
-    query = bzapi.url_to_query("http://bugs.documentfoundation.org/buglist.cgi?f1=cf_crashreport&f2=cf_crashreport&list_id=618562&o1=isnotempty&o2=changedafter&product=LibreOffice&query_format=advanced&v2=2016-01-01")
+    yesterday = datetime.date.today() - datetime.timedelta(days=1)
+    bz_query_url = "http://bugs.documentfoundation.org/buglist.cgi?f1=cf_crashreport&f2=cf_crashreport&o1=isnotempty&o2=changedafter&product=LibreOffice&query_format=advanced&v2=%s" % yesterday.isoformat()
+    print(bz_query_url)
+    query = bzapi.url_to_query("")
 
     bugs = bzapi.query(query)
     for bug in bugs:
