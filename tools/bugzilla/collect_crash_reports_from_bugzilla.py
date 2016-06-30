@@ -37,7 +37,7 @@ def main():
     yesterday = datetime.date.today() - datetime.timedelta(days=1)
     bz_query_url = "http://bugs.documentfoundation.org/buglist.cgi?f1=cf_crashreport&f2=cf_crashreport&o1=isnotempty&o2=changedafter&product=LibreOffice&query_format=advanced&v2=%s" % yesterday.isoformat()
     print(bz_query_url)
-    query = bzapi.url_to_query("")
+    query = bzapi.url_to_query(bz_query_url)
 
     bugs = bzapi.query(query)
     for bug in bugs:
