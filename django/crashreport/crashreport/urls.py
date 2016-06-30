@@ -26,8 +26,10 @@ Including another URLconf
 
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.views.generic.base import RedirectView
 
 urlpatterns = [
+    url(r'^$', RedirectView.as_view(url='/stats/')),
     url(r'^submit/', include('crashsubmit.urls')),
     url(r'^process/', include('processor.urls')),
     url(r'^symbols/', include('symbols.urls')),
