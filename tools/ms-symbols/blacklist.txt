@@ -59,6 +59,7 @@ updatefeedlo.pdb
 updchklo.pdb
 uwinapi.pdb
 wininetbe1lo.pdb
+wpftwriterlo.pdb
 writerfilterlo.pdb
 xmlreaderlo.pdb
 xmlsecurity.pdb
