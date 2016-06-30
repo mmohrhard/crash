@@ -249,6 +249,7 @@ class ProcessedCrash(models.Model):
             else:
                 text = frame['lib_name']
 
+        text = text[:255] if len(text) > 255 else text
         signatures = Signature.objects.filter(signature=text)
         if len(signatures) < 1:
             signature = Signature()
