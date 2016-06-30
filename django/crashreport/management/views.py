@@ -13,7 +13,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 
-from processor.models import Signature, BugReport
+from processor.models import Signature, BugReport, ProcessedCrash
 
 import logging
 
@@ -34,11 +34,16 @@ def add_bug_report(request):
         logger.warning("form is invalid with error: " + str(form.errors))
         return HttpResponseBadRequest()
 
-    crash_object = get_object_or_404(Signature, signature = form.cleaned_data['signature'])
+    signatures = Signature.objects.filter(signature = form.cleaned_data['signature'])
+    if signatures.count() == 0:
+        processed_crash = get_object_or_404(ProcessedCrash, crash_id = form.cleaned_data['signature'])
+        signature_object = processed_crash.signature
+    else:
+        signature_object = signatures[0]
 
     bug_report = BugReport.objects.get_or_create(bug_nr = int(form.cleaned_data['bug_nr']))
 
-    crash_object.bugs.add(bug_report[0])
+    signature_object.bugs.add(bug_report[0])
 
     return HttpResponse('Ok')
 
