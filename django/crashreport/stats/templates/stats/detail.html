@@ -6,6 +6,7 @@
 
 {% block additional_css %}
 <link rel="stylesheet" type="text/css" href="{% static 'stats/css/details.css' %}" media="screen" />
+<link rel="stylesheet" type="text/less" href="{% static 'stats/css/bugs.less' %}" media="screen" />
 {% endblock %}
 {% block additional_js %}
 <script src="{% static 'stats/js/details.js' %}"></script>
@@ -110,6 +111,22 @@
                 </tr>
             </tbody>
         </table>
+
+        <div class="bug_report">
+            <h2>Bug reports for <code>{{crash.signature}}</code>:</h2>
+            <p>File a bug for:
+            <a href="https://bugs.documentfoundation.org/enter_bug.cgi?product=LibreOffice&component=Calc&{{create_bug}}">Calc</a>
+            <a href="https://bugs.documentfoundation.org/enter_bug.cgi?product=LibreOffice&component=Writer&{{create_bug}}">Writer</a>
+            <a href="https://bugs.documentfoundation.org/enter_bug.cgi?product=LibreOffice&component=Impress&{{create_bug}}">Impress</a>
+            <a href="https://bugs.documentfoundation.org/enter_bug.cgi?product=LibreOffice&component=ChartWriter&{{create_bug}}">Chart</a>
+            <a href="https://bugs.documentfoundation.org/enter_bug.cgi?product=LibreOffice&component=Base&{{create_bug}}">Base</a></p>
+
+            <div>
+                {% for bug in crash.signature.bugs.all %}
+                <a class="bug_link" href="{{bug.get_url}}">{{bug}}</a>
+                {%endfor%}
+            </div>
+        </div>
 
         <div id="frames">
             <h2>Crashing Thread</h2>

@@ -18,6 +18,7 @@ from django import forms
 from django.db.models import Count
 
 import json, itertools
+import urllib
 import logging
 
 logger = logging.getLogger(__name__)
@@ -98,6 +99,11 @@ def main(request):
     data['version'] = 'current'
     return render(request, 'stats/main.html', data)
 
+def generate_bug_info(crash):
+    comment_text = "This bug was filed from the crash reporting server and is br-%s.\n=========================================" % crash.crash_id
+    signature = "[\"%s\"]" % crash.signature.signature
+    return 'comment=%s&cf_crashreport=%s&short_desc=%s' % ( urllib.quote(comment_text, safe=''), urllib.quote(signature, safe=''), urllib.quote("Crash in: %s" % crash.signature.signature, safe='') )
+
 def crash_details(request, crash_id):
     crash = get_object_or_404(ProcessedCrash, crash_id=crash_id)
     modules = crash.get_split_module_list()
@@ -108,6 +114,7 @@ def crash_details(request, crash_id):
     data['crashing_thread'] = {'frames': json.loads(crash.crashing_thread)}
     data['threads'] = json.loads(crash.threads)
     data['version'] = 'current'
+    data['create_bug'] = generate_bug_info(crash)
     return render(request, 'stats/detail.html', data)
 
 class BugNumberForm(forms.Form):
