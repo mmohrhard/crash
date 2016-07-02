@@ -57,7 +57,7 @@
                 </tr>
                 <tr>
                     <th scope="row">Version</th>
-                    <td>
+                    <td class="version_str">
                         {{ crash.version }}
                     </td>
                 </tr>
@@ -130,7 +130,7 @@
 
         <div id="frames">
             <h2>Crashing Thread</h2>
-            <table class="data-table">
+            <table class="data-table threads">
                 <thead>
                     <tr>
                         <th scope="col">Frame</th>
@@ -163,7 +163,7 @@
             <div id="allthreads">
                 {% for thread_id, thread_frames in threads.items %}
                 <h2>Thread: {{ thread_id }}</h2>
-                <table  class="data-table">
+                <table  class="data-table threads">
                     <thead>
                         <tr>
                             <th scope="col">Frame</th>

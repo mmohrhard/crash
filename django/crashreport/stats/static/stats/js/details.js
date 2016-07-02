@@ -11,4 +11,20 @@ $(document).ready(function () {
             return false;
         }
     });
+
+    String.prototype.beginsWith = function(string) {
+        return(this.indexOf(string) === 0);
+    }
+
+    $(".threads").find("td:nth-child(4)").each(function() {
+        var $this = $(this);
+        var cellText = $this.html();
+        var trimmedText = $.trim(cellText);
+        if (trimmedText.beginsWith("c:\\cygwin64\\home\\buildslave\\source\\libo-core\\")) {
+            var src_code_path = trimmedText.replace("c:\\cygwin64\\home\\buildslave\\source\\libo-core\\","").replace("\\","/");
+            var url = "http://cgit.freedesktop.org/libreoffice/core/tree/" + src_code_path.replace(":", "?h=libreoffice-5-2#n");
+            $this.html("<a href=\""+ url + "\">" + src_code_path + "</a>");
+        }
+    });
+
 });
