@@ -18,8 +18,8 @@ import os
 logger = logging.getLogger(__name__)
 
 @receiver(post_save, sender=UploadedCrash)
-def process_uploaded_crash(sender, **kwargs):
-    do_process_uploaded_crash.spool(crash_id = kwargs['instance'].crash_id)
+def process_uploaded_crash(sender, instance, **kwargs):
+    do_process_uploaded_crash.spool(crash_id = instance.crash_id)
 
 @receiver(pre_delete, sender=UploadedCrash)
 def process_deleted_crash(sender, instance, **kwargs):
