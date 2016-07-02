@@ -57,6 +57,7 @@ def main():
                 for crash_report in crash_reports:
                     set_bug_to_report(session, crash_report, bug_id)
             except Exception as e:
+                print("exception setting bug report")
                 print(e)
         else:
             print(bug_id)
