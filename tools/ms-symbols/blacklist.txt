@@ -4,18 +4,21 @@ configmgrlo.pdb
 cppu3.pdb
 cppuhelper3MSC.pdb
 cuilo.pdb
+deploymentmisclo.pdb
 dict_zh.pdb
 emserlo.pdb
 evtattlo.pdb
 expwraplo.pdb
 foruilo.pdb
 ftransl.pdb
+fwklo.pdb
 fwllo.pdb
 helplinkerlo.pdb
 hyphenlo.pdb
 introspectionlo.pdb
 invocadaptlo.pdb
 invocationlo.pdb
+javavmlo.pdb
 jvmaccesslo.pdb
 lcms.pdb
 librtf.pdb
@@ -25,6 +28,7 @@ localedata_euro.pdb
 localedata_others.pdb
 mergedlo.pdb
 mscx_uno.pdb
+msfilterlo.pdb
 neon.pdb
 oleautobridgelo.pdb
 ooxlo.pdb
@@ -40,7 +44,9 @@ salhelper3MSC.pdb
 sal_textenclo.pdb
 sblo.pdb
 sclo.pdb
+sfxlo.pdb
 soffice.bin
+sotlo.pdb
 spelllo.pdb
 stocserviceslo.pdb
 storagefdlo.pdb
@@ -48,6 +54,7 @@ storelo.pdb
 svgiolo.pdb
 swlo.pdb
 tllo.pdb
+ucbhelper.pdb
 ucpchelp1.pdb
 ucpdav1.pdb
 ucppkg1.pdb
@@ -59,7 +66,9 @@ updatefeedlo.pdb
 updchklo.pdb
 uwinapi.pdb
 wininetbe1lo.pdb
+wpftimpresslo.pdb
 wpftwriterlo.pdb
 writerfilterlo.pdb
+writerperfectlo.pdb
 xmlreaderlo.pdb
 xmlsecurity.pdb
