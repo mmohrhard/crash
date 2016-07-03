@@ -29,6 +29,18 @@ def main():
     config = configparser.ConfigParser()
     config.read(sys.argv[1])
 
+    bzapi = bugzilla.Bugzilla(URL)
+
+    yesterday = datetime.date.today() - datetime.timedelta(days=1)
+    bz_query_url = "http://bugs.documentfoundation.org/buglist.cgi?f1=cf_crashreport&f2=cf_crashreport&o1=isnotempty&o2=changedafter&product=LibreOffice&query_format=advanced&v2=%s" % yesterday.isoformat()
+    print(bz_query_url)
+    query = bzapi.url_to_query(bz_query_url)
+
+    bugs = bzapi.query(query)
+
+    if len(bugs) == 0:
+        sys.exit()
+
     user = config["CrashReport"]["User"]
     password = config["CrashReport"]["Password"]
     session = requests.session()
@@ -39,14 +51,6 @@ def main():
             'csrfmiddlewaretoken': csrftoken }
     r1 = session.post(login_url, data=login_data, headers={"Referer": login_url})
 
-    bzapi = bugzilla.Bugzilla(URL)
-
-    yesterday = datetime.date.today() - datetime.timedelta(days=1)
-    bz_query_url = "http://bugs.documentfoundation.org/buglist.cgi?f1=cf_crashreport&f2=cf_crashreport&o1=isnotempty&o2=changedafter&product=LibreOffice&query_format=advanced&v2=%s" % yesterday.isoformat()
-    print(bz_query_url)
-    query = bzapi.url_to_query(bz_query_url)
-
-    bugs = bzapi.query(query)
     for bug in bugs:
 
         bug_id = bug.id
