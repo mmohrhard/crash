@@ -47,4 +47,26 @@ def add_bug_report(request):
 
     return HttpResponse('Ok')
 
+class SetBugStatusForm(forms.Form):
+    bug_nr = forms.IntegerField(min_value=1)
+    fixed = forms.BooleanField(required=False)
+
+@login_required
+@csrf_exempt
+def set_bug_status(request):
+    if request.method != 'POST':
+        return HttpResponseNotAllowed('Only POST allowed.')
+
+    form = SetBugStatusForm(request.POST, request.FILES)
+    if not form.is_valid():
+        logger.warning("form is invalid with error: " + str(form.errors))
+        return HttpResponseBadRequest()
+
+    bug_report = get_object_or_404(BugReport, bug_nr = int(form.cleaned_data['bug_nr']))
+
+    bug_report.fixed = form.cleaned_data['fixed']
+    bug_report.save()
+
+    return HttpResponse('Ok')
+
 # vim:set shiftwidth=4 softtabstop=4 expandtab: */

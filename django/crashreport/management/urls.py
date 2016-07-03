@@ -11,6 +11,7 @@ from . import views
 
 urlpatterns = [
         url(r'add-bug$', views.add_bug_report),
+        url(r'set-bug-status$', views.set_bug_status),
         ]
 
 # vim:set shiftwidth=4 softtabstop=4 expandtab: */
