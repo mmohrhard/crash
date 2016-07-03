@@ -88,6 +88,30 @@
         <div id="summary" class="ui-tabs-hide">
             <div class="panel">
                 <header class="title">
+                    <h2>Version</h2>
+                </header>
+                <div class="content">
+                    <table id="version_tab" class="data-table">
+                        <thead>
+                            <tr>
+                                <th class="header">Version</th>
+                                <th class="header">Count<th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for version, count in version_info.items %}
+                            <tr>
+                                <td>{{version}}</td>
+                                <td>{{count}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="panel">
+                <header class="title">
                     <h2>Operating System</h2>
                 </header>
                 <div class="content">

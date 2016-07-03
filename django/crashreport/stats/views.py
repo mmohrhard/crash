@@ -137,6 +137,14 @@ def get_cpu_architecture(crashes):
 
     return data
 
+def get_version_info(crashes):
+    version_info = crashes.values('version').annotate(Count('version'))
+    data = {}
+    for version in version_info:
+        data[str(Version.objects.get(id = version['version']))] = version['version__count']
+
+    return data
+
 class SignatureView(ListViewBase):
     template_name = 'stats/signature.html'
     context_object_name = 'crashes'
@@ -150,6 +158,7 @@ class SignatureView(ListViewBase):
         crashes = ProcessedCrash.objects.filter(signature = signature_object)
         context['os_info'] = get_os_info(crashes)
         context['cpu_info'] = get_cpu_architecture(crashes)
+        context['version_info'] = get_version_info(crashes)
         return context
 
     def get_queryset(self):
