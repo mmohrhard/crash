@@ -119,11 +119,12 @@
             <a href="https://bugs.documentfoundation.org/enter_bug.cgi?product=LibreOffice&component=Writer&{{create_bug}}">Writer</a>
             <a href="https://bugs.documentfoundation.org/enter_bug.cgi?product=LibreOffice&component=Impress&{{create_bug}}">Impress</a>
             <a href="https://bugs.documentfoundation.org/enter_bug.cgi?product=LibreOffice&component=Chart&{{create_bug}}">Chart</a>
-            <a href="https://bugs.documentfoundation.org/enter_bug.cgi?product=LibreOffice&component=Base&{{create_bug}}">Base</a></p>
+            <a href="https://bugs.documentfoundation.org/enter_bug.cgi?product=LibreOffice&component=Base&{{create_bug}}">Base</a>
+            </p>
 
             <div>
                 {% for bug in crash.signature.bugs.all %}
-                <a class="bug_link" href="{{bug.get_url}}">{{bug}}</a>
+                <a class="bug_link {% if bug.fixed %}bug_fixed {%endif%}" href="{{bug.get_url}}">{{bug}}</a>
                 {%endfor%}
             </div>
         </div>

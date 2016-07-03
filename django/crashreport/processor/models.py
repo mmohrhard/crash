@@ -70,6 +70,8 @@ class BugReport(models.Model):
     # TODO: moggi: support different bug trackers
     bug_nr = models.IntegerField()
 
+    fixed = models.BooleanField(default=False)
+
     def __str__(self):
         return "tdf#" + str(self.bug_nr)
 
