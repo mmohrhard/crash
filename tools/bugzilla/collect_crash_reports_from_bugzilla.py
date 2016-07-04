@@ -32,7 +32,7 @@ def main():
     bzapi = bugzilla.Bugzilla(URL)
 
     yesterday = datetime.date.today() - datetime.timedelta(days=1)
-    bz_query_url = "http://bugs.documentfoundation.org/buglist.cgi?f1=cf_crashreport&f2=cf_crashreport&o1=isnotempty&o2=changedafter&product=LibreOffice&query_format=advanced&v2=%s" % yesterday.isoformat()
+    bz_query_url = "https://bugs.documentfoundation.org/buglist.cgi?f1=cf_crashreport&f3=OP&f4=cf_crashreport&f5=creation_ts&j3=OR&list_id=620362&o1=isnotempty&o4=changedafter&o5=changedafter&product=LibreOffice&query_format=advanced&v4=%s&v5=%s" % (yesterday.isoformat(), yesterday.isoformat())
     print(bz_query_url)
     query = bzapi.url_to_query(bz_query_url)
 
