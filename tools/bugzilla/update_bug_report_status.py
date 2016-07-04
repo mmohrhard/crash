@@ -28,7 +28,7 @@ def is_bug_report_fixed(bug):
 def main():
     yesterday = datetime.date.today() - datetime.timedelta(days=1)
     bzapi = bugzilla.Bugzilla(URL)
-    bz_query_url = "https://bugs.documentfoundation.org/buglist.cgi?f1=cf_crashreport&f2=bug_status&list_id=620354&o1=isnotempty&o2=changedafter&query_format=advanced&resolution=---&resolution=FIXED&resolution=INVALID&resolution=WONTFIX&resolution=DUPLICATE&resolution=WORKSFORME&resolution=MOVED&resolution=NOTABUG&resolution=NOTOURBUG&resolution=INSUFFICIENTDATA&v2=%s" % yesterday.isoformat()
+    bz_query_url = "https://bugs.documentfoundation.org/buglist.cgi?f1=cf_crashreport&f3=OP&f4=bug_status&f5=creation_ts&f6=cf_crashreport&j3=OR&list_id=620366&o1=isnotempty&o4=changedafter&o5=changedafter&o6=changedafter&query_format=advanced&v4=%s&v5=%s&v6=%s" % (yesterday.isoformat(), yesterday.isoformat(), yesterday.isoformat())
     query = bzapi.url_to_query(bz_query_url)
 
     bugs = bzapi.query(query)
