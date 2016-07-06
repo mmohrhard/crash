@@ -216,6 +216,9 @@ class ProcessedCrash(models.Model):
 
     raw = models.TextField()
 
+    def __str__(self):
+        return crash_id
+
     def set_view_os_name_to_model(self, view_os_name):
         if view_os_name.lower() == ProcessedCrash.LINUX:
             self.os_name = ProcessedCrash.LINUX
