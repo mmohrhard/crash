@@ -27,4 +27,7 @@ class UploadedCrash(models.Model):
 
     additional_data = models.TextField(default="{}")
 
+    def __str__(self):
+        return self.crash_id
+
 # vim:set shiftwidth=4 softtabstop=4 expandtab: */
