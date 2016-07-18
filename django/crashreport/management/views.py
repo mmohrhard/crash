@@ -13,7 +13,12 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 
-from processor.models import Signature, BugReport, ProcessedCrash
+from base.models import Version
+from processor.models import Signature, BugReport, ProcessedCrash, CrashCount
+
+from django.utils import timezone
+
+from datetime import timedelta
 
 import logging
 
@@ -68,5 +73,19 @@ def set_bug_status(request):
     bug_report.save()
 
     return HttpResponse('Ok')
+
+@login_required
+@csrf_exempt
+def create_daily_stats(request):
+    featured_versions = Version.objects.filter(featured=True)
+    for day in range(1, 7):
+        for version in featured_versions:
+            date = timezone.now().today() - timedelta(days=day)
+            crash_count = CrashCount.objects.get_or_create(version=version, date = date)
+            if crash_count[1] is True:
+                crashes = ProcessedCrash.objects.get_crashes_for_day(date, version)
+                crash_count[0].count = len(crashes)
+                crash_count[0].save()
+    return HttpResponse('OK')
 
 # vim:set shiftwidth=4 softtabstop=4 expandtab: */

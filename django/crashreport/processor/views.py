@@ -9,15 +9,10 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 
-from django.utils import timezone
-
-from datetime import timedelta
-
 from processor import MinidumpProcessor
 
-from .models import ProcessedCrash, CrashCount
+from .models import ProcessedCrash
 from .signals import do_process_uploaded_crash
-from base.models import Version
 
 import logging
 
@@ -36,19 +31,5 @@ def process_all(request):
 def process(request, crash_id):
     do_process_uploaded_crash.spool({'crash_id': crash_id})
     return HttpResponse('CrashID=' + crash_id)
-
-@login_required
-def create_stats(request):
-    featured_versions = Version.objects.filter(featured=True)
-    print(featured_versions)
-    for day in range(1, 7):
-        for version in featured_versions:
-            date = timezone.now().today() - timedelta(days=day)
-            crash_count = CrashCount.objects.get_or_create(version=version, date = date)
-            if crash_count[1] is True:
-                crashes = ProcessedCrash.objects.get_crashes_for_day(date, version)
-                crash_count[0].count = len(crashes)
-                crash_count[0].save()
-    return HttpResponse('OK')
 
 # vim:set shiftwidth=4 softtabstop=4 expandtab: */

@@ -10,7 +10,6 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-        url(r'stat$', views.create_stats),
         url(r'all$', views.process_all),
         url(r'^(?P<crash_id>.+)$', views.process, name='process'),
         ]
