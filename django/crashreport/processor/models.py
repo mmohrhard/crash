@@ -195,7 +195,7 @@ class ProcessedCrash(models.Model):
     signature = models.ForeignKey(Signature, on_delete=models.CASCADE)
 
     # crash info
-    crash_cause = models.CharField(max_length=35,
+    crash_cause = models.CharField(max_length=100,
             default='SIGSEGV')
 
     crash_address = models.CharField(max_length=100,
