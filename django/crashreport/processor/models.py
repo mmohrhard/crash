@@ -254,6 +254,10 @@ class ProcessedCrash(models.Model):
             else:
                 text = frame['lib_name']
 
+        if len(text) is 0:
+            text = "Invalid signature"
+            logger.warn("could not create a valid signature for %s" % self.crash_id)
+
         text = text[:255] if len(text) > 255 else text
         signatures = Signature.objects.filter(signature=text)
         if len(signatures) < 1:
