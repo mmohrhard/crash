@@ -31,6 +31,8 @@ SYMBOL_UPLOAD_DIR = os.environ.get('SYMBOL_UPLOAD_DIR', '/tmp/symbol_upload/')
 
 MINIDUMP_STACKWALK = os.environ.get('MINIDUMP_STACKWALK', 'minidump_stackwalk')
 
+SYMBOL_PROCESSING = os.environ.get('SYMBOL_PROCESSING', os.path.join(BASE_DIR, "../../tools/process-symbols/process-symbols.py"))
+
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', [])
 
 APPEND_SLASH = True
