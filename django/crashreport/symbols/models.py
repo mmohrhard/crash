@@ -19,4 +19,8 @@ class SymbolsUpload(models.Model):
     files = models.TextField(
             help_text='A list with all the files contained in that upload')
 
+    system_symbols = models.BooleanField(
+            help_text='This contains system symbols and not LibreOffice symbols',
+            default=False)
+
 # vim:set shiftwidth=4 softtabstop=4 expandtab: */
