@@ -26,6 +26,7 @@ class SymbolsUploadHandler(object):
         upload.files = file_names
         upload.comment = data['version'] + " " + data['platform']
         upload.upload_time = timezone.now()
+        upload.system_symbols = data['system'] if 'system' in data else False;
         upload.save()
 
 # vim:set shiftwidth=4 softtabstop=4 expandtab: */

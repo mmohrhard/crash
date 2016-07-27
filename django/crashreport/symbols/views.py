@@ -24,6 +24,7 @@ class UploadSymbolsForm(forms.Form):
     symbols = forms.FileField()
     version = forms.CharField()
     platform = forms.CharField()
+    system = forms.BooleanField(required=False)
 
 def handle_uploaded_file(f):
     file_path = os.path.join(settings.SYMBOL_UPLOAD_DIR, f.name)
