@@ -3,9 +3,11 @@ import sys
 import requests
 import configparser
 
+base_address = "http://crashreport.libreoffice.org/"
+
 def main():
 
-    login_url = "http://crashreport.libreoffice.org/accounts/login/"
+    login_url = base_address + "accounts/login/"
 
     config = configparser.ConfigParser()
     config.read(sys.argv[1])
@@ -20,9 +22,10 @@ def main():
             'csrfmiddlewaretoken': csrftoken }
     r1 = session.post(login_url, data=login_data, headers={"Referer": login_url})
 
-    r = session.post(sys.argv[2])
+    url = base_address + sys.argv[2]
+    r = session.post(url)
     if r.status_code != 200:
-        print("error calling %s" % sys.argv[2])
+        print("error calling %s" % url)
 
 if __name__ == "__main__":
     main()
