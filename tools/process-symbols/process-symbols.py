@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from __future__ import print_function
+import os
 import re
 import fileinput
 
@@ -8,7 +9,9 @@ def is_file_line(line):
 
 file_map = {}
 
-with open('filemap', 'r') as f:
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+with open(os.path.join(current_dir, 'filemap'), 'r') as f:
     lines = f.readlines()
     for line in lines:
         split_line = line.split()
