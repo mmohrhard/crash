@@ -13,6 +13,8 @@ from .models import SymbolsUpload
 
 import logging
 import os
+import subprocess
+import sys
 
 logger = logging.getLogger(__name__)
 
@@ -26,5 +28,19 @@ def process_deleted_symbols(sender, instance, **kwargs):
             os.remove(symbol_path)
         except:
             pass
+
+@receiver(post_save, sender=SymbolsUpload)
+def process_uploaded_symbols(sender, instance, **kwargs):
+    logger.info('processing symbols for: "%s"' % (instance.comment))
+    symbol_location = settings.SYMBOL_LOCATION
+    for symbol_file in instance.files.splitlines():
+        symbol_path = os.path.join(symbol_location, symbol_file)
+        try:
+            command = ["python", os.path.abspath(settings.SYMBOL_PROCESSING), symbol_path]
+            subprocess.check_call(command)
+        except OSError as e:
+            logger.warn("error while processing %s: %s" % (symbol_file,  e.strerror))
+        except:
+            logger.warn("error while processing %s: %s" % (symbol_file,  str(sys.exc_info()[0])))
 
 # vim:set shiftwidth=4 softtabstop=4 expandtab: */
