@@ -71,6 +71,7 @@ saxlo.pdb
 sblo.pdb
 scfiltlo.pdb
 sclo.pdb
+scdlo.pdb
 sddlo.pdb
 sfxlo.pdb
 sofficeapp.pdb
@@ -86,6 +87,7 @@ svtlo.pdb
 svxcorelo.pdb
 svxlo.pdb
 swlo.pdb
+swdlo.pdb
 t602filterlo.pdb
 tklo.pdb
 tllo.pdb
