@@ -118,3 +118,8 @@ xmlreaderlo.pdb
 xmlscriptlo.pdb
 xmlsecurity.pdb
 xoflo.pdb
+
+atio6axx.pdb
+atig6txx.pdb
+amdocl.pdb
+ig75icd32.pdb
