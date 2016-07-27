@@ -320,6 +320,7 @@ def main():
                                                     code_id, code_file)
                 if sym_output is None:
                     not_found_count += 1
+                    skiplist[id] = filename.lower()
                     # Figure out how to manage the skiplist later...
                     log.debug(
                         'Couldn\'t fetch %s/%s, but not skiplisting',
