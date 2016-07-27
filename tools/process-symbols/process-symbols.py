@@ -17,7 +17,7 @@ with open(os.path.join(current_dir, 'filemap'), 'r') as f:
         split_line = line.split()
         file_map[split_line[0]] = split_line[1]
 
-for line in fileinput.input(inplace=True, backup='.bak'):
+for line in fileinput.input(inplace=True):
     regexp = re.compile("(FILE \d+ )(.*)")
     if is_file_line(line):
         results = regexp.match(line)
