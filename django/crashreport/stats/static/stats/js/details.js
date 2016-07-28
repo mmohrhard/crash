@@ -20,9 +20,10 @@ $(document).ready(function () {
         var $this = $(this);
         var cellText = $this.html();
         var trimmedText = $.trim(cellText);
-        if (trimmedText.beginsWith("c:\\cygwin64\\home\\buildslave\\source\\libo-core\\")) {
-            var src_code_path = trimmedText.replace("c:\\cygwin64\\home\\buildslave\\source\\libo-core\\","").replace("\\","/");
-            var url = "http://cgit.freedesktop.org/libreoffice/core/tree/" + src_code_path.replace(":", "?h=libreoffice-5-2#n");
+        var nonCoreFilePattern = new RegExp('^[a-zA-Z]:');
+        if (trimmedText && trimmedText.length > 0 && !nonCoreFilePattern.test(trimmedText))
+        {
+            var url = "http://cgit.freedesktop.org/libreoffice/core/tree/" + trimmedText.replace(":", "?h=libreoffice-5-2#n");
             $this.html("<a href=\""+ url + "\">" + src_code_path + "</a>");
         }
     });
