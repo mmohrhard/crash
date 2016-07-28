@@ -31,6 +31,9 @@ def process_deleted_symbols(sender, instance, **kwargs):
 
 @receiver(post_save, sender=SymbolsUpload)
 def process_uploaded_symbols(sender, instance, **kwargs):
+    if instance.system_symbols:
+        return
+
     logger.info('processing symbols for: "%s"' % (instance.comment))
     symbol_location = settings.SYMBOL_LOCATION
     for symbol_file in instance.files.splitlines():
