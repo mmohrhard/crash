@@ -24,7 +24,7 @@ $(document).ready(function () {
         if (trimmedText && trimmedText.length > 0 && !nonCoreFilePattern.test(trimmedText))
         {
             var url = "http://cgit.freedesktop.org/libreoffice/core/tree/" + trimmedText.replace(":", "?h=libreoffice-5-2#n");
-            $this.html("<a href=\""+ url + "\">" + src_code_path + "</a>");
+            $this.html("<a href=\""+ url + "\">" + trimmedText + "</a>");
         }
     });
 
