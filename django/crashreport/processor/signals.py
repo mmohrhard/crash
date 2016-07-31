@@ -14,9 +14,9 @@ import logging
 logger = logging.getLogger(__name__)
 
 @spool
-def do_process_uploaded_crash(*args, **kwargs):
+def do_process_uploaded_crash(env):
     minproc = MinidumpProcessor()
-    minproc.process(kwargs['crash_id'])
-    logger.info('processed: %s' % (kwargs['crash_id']))
+    minproc.process(env['crash_id'])
+    logger.info('processed: %s' % (env['crash_id']))
 
 # vim:set shiftwidth=4 softtabstop=4 expandtab: */
