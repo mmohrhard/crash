@@ -10,6 +10,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.db.models import Count
 from django.utils import timezone
+from django.db.utils import DataError
 
 from datetime import timedelta
 
@@ -276,7 +277,11 @@ class ProcessedCrash(models.Model):
 
         if signature.last_observed < self.upload_time:
             signature.last_observed = self.upload_time
-        signature.save()
+        try:
+            signature.save()
+        except DataError as e:
+            logger.error("error trying to save signature %s" % text)
+            logger.error(str(e))
         self.signature = signature
 
     def set_thread_to_model(self, threads):
