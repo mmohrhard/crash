@@ -193,6 +193,10 @@ class TopCrashesView(ListViewBase):
 
     def get_context_data(self, **kwargs):
         context = super(TopCrashesView, self).get_context_data(**kwargs)
+        shown_crashes = 0
+        for signature in context['signatures']:
+            shown_crashes = shown_crashes + signature.all
+        context['shown_crashes'] = shown_crashes
         limit = int(handle_parameter_or_default(self.request.GET, 'limit', 50))
         context['limit'] = limit
         days = int(handle_parameter_or_default(self.request.GET, 'days', 7))
@@ -201,6 +205,7 @@ class TopCrashesView(ListViewBase):
             context['version'] = self.kwargs['version']
         else:
             context['version'] = handle_parameter_or_default(self.request.GET, 'version', None)
+        context['all_crashes'] = ProcessedCrash.objects.get_crashes_for_version(context['version']).count()
         return context
 
     def get_queryset(self):

@@ -150,6 +150,12 @@ class ProcessedCrashManager(models.Manager):
         processed = ProcessedCrash.objects.values_list('crash_id')
         return submit_models.UploadedCrash.objects.all().exclude(crash_id__in=processed)
 
+    def get_crashes_for_version(self, version):
+        res = self.get_queryset()
+        version_filter_params = Version.get_filter_params(version, prefix='version__')
+        res = res.filter(**version_filter_params)
+        return res
+
 class ProcessedCrash(models.Model):
     # custom manager
     objects = ProcessedCrashManager()
