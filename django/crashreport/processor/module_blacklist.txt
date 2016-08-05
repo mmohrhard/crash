@@ -8,3 +8,5 @@ nvoglv32.dll
 nvoglv64.dll
 odbc32.dll
 setupapi.dll
+gdi32.dll
+msvcrt.dll
