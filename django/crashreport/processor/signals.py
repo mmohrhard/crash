@@ -9,6 +9,8 @@ from .processor import MinidumpProcessor
 
 from uwsgidecoratorsfallback import spool
 
+from subprocess import CalledProcessError
+
 import logging
 
 logger = logging.getLogger(__name__)
