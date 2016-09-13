@@ -9,6 +9,17 @@ from __future__ import unicode_literals
 
 from django.db import models
 
+class MissingSymbolConfig(models.Model):
+
+    last_time = models.DateTimeField()
+
+class MissingSymbol(models.Model):
+
+    symbol_file = models.CharField(max_length=255, db_index=True)
+    debug_id = models.CharField(max_length=100, db_index=True)
+    code_id = models.CharField(max_length=100, db_index=True)
+    code_name = models.CharField(max_length=255, db_index=True)
+
 class SymbolsUpload(models.Model):
 
     upload_time = models.DateTimeField()

@@ -15,6 +15,8 @@ from .handler import SymbolsUploadHandler
 
 from processor.models import ProcessedCrash
 
+from .models import MissingSymbol
+
 import os
 import logging
 
@@ -53,63 +55,16 @@ def upload_symbols(request):
 
     return HttpResponse("Success")
 
-def create_symbols_entry(module_entries):
-    symbol_file = module_entries[3]
-    debug_id = module_entries[4]
-
-    entry = symbol_file + "," + debug_id
-
-    if len(module_entries) >= 9:
-        entry = entry + "," + module_entries[1] + "," + module_entries[8]
-
-    return entry
-
-def add_missing_symbols(missing_symbols, module_list, symbol_ids):
-    modules = module_list.splitlines()
-    # Module|{code_name}|6.1.7601.17514|{debug_name}|{debug_id}|0x6a710000|0x6a75dfff|{main?}|{Code_id}
-    for module in modules:
-        module_entries = module.split('|')
-        if len(module_entries) < 5:
-            continue
-
-        symbol_file = module_entries[3]
-        debug_id = module_entries[4]
-
-        # this is not a code module
-        if debug_id == "000000000000000000000000000000000":
-            continue
-
-        if symbol_file not in symbol_ids:
-            missing_symbols.add(create_symbols_entry(module_entries))
-            continue
-
-        debug_ids = symbol_ids.get(symbol_file)
-
-        if debug_id not in debug_ids:
-            missing_symbols.add(create_symbols_entry(module_entries))
-
-def get_all_existing_symbols():
-    libs = set(os.listdir(settings.SYMBOL_LOCATION))
-    symbol_ids = {}
-    for lib in libs:
-        symbol_ids[lib] = set(os.listdir(os.path.join(settings.SYMBOL_LOCATION, lib)))
-
-    return symbol_ids
-
-@csrf_exempt
 @login_required
-def find_missing_symbols(request):
+def get_missing_symbols(request):
 
     if request.method != 'GET':
         return HttpResponseNotAllowed("Only GET here")
 
-    symbold_ids = get_all_existing_symbols()
+    missing_symbols = MissingSymbol.objects.all()
 
-    crashes = ProcessedCrash.objects.get_crashes_for_day(None, None)
-    missing_symbols = set()
-    for crash in crashes:
-        add_missing_symbols(missing_symbols, crash.modules, symbol_ids)
+    symbol_list = [ symbol.symbol_file + ',' + symbol.debug_id + ',' + symbol.code_name + ',' + symbol.code_id for symbol in missing_symbols]
 
-    return HttpResponse("\n".join(missing_symbols))
+    return HttpResponse("\n".join(symbol_list))
 
 # vim:set shiftwidth=4 softtabstop=4 expandtab: */
