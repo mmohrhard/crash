@@ -94,7 +94,6 @@ def add_missing_symbols(module_list):
 
 @cron(-1, -1, -1, -1, -1)
 def collect_missing_symbols(args):
-    print("collect_missing_symbols")
     configs = MissingSymbolConfig.objects.all()
     date = datetime.datetime(2010, 1, 1)
     if configs.count() > 0:
@@ -103,7 +102,6 @@ def collect_missing_symbols(args):
 
     MissingSymbolConfig.objects.create(last_time = timezone.now())
     crashes = ProcessedCrash.objects.filter(process_time__gte=date).only('modules')
-    print(crashes.count())
     for crash in crashes:
         add_missing_symbols(crash.modules)
 
