@@ -46,10 +46,10 @@ class ListViewBase(ListView):
 
 class ChartColorMap(object):
 
-    color_list = [ "rgba(141, 211, 199, {0})", "rgba(255, 255, 171, {0})",
+    color_list = [ "rgba(255, 255, 171, {0})",
                 "rgba(190, 186, 218, {0})", "rgba(251, 128, 114, {0})", "rgba(128, 177, 211, {0})",
                 "rgba(253, 180, 98, {0})", "rgba(179, 222, 105, {0})", "rgba(252, 205, 229, {0})",
-                "rgba(217, 217, 217, {0})", "rgba(188, 128, 189, {0})" ]
+                "rgba(217, 217, 217, {0})", "rgba(188, 128, 189, {0})", "rgba(141, 211, 199, {0})" ]
 
     @classmethod
     def get_color_by_index(cls, index, alpha = 1):
