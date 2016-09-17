@@ -180,12 +180,6 @@ class SignatureView(ListViewBase):
 
         return HttpResponseRedirect(reverse('signature_details', args=[signature]) + '#bugs')
 
-def handle_parameter_or_default(data, param_name, default):
-    if param_name in data:
-        return data[param_name]
-
-    return default
-
 class TopCrashesView(ListViewBase):
     template_name = 'stats/version.html'
     context_object_name = 'signatures'
@@ -196,24 +190,24 @@ class TopCrashesView(ListViewBase):
         for signature in context['signatures']:
             shown_crashes = shown_crashes + signature.all
         context['shown_crashes'] = shown_crashes
-        limit = int(handle_parameter_or_default(self.request.GET, 'limit', 50))
+        limit = int(self.request.GET.get('limit', 50))
         context['limit'] = limit
-        days = int(handle_parameter_or_default(self.request.GET, 'days', 7))
+        days = int(self.request.GET.get('days', 7))
         context['days'] = days
         if 'version' in self.kwargs:
             context['version'] = self.kwargs['version']
         else:
-            context['version'] = handle_parameter_or_default(self.request.GET, 'version', None)
+            context['version'] = self.request.GET.get('version', None)
         context['all_crashes'] = ProcessedCrash.objects.get_crashes_for_version(context['version']).count()
         return context
 
     def get_queryset(self):
-        days = int(handle_parameter_or_default(self.request.GET, 'days', 7))
-        limit = int(handle_parameter_or_default(self.request.GET, 'limit', 50))
+        days = int(self.request.GET.get('days', 7))
+        limit = int(self.request.GET.get('limit', 50))
         if 'version' in self.kwargs:
             version = self.kwargs['version']
         else:
-            version = handle_parameter_or_default(self.request.GET, 'version', None)
+            version = self.request.GET.get('version', None)
         top_crash = ProcessedCrash.objects.get_top_crashes(time=days, limit=limit, version=version)
         return top_crash
 
