@@ -65,4 +65,7 @@ class Version(models.Model):
         unique_together = ('major_version', 'minor_version',
                 'micro_version', 'patch_version')
 
+        index_together = [('major_version', 'minor_version',
+                'micro_version', 'patch_version')]
+
 # vim:set shiftwidth=4 softtabstop=4 expandtab: */from __future__ import unicode_literals
