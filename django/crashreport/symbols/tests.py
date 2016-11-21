@@ -105,7 +105,7 @@ class TestMissingSymbols(TestCase):
     # need a better way to generate the missing symbols from the string
     def get_missing_symbols(self):
         with self.settings(SYMBOL_DIR=self.tmp_dir):
-            response = self.c.get('/upload/missing')
+            response = self.c.get('/symbols/missing')
         content = response.content;
         content_split = content.splitlines()
         self.assertIn("ActXPrxy.pdb,C674D3ABFBB34B75BC59063E6B68ABA12", content_split)
