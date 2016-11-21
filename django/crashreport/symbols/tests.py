@@ -5,7 +5,7 @@ from django.utils import timezone
 
 import os, zipfile, tempfile
 
-from .models import SymbolsUpload
+from .models import SymbolsUpload, MissingSymbol
 
 from processor.models import ProcessedCrash, Signature
 
@@ -112,3 +112,27 @@ class TestMissingSymbols(TestCase):
         self.assertIn("soffice.bin,4B253D6CB7E740A997444A61FE6E511C2", content_split)
         self.assertIn("mergedlo.pdb,6C797FEC36EF447699D43D58FE1486102", content_split)
         self.assertEqual(len(content_split), 3)
+
+class TestMissingSymbolRemoval(TestCase):
+
+    def setUp(self):
+        self.tmp_dir = tempfile.mkdtemp()
+        missing_symbol1 = MissingSymbol(symbol_file = "kernelbase.pdb", debug_id = "2474C6E48C0C4E86BDD73A05A694E7221", code_id = "2474C6E48C0C4E86BDD73A05A694E7222", code_name = "kernelbase.dll")
+        missing_symbol1.save()
+        missing_symbol2 = MissingSymbol(symbol_file = "some.pdb", debug_id = "ABCDEFGH", code_id = "FGHIJ", code_name = "some.dll")
+        missing_symbol2.save()
+
+        user = User.objects.create_user('test user')
+        self.c = Client()
+        self.c.force_login(user)
+
+    def tearDown(self):
+        remove_dir(self.tmp_dir)
+
+    def test_remove_missing_symbol_after_upload(self):
+        self.assertEqual(2, MissingSymbol.objects.count())
+        with self.settings(SYMBOL_UPLOAD_DIR=self.tmp_dir):
+            with open(get_test_file_path("system_symbols.zip")) as f:
+                response = self.c.post('/upload/', {"symbols":f, "version": "1.2.3.4", "platform":"linux", "system":True})
+                self.assertEqual(200, response.status_code)
+        self.assertEqual(1, MissingSymbol.objects.count())
