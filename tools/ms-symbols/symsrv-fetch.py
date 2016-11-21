@@ -66,10 +66,13 @@ def fetch_symbol(debug_id, debug_file):
                            os.path.join(debug_file,
                                         debug_id,
                                         debug_file[:-1] + '_'))
-    r = requests.get(url,
-                     headers={'User-Agent': USER_AGENT})
-    if r.status_code == 200:
-        return r.content
+    try:
+        r = requests.get(url,
+                         headers={'User-Agent': USER_AGENT})
+        if r.status_code == 200:
+            return r.content
+    except requests.exceptions.RequestException as e:
+        log.warn('Error fetching symbol file "%s/%s": %s' % (debug_id, debug_file, str(e)))
     return None
 
 
