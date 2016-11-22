@@ -37,6 +37,15 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', [])
 
 APPEND_SLASH = True
 
+def show_debug_toolbar(request):
+    if hasattr(request, 'user'):
+        print(request.user)
+    return not request.is_ajax() and hasattr(request, 'user') and request.user and request.user.is_superuser
+
+DEBUG_TOOLBAR_CONFIG = {
+        'SHOW_TOOLBAR_CALLBACK': 'crashreport.settings.show_debug_toolbar',
+}
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -53,6 +62,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'compressor',
+    'debug_toolbar',
 ]
 
 STATICFILES_FINDERS = [
@@ -67,6 +77,7 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',

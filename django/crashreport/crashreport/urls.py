@@ -28,6 +28,8 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.views.generic.base import RedirectView
 
+import debug_toolbar
+
 urlpatterns = [
     url(r'^$', RedirectView.as_view(url='/stats/')),
     url(r'^submit/', include('crashsubmit.urls')),
@@ -38,6 +40,7 @@ urlpatterns = [
     url(r'^management/', include('management.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('django.contrib.auth.urls')),
+    url(r'^debug/', include(debug_toolbar.urls)),
 ]
 
 # vim:set shiftwidth=4 softtabstop=4 expandtab: */
