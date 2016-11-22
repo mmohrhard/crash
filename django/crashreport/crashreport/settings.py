@@ -38,8 +38,6 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', [])
 APPEND_SLASH = True
 
 def show_debug_toolbar(request):
-    if hasattr(request, 'user'):
-        print(request.user)
     return not request.is_ajax() and hasattr(request, 'user') and request.user and request.user.is_superuser
 
 DEBUG_TOOLBAR_CONFIG = {
