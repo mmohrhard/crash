@@ -162,7 +162,11 @@ class SignatureView(ListViewBase):
 
     def get_queryset(self):
         self.signature_obj = get_object_or_404(Signature, signature=self.kwargs['signature'])
+        version = self.request.GET.get('version', None)
         crashes = self.signature_obj.processedcrash_set.all()
+        if version is not None:
+            version_filter_params = Version.get_filter_params(version, prefix='version__')
+            crashes.filter(**version_filter_params)
         return crashes
 
     def post(self, request, *args, **kwargs):
