@@ -16,6 +16,7 @@ from django.core.urlresolvers import reverse
 from django.views.generic import ListView
 from django import forms
 from django.db.models import Count
+from django.core.paginator import Paginator
 
 import json, itertools
 import urllib
@@ -147,6 +148,7 @@ def get_version_info(crashes):
 class SignatureView(ListViewBase):
     template_name = 'stats/signature.html'
     context_object_name = 'crashes'
+    paginate_by = 50
 
     def get_context_data(self, **kwargs):
         context = super(SignatureView, self).get_context_data(**kwargs)
