@@ -166,7 +166,7 @@ class SignatureView(ListViewBase):
         crashes = self.signature_obj.processedcrash_set.all()
         if version is not None:
             version_filter_params = Version.get_filter_params(version, prefix='version__')
-            crashes.filter(**version_filter_params)
+            crashes = crashes.filter(**version_filter_params)
         return crashes
 
     def post(self, request, *args, **kwargs):
