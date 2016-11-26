@@ -97,7 +97,7 @@ class CrashByVersionData(object):
         self.all = 0
         self.win = 0
         self.lin = 0
-        self.id = id
+        self.id = Signature.objects.get(signature=id)
 
     def getKey(item):
         return item.all
