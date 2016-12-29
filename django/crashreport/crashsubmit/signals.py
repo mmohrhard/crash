@@ -12,8 +12,11 @@ from .models import UploadedCrash
 
 from processor.signals import do_process_uploaded_crash
 
+from uwsgidecoratorsfallback import cron
+
 import logging
 import os
+import datetime
 
 logger = logging.getLogger(__name__)
 
@@ -27,5 +30,10 @@ def process_deleted_crash(sender, instance, **kwargs):
         os.remove(instance.crash_path)
     except:
         pass
+
+@cron(1, 1, -1, -1, -1)
+def remove_old_uploads(args):
+    delete_date = datetime.date.today() - datetime.timedelta(days=30)
+    UploadedCrash.objects.filter(upload_time__date__lte=delete_date).delete()
 
 # vim:set shiftwidth=4 softtabstop=4 expandtab: */
