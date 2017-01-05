@@ -21,9 +21,20 @@ $(document).ready(function () {
         var cellText = $this.html();
         var trimmedText = $.trim(cellText);
         var nonCoreFilePattern = new RegExp('^[a-zA-Z]:');
+        var version_str = $.trim($(".version_str").html());
+        var versionPattern = new RegExp(/(\d)\.(\d).(\d)\./);
+        var [,...version_arr] = versionPattern.exec(version_str);
+        
+        // version_arr = [major, minor, patch]
+        if(version_arr[2] === "0"){
+            version_arr.pop();
+        }
+        version_str = version_arr.join('-');
+
         if (trimmedText && trimmedText.length > 0 && !nonCoreFilePattern.test(trimmedText))
         {
-            var url = "http://cgit.freedesktop.org/libreoffice/core/tree/" + trimmedText.replace(":", "?h=libreoffice-5-2#n");
+            var url = "http://cgit.freedesktop.org/libreoffice/core/tree/" 
+                + trimmedText.replace(":", "?h=libreoffice-" + version_str +"#n");
             $this.html("<a href=\""+ url + "\">" + trimmedText + "</a>");
         }
     });
