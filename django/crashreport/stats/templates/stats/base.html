@@ -46,6 +46,14 @@
                     </optgroup>
                 </select>
             </li>
+            <li>
+                <form id="search_form" method="POST" action="{% url 'crash_search' %}">
+                    {% csrf_token %}
+                    <label for="search_id">ID Search:</label>
+                    <input id="search_id" name='search_id' type="text" />
+                    <button type="submit">Search</button>
+                </form>
+            </li>
         </ul>
     </div>
     <div class="content">
