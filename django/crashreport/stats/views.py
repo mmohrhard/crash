@@ -5,8 +5,9 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 #
 
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponse, HttpResponseRedirect, \
+    HttpResponseBadRequest, Http404
 
 from processor.models import ProcessedCrash, Signature, CrashCount, BugReport
 from base.models import Version
@@ -218,3 +219,9 @@ class TopCrashesView(ListViewBase):
         return top_crash
 
 # vim:set shiftwidth=4 softtabstop=4 expandtab: */
+
+def crash_search(request):
+    if request.method == 'POST' and request.POST['search_id']:
+        crash_id = (request.POST['search_id']).strip()
+        return redirect('crash_details', crash_id=crash_id)
+    raise Http404()

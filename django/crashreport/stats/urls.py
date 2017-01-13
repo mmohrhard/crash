@@ -11,6 +11,7 @@ from . import views
 
 urlpatterns = [
         url(r'crash_details/(?P<crash_id>.+)$', views.crash_details, name='crash_details'),
+        url(r'crash_search/$', views.crash_search, name='crash_search'),
         url(r'top_crashes$', views.TopCrashesView.as_view(), name='top_crashes'),
         url(r'version/(?P<version>.+)$', views.TopCrashesView.as_view(), name='crash_version'),
         url(r'signature/(?P<signature>.+)$', views.SignatureView.as_view(), name='signature_details'),
