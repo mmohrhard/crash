@@ -80,9 +80,9 @@ def generate_data_for_version(id, version, x_values, crashes):
     data['data'] = values
     return data
 
-def generate_chart_data(featured_versions):
+def generate_chart_data(featured_versions, days):
     data = {}
-    keys, values = CrashCount.objects.get_crash_count_processed(versions=featured_versions, time=7)
+    keys, values = CrashCount.objects.get_crash_count_processed(versions=featured_versions, time=days)
     data['labels'] = keys
     data['datasets'] = []
     for id, version in enumerate(values.keys()):
@@ -91,7 +91,8 @@ def generate_chart_data(featured_versions):
 
 def main(request):
     featured_versions = Version.objects.filter(featured=True)
-    generated_chart_data = generate_chart_data(featured_versions)
+    days = request.GET.get('days', 7)
+    generated_chart_data = generate_chart_data(featured_versions, days)
     # TODO: moggi: load the chart data through a rest api dynamically
     chart_data = json.dumps(generated_chart_data)
     data = generate_product_version_data()
