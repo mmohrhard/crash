@@ -83,3 +83,13 @@ class TestSetBugReportStatus(TestCase):
         response = self.c.post('/management/set-bug-status', {'bug_nr': 201, 'fixed': False})
 
         self.assertEqual(response.status_code, 404)
+
+class TestAddVersion(TestCase):
+    def setUp(self):
+        user = User.objects.create_user('test user')
+        self.c = Client()
+        self.c.force_login(user)
+
+    def test_add_valid_version(self):
+        response = self.c.post('/management/add-version/6.1.2.3')
+        self.assertEqual(response.status_code, 200)
