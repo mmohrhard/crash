@@ -91,7 +91,7 @@ def generate_chart_data(featured_versions, days):
 
 def main(request):
     featured_versions = Version.objects.filter(featured=True)
-    days = request.GET.get('days', 7)
+    days = int(request.GET.get('days', 7))
     generated_chart_data = generate_chart_data(featured_versions, days)
     # TODO: moggi: load the chart data through a rest api dynamically
     chart_data = json.dumps(generated_chart_data)
