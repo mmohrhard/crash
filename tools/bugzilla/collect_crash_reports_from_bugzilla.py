@@ -33,7 +33,6 @@ def main():
 
     yesterday = datetime.date.today() - datetime.timedelta(days=1)
     bz_query_url = "https://bugs.documentfoundation.org/buglist.cgi?f1=cf_crashreport&f3=OP&f4=cf_crashreport&f5=creation_ts&j3=OR&list_id=620362&o1=isnotempty&o4=changedafter&o5=changedafter&product=LibreOffice&query_format=advanced&v4=%s&v5=%s" % (yesterday.isoformat(), yesterday.isoformat())
-    print(bz_query_url)
     query = bzapi.url_to_query(bz_query_url)
 
     bugs = bzapi.query(query)
@@ -51,6 +50,10 @@ def main():
             'csrfmiddlewaretoken': csrftoken }
     r1 = session.post(login_url, data=login_data, headers={"Referer": login_url})
 
+    if not r1.ok:
+        print("Could not log into the crashreporter website")
+        sys.exit(1)
+
     for bug in bugs:
 
         bug_id = bug.id
@@ -62,6 +65,7 @@ def main():
                     set_bug_to_report(session, crash_report, bug_id)
             except Exception as e:
                 print("exception setting bug report")
+                print(bug_id)
                 print(e)
         else:
             print(bug_id)
