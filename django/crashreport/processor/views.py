@@ -23,13 +23,13 @@ def process_all(request):
     crashes = ProcessedCrash.objects.get_crashes_to_process()
     done = []
     for crash in crashes:
-        do_process_uploaded_crash.spool(crash_id = crash.crash_id)
+        do_process_uploaded_crash.spool(crash_id = crash.crash_id, pass_arguments=True)
         done.append(crash.crash_id)
     return HttpResponse("\n".join(done))
 
 @login_required
 def process(request, crash_id):
-    do_process_uploaded_crash.spool(crash_id = crash_id)
+    do_process_uploaded_crash.spool(crash_id = crash_id, pass_arguments=True)
     return HttpResponse('CrashID=' + crash_id)
 
 # vim:set shiftwidth=4 softtabstop=4 expandtab: */

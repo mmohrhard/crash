@@ -16,14 +16,14 @@ import logging
 logger = logging.getLogger(__name__)
 
 @spool
-def do_process_uploaded_crash(env):
+def do_process_uploaded_crash(crash_id, *args, **kwargs):
     minproc = MinidumpProcessor()
     try:
-        minproc.process(env['crash_id'])
+        minproc.process(crash_id)
     except CalledProcessError as e:
-        logger.warn('error processing: %s with error %s'%(env['crash_id'], str(e)))
+        logger.warn('error processing: %s with error %s'%(crash_id, str(e)))
         return 0
-    logger.info('processed: %s' % (env['crash_id']))
+    logger.info('processed: %s' % (crash_id))
     return -2
 
 # vim:set shiftwidth=4 softtabstop=4 expandtab: */
