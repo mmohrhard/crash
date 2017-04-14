@@ -33,14 +33,14 @@
                         <option value="{% url 'main'%}" {% if version == "current" %}selected{% endif %}>Current Versions</option>
                         {% for v in versions %}
                         {% if v.featured %}
-			<option value="{% url 'crash_version' v.str_without_product %}" {% if version = v.str_without_product %}selected="selected"{% endif %}>{{ v }}</option>
+			<option value="{% url 'crash_version' v.str_without_product %}" {% if version == v.str_without_product %}selected="selected"{% endif %}>{{ v }}</option>
                         {% endif %}
                         {% endfor %}
                     </optgroup>
                     <optgroup label=" ">
                         {% for v in versions %}
                         {% if not v.featured %}
-			<option value="{% url 'crash_version' v.str_without_product %}" {% if version = v.str_without_product %}selected="selected"{% endif %}>{{ v }}</option>
+			<option value="{% url 'crash_version' v.str_without_product %}" {% if version == v.str_without_product %}selected="selected"{% endif %}>{{ v }}</option>
                         {% endif %}
                         {% endfor %}
                     </optgroup>
