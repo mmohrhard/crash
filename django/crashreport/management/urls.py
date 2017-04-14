@@ -13,6 +13,7 @@ urlpatterns = [
         url(r'add-bug$', views.add_bug_report),
         url(r'set-bug-status$', views.set_bug_status),
         url(r'create-daily-stats$', views.create_daily_stats),
+        url(r'add-version/(?P<version>.+)$', views.add_version),
         ]
 
 # vim:set shiftwidth=4 softtabstop=4 expandtab: */

@@ -88,4 +88,17 @@ def create_daily_stats(request):
                 crash_count[0].save()
     return HttpResponse('OK')
 
+@login_required
+@csrf_exempt
+def add_version(request, version):
+    if request.method != 'POST':
+        return HttpResponseNotAllowed('Only POST allowed')
+
+    parsed = Version.get_filter_params(version)
+    if len(parsed) != 4:
+        return HttpResponseBadRequest('Bad version string')
+
+    Version.objects.create_from_string(version)
+    return HttpResponse('Version added')
+
 # vim:set shiftwidth=4 softtabstop=4 expandtab: */
