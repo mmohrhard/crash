@@ -1,0 +1,12 @@
+{
+    "versions" : [
+        {
+            "name" : "3.2.3.4",
+            "featured" : true
+        },
+        {
+            "name" : "2.2.3.4",
+            "featured" : true
+        }
+    ]
+}
