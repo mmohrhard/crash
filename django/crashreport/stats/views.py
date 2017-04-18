@@ -99,6 +99,7 @@ def main(request):
     data['featured'] = featured_versions
     data['chart_data'] = chart_data
     data['version'] = 'current'
+    data['days'] = days
     return render(request, 'stats/main.html', data)
 
 def generate_bug_info(crash):
