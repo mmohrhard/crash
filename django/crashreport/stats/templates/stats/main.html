@@ -5,14 +5,17 @@
 <script src="{% static 'stats/js/Chart.min.js' %}"></script>
 {% endblock %}
 {% block content %}
-    <ul class="tc-result-count tc-filter">
-        <li class="tc-selector-heading">Days:</li>
-        <li><a {% if days == 1 %}class="selected" {% endif %} href="{% url 'main' %}?days=1">1</a></li>
-        <li><a {% if days == 3 %}class="selected" {% endif %} href="{% url 'main' %}?days=3">3</a></li>
-        <li><a {% if days == 7 %}class="selected" {% endif %} href="{% url 'main' %}?days=7">7</a></li>
-        <li><a {% if days == 14 %}class="selected" {% endif %} href="{% url 'main' %}?days=14">14</a></li>
-        <li><a {% if days == 28 %}class="selected" {% endif %} href="{% url 'main' %}?days=28">28</a></li>
-    </ul>
+    <div class="sel">
+        <ul class="tc-result-count tc-filter">
+            <li class="tc-selector-heading">Days:</li>
+            <li><a {% if days == 1 %}class="selected" {% endif %} href="{% url 'main' %}?days=1">1</a></li>
+            <li><a {% if days == 3 %}class="selected" {% endif %} href="{% url 'main' %}?days=3">3</a></li>
+            <li><a {% if days == 7 %}class="selected" {% endif %} href="{% url 'main' %}?days=7">7</a></li>
+            <li><a {% if days == 14 %}class="selected" {% endif %} href="{% url 'main' %}?days=14">14</a></li>
+            <li><a {% if days == 28 %}class="selected" {% endif %} href="{% url 'main' %}?days=28">28</a></li>
+        </ul>
+    </div>
+    <br>
     <canvas id="chart" width="600" height="400">
 
     </canvas>
