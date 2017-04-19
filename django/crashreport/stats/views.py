@@ -82,7 +82,7 @@ def generate_data_for_version(id, version, x_values, crashes):
 
 def generate_chart_data(featured_versions, days):
     data = {}
-    keys, values = CrashCount.objects.get_crash_count_processed(versions=featured_versions, time=days)
+    keys, values = CrashCount.objects.get_crash_count_processed(versions=featured_versions, time=days + 1)
     data['labels'] = keys
     data['datasets'] = []
     for id, version in enumerate(values.keys()):
