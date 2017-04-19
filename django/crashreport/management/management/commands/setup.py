@@ -7,11 +7,16 @@ import json
 import uuid
 import shutil
 import subprocess
+from random import randint
 from shutil import copyfile
+from datetime import timedelta
+
+from django.utils import timezone
 
 from base.models import Version
 from crashsubmit.models import UploadedCrash
 from symbols.handler import SymbolsUploadHandler
+from processor.models import CrashCount
 
 class Command(BaseCommand):
 
@@ -46,6 +51,16 @@ class Command(BaseCommand):
         for version in version_list:
             version
             Version.objects.create_from_string(version["name"], featured = version.get("featured", False))
+
+    def _create_chart_data(self):
+        days = 7
+        featured_versions = Version.objects.filter(featured=True)
+        for i in range(1, days):
+            for version in featured_versions:
+                date = timezone.now().today() - timedelta(days=(days + 1 - i))
+                crash_count = CrashCount.objects.get_or_create(version=version, date=date)
+                crash_count[0].count = randint(1,100)
+                crash_count[0].save()
 
     def _upload_crash_reports(self):
         crash_report_dir = os.path.join(settings.BASE_DIR, "setup", "crash_reports")
@@ -83,3 +98,4 @@ class Command(BaseCommand):
         self._move_symbols()
         self._create_versions()
         self._upload_crash_reports()
+        self._create_chart_data()
