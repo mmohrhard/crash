@@ -9,7 +9,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 
-from processor import MinidumpProcessor
+from .processor import MinidumpProcessor
 
 from .models import ProcessedCrash
 from .signals import do_process_uploaded_crash
