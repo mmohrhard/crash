@@ -29,7 +29,7 @@ SYMBOL_LOCATION = os.environ.get('SYMBOL_LOCATION', '/tmp/symbols/')
 
 SYMBOL_UPLOAD_DIR = os.environ.get('SYMBOL_UPLOAD_DIR', '/tmp/symbol_upload/')
 
-MINIDUMP_STACKWALK = os.environ.get('MINIDUMP_STACKWALK', 'minidump_stackwalk')
+MINIDUMP_STACKWALK = os.environ.get('MINIDUMP_STACKWALK', os.path.join(BASE_DIR, "../../bin/minidump_stackwalk"))
 
 SYMBOL_PROCESSING = os.environ.get('SYMBOL_PROCESSING', os.path.join(BASE_DIR, "../../tools/process-symbols/process-symbols.py"))
 
