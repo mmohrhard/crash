@@ -32,6 +32,7 @@ import debug_toolbar
 
 urlpatterns = [
     url(r'^$', RedirectView.as_view(url='/stats/')),
+    url(r'^api/', include('api.urls')),
     url(r'^submit/', include('crashsubmit.urls')),
     url(r'^process/', include('processor.urls')),
     url(r'^symbols/', include('symbols.urls')),

@@ -8,7 +8,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect, \
     HttpResponseBadRequest, Http404
-
 from processor.models import ProcessedCrash, Signature, CrashCount, BugReport
 from base.models import Version
 from django.contrib.staticfiles import finders
@@ -220,10 +219,10 @@ class TopCrashesView(ListViewBase):
         top_crash = ProcessedCrash.objects.get_top_crashes(time=days, limit=limit, version=version)
         return top_crash
 
-# vim:set shiftwidth=4 softtabstop=4 expandtab: */
-
 def crash_search(request):
     if request.method == 'POST' and request.POST['search_id']:
         crash_id = (request.POST['search_id']).strip()
         return redirect('crash_details', crash_id=crash_id)
     raise Http404()
+
+# vim:set shiftwidth=4 softtabstop=4 expandtab: */
