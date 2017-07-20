@@ -15,11 +15,9 @@
             <li><a class="days" id="28" href="#" onclick="getChartData(id)">28</a></li>
         </ul>
     </div>
-    <br>
-    <canvas id="chart" width="800" height="600">
-
-    </canvas>
-    <script src="{% static 'stats/js/chart-data.js' %}"></script>
-
-    <br>
+    <div class="canvas-placeholder">
+        <canvas id="chart" width="800" height="600">
+        </canvas>
+        <script src="{% static 'stats/js/chart-data.js' %}"></script>
+    </div>
 {% endblock %}
