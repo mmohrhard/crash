@@ -11,6 +11,7 @@ from . import views
 
 urlpatterns = [
         url(r'get/crash-count$', views.api_crash_count, name='api_crash_count'),
+        url(r'get/chart-data/([1-9]{1,2})$', views.api_chart_data, name='api_chart_data'),
         ]
 
 # vim:set shiftwidth=4 softtabstop=4 expandtab: */
