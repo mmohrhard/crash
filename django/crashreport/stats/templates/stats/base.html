@@ -25,51 +25,52 @@
 </head>
 <body>
     <div class="version-nav">
-        <ul class="filter">
-            <li class"version_select">
-                <label for="version_select">Select Version:</label>
-		<select name='version_select' id="version_select" onchange="version_dropdown()">
-                    <optgroup label=" ">
-                        <option value="{% url 'main'%}" {% if version == "current" %}selected{% endif %}>Current Versions</option>
-                        {% for v in versions %}
-                        {% if v.featured %}
-			<option value="{% url 'crash_version' v.str_without_product %}" {% if version == v.str_without_product %}selected="selected"{% endif %}>{{ v }}</option>
-                        {% endif %}
-                        {% endfor %}
-                    </optgroup>
-                    <optgroup label=" ">
-                        {% for v in versions %}
-                        {% if not v.featured %}
-			<option value="{% url 'crash_version' v.str_without_product %}" {% if version == v.str_without_product %}selected="selected"{% endif %}>{{ v }}</option>
-                        {% endif %}
-                        {% endfor %}
-                    </optgroup>
-                </select>
-            </li>
-            <li>
-                <form id="search_form" method="POST" action="{% url 'crash_search' %}">
-                    {% csrf_token %}
-                    <label for="search_id">ID Search:</label>
-                    <input id="search_id" name='search_id' type="text" />
-                    <button type="submit">Search</button>
-                </form>
-            </li>
-        </ul>
+        <div class="filter">
+	    <div class="width_33">
+                <p>LibreOffice Crash Reports</p>
+            </div>
+            <div class"version_select width_34">
+                <p>
+		    <label for="version_select">Select Version: </label>
+		    <select name='version_select' id="version_select" onchange="version_dropdown()">
+                        <optgroup label=" ">
+                            <option value="{% url 'main'%}" {% if version == "current" %}selected{% endif %}>Current Versions</option>
+                            {% for v in versions %}
+                            {% if v.featured %}
+		       	    <option value="{% url 'crash_version' v.str_without_product %}" {% if version == v.str_without_product %}selected="selected"{% endif %}>{{ v }}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </optgroup>
+                        <optgroup label=" ">
+                            {% for v in versions %}
+                            {% if not v.featured %}
+			    <option value="{% url 'crash_version' v.str_without_product %}" {% if version == v.str_without_product %}selected="selected"{% endif %}>{{ v }}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </optgroup>
+                    </select>
+		</p>
+            </div>
+            <div class="width_33">
+                <p>
+		    <form id="search_form" method="POST" action="{% url 'crash_search' %}">
+                        {% csrf_token %}
+                        <label for="search_id">ID Search:</label>
+                        <input id="search_id" name='search_id' type="text" />
+                        <button type="submit">Search</button>
+                    </form>
+		</p>
+            </div>
+        </div>
     </div>
     <div class="content">
     {% block content %}
     {% endblock %}
     </div>
     <div id="footer" class="page-footer">
-        <div class="nav">
-            <div class="about">
-                <strong>LibreOffice Crash Reports</strong> - Powered by <a href="https://github.com/mmohrhard/crash">Crash</a>. Inspired by <a href="https://github.com/mozilla/socorro">Socorro</a> - All dates are UTC
-            </div>
-            <ul>
-                <li><a href="https://github.com/mmohrhard/crash">Source</a></li>
-                <li><a href="https://www.libreoffice.org/imprint">Impressum (some German legal stuff)</a></li>
-            </ul>
-        </div>
+        <p class="about">
+            <strong>LibreOffice Crash Reports</strong> - Powered by <a href="https://github.com/mmohrhard/crash">Crash</a> - Inspired by <a href="https://github.com/mozilla/socorro">Socorro</a> - All dates are UTC - <a href="https://www.libreoffice.org/imprint">Impressum (some German legal stuff)</a>
+        </p>
     </div>
 </body>
 </html>

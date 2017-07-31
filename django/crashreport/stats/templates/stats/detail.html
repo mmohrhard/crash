@@ -122,11 +122,11 @@
             <a href="https://bugs.documentfoundation.org/enter_bug.cgi?product=LibreOffice&component=Base&{{create_bug}}">Base</a>
             </p>
 
-            <div>
+            <p>
                 {% for bug in crash.signature.bugs.all %}
                 <a class="bug_link {% if bug.fixed %}bug_fixed {%endif%}" href="{{bug.get_url}}">{{bug}}</a>
                 {%endfor%}
-            </div>
+            </p>
         </div>
 
         <div id="frames">

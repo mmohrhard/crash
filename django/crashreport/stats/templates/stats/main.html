@@ -1,6 +1,9 @@
 {% extends 'stats/base.html' %}
 {% load static from staticfiles %}
 {% block title %}Crash reporting for the LibreOffice project{% endblock %}
+{% block additional_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'stats/css/main.css' %}" media="screen" />
+{% endblock %}
 {% block additional_js %}
 <script src="{% static 'stats/js/Chart.min.js' %}"></script>
 {% endblock %}
@@ -15,15 +18,14 @@
             <li><a {% if days == 28 %}class="selected" {% endif %} href="{% url 'main' %}?days=28">28</a></li>
         </ul>
     </div>
-    <br>
-    <canvas id="chart" width="800" height="600">
+    <div class="canvas-placeholder">
+        <canvas id="chart" width="800" height="600">
 
-    </canvas>
+        </canvas>
+    </div>
     <script>
         var data = {{chart_data|safe}};
         var chart = document.getElementById('chart').getContext('2d');
         new Chart(chart).Line(data, {scaleBeginAtZero : true, multiTooltipTemplate: "<%= datasetLabel %> - <%= value %>"});
     </script>
-
-    <br>
 {% endblock %}
