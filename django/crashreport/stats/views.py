@@ -45,60 +45,11 @@ class ListViewBase(ListView):
         version = '5.1.0.0'
         return HttpResponseRedirect(reverse(base_url, {'product': product, 'version': version}))
 
-class ChartColorMap(object):
-
-    color_list = [ "rgba(255, 255, 171, {0})",
-                "rgba(190, 186, 218, {0})", "rgba(251, 128, 114, {0})", "rgba(128, 177, 211, {0})",
-                "rgba(253, 180, 98, {0})", "rgba(179, 222, 105, {0})", "rgba(252, 205, 229, {0})",
-                "rgba(217, 217, 217, {0})", "rgba(188, 128, 189, {0})", "rgba(141, 211, 199, {0})" ]
-
-    @classmethod
-    def get_color_by_index(cls, index, alpha = 1):
-        return cls.color_list[index].format(alpha)
-
-def generate_data_for_version(id, version, x_values, crashes):
-    values = []
-    for x in x_values:
-        if x in crashes:
-            values.append(crashes[x])
-        else:
-            values.append(None)
-
-    data = {}
-    data['label'] = version
-
-    color = ChartColorMap.get_color_by_index(id, 1)
-    color_with_alpha = ChartColorMap.get_color_by_index(id, 0.2)
-    data['fillColor'] = color_with_alpha
-    data['strokeColor'] = color
-    data['pointColor'] = color
-    data['pointStrokeColor'] = "#fff"
-    data['pointHighlightFill'] = "#fff"
-    data['pointHighlightStroke'] = "#fff"
-
-    data['data'] = values
-    return data
-
-def generate_chart_data(featured_versions, days):
-    data = {}
-    keys, values = CrashCount.objects.get_crash_count_processed(versions=featured_versions, time=days + 1)
-    data['labels'] = keys
-    data['datasets'] = []
-    for id, version in enumerate(values.keys()):
-        data['datasets'].append(generate_data_for_version(id, version, keys, values[version]))
-    return data
-
 def main(request):
     featured_versions = Version.objects.filter(featured=True)
-    days = int(request.GET.get('days', 7))
-    generated_chart_data = generate_chart_data(featured_versions, days)
-    # TODO: moggi: load the chart data through a rest api dynamically
-    chart_data = json.dumps(generated_chart_data)
     data = generate_product_version_data()
     data['featured'] = featured_versions
-    data['chart_data'] = chart_data
     data['version'] = 'current'
-    data['days'] = days
     return render(request, 'stats/main.html', data)
 
 def generate_bug_info(crash):

@@ -8,22 +8,18 @@
     <div class="sel">
         <ul class="tc-result-count tc-filter">
             <li class="tc-selector-heading">Days:</li>
-            <li><a {% if days == 1 %}class="selected" {% endif %} href="{% url 'main' %}?days=1">1</a></li>
-            <li><a {% if days == 3 %}class="selected" {% endif %} href="{% url 'main' %}?days=3">3</a></li>
-            <li><a {% if days == 7 %}class="selected" {% endif %} href="{% url 'main' %}?days=7">7</a></li>
-            <li><a {% if days == 14 %}class="selected" {% endif %} href="{% url 'main' %}?days=14">14</a></li>
-            <li><a {% if days == 28 %}class="selected" {% endif %} href="{% url 'main' %}?days=28">28</a></li>
+            <li><a class="days" id="1" href="#" onclick="getChartData(id)">1</a></li>
+            <li><a class="days" id="3" href="#" onclick="getChartData(id)">3</a></li>
+            <li><a class="days" id ="7" href="#" onclick="getChartData(id)">7</a></li>
+            <li><a class="days" id="14" href="#" onclick="getChartData(id)">14</a></li>
+            <li><a class="days" id="28" href="#" onclick="getChartData(id)">28</a></li>
         </ul>
     </div>
     <br>
     <canvas id="chart" width="800" height="600">
 
     </canvas>
-    <script>
-        var data = {{chart_data|safe}};
-        var chart = document.getElementById('chart').getContext('2d');
-        new Chart(chart).Line(data, {scaleBeginAtZero : true, multiTooltipTemplate: "<%= datasetLabel %> - <%= value %>"});
-    </script>
+    <script src="{% static 'stats/js/chart-data.js' %}"></script>
 
     <br>
 {% endblock %}
