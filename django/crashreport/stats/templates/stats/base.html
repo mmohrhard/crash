@@ -26,7 +26,7 @@
 <body>
     <div class="version-nav">
         <div class="filter">
-	    <div class="width_33">
+	    <div class="width_33 left_pad">
                 <p>LibreOffice Crash Reports</p>
             </div>
             <div class="version_select width_34">
@@ -51,7 +51,7 @@
                     </select>
 		</p>
             </div>
-            <div class="width_33">
+            <div class="width_33 right_pad">
                 <p>
 		    <form id="search_form" method="POST" action="{% url 'crash_search' %}">
                         {% csrf_token %}
