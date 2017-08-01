@@ -50,10 +50,6 @@ def main():
             'csrfmiddlewaretoken': csrftoken }
     r1 = session.post(login_url, data=login_data, headers={"Referer": login_url})
 
-    if not r1.ok:
-        print("Could not log into the crashreporter website")
-        sys.exit(1)
-
     for bug in bugs:
 
         bug_id = bug.id
