@@ -46,6 +46,8 @@ class MinidumpProcessor(object):
                 os_version.append(line)
             elif line.startswith('CPU'):
                 cpu.append(line)
+            elif line.startswith('GPU'):
+                pass
             elif line.startswith('Crash'):
                 crash.append(line)
             elif line.startswith('Module'):
