@@ -48,7 +48,7 @@ class ChartColorMap(object):
 
     @classmethod
     def get_color_by_index(cls, index, alpha = 1):
-        return cls.color_list[index].format(alpha)
+        return cls.color_list[index % len(cls.color_list)].format(alpha)
 
 def generate_data_for_version(id, version, x_values, crashes):
     values = []
