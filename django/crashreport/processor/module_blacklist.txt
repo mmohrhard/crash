@@ -10,3 +10,10 @@ odbc32.dll
 setupapi.dll
 gdi32.dll
 msvcrt.dll
+ucrtbase.dll
+VCRUNTIME140.dll
+nviewH64.dll
+user32.dll
+atioglxx.dll
+atio6axx.dll
+combase.dll
