@@ -116,26 +116,36 @@ def fetch_and_dump_symbols(tmpdir, debug_id, debug_file,
                 os.unlink(bin_path)
             return syms
         except subprocess.CalledProcessError as e:
-            if bin_path is None and e.output.splitlines()[0].split()[2] == 'x86_64':
-                # Can't dump useful symbols for Win64 PDBs without binaries.
-                if code_id and code_file:
-                    log.debug('Fetching binary %s, %s', code_id, code_file)
-                    bin_path = fetch_symbol_and_decompress(tmpdir, code_id, code_file)
-                    if bin_path:
-                        log.debug('Fetched binary %s', bin_path)
-                        split_bin_path = os.path.splitext(bin_path)
-                        split_pdb_path = os.path.splitext(pdb_path)
-                        if split_bin_path[0] != split_pdb_path[0]:
-                            os.rename(bin_path, split_pdb_path[0] + ".dll")
-                            bin_path = split_pdb_path[0] + ".dll"
-                            log.warn('Renamed binary to %s', bin_path)
+            if bin_path is None:
+                splitlines = e.output.splitlines()
+                if len(splitlines) == 0:
+                    return None
+
+                if len(splitlines[0].split()) < 3:
+                    return None
+
+                if splitlines[0].split()[2] == 'x86_64':
+                    # Can't dump useful symbols for Win64 PDBs without binaries.
+                    if code_id and code_file:
+                        log.debug('Fetching binary %s, %s', code_id, code_file)
+                        bin_path = fetch_symbol_and_decompress(tmpdir, code_id, code_file)
+                        if bin_path:
+                            log.debug('Fetched binary %s', bin_path)
+                            split_bin_path = os.path.splitext(bin_path)
+                            split_pdb_path = os.path.splitext(pdb_path)
+                            if split_bin_path[0] != split_pdb_path[0]:
+                                os.rename(bin_path, split_pdb_path[0] + ".dll")
+                                bin_path = split_pdb_path[0] + ".dll"
+                                log.warn('Renamed binary to %s', bin_path)
+                        else:
+                            log.warn("Couldn't fetch binary for %s, %s",
+                                     code_id, code_file)
+                            raise Win64ProcessError()
+                        continue
                     else:
-                        log.warn("Couldn't fetch binary for %s, %s",
-                                 code_id, code_file)
                         raise Win64ProcessError()
-                    continue
                 else:
-                    raise Win64ProcessError()
+                    return None
             return None
 
 
