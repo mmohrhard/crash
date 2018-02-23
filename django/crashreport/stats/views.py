@@ -81,6 +81,14 @@ def get_os_info(crashes):
 
     return data
 
+def get_os_detail_info(crashes):
+    detail_info = crashes.values('os_detail_parsed').annotate(Count('os_detail_parsed'))
+    data = {}
+    for detail in detail_info:
+        data[detail['os_detail_parsed']] = detail['os_detail_parsed__count']
+
+    return data
+
 def get_cpu_architecture(crashes):
     cpu_architecture = crashes.values('cpu_architecture').annotate(Count('cpu_architecture'))
 
@@ -111,6 +119,7 @@ class SignatureView(ListViewBase):
 
         crashes = ProcessedCrash.objects.filter(signature = signature_object)
         context['os_info'] = get_os_info(crashes)
+        context['os_detail_info'] = get_os_detail_info(crashes)
         context['cpu_info'] = get_cpu_architecture(crashes)
         context['version_info'] = get_version_info(crashes)
         return context

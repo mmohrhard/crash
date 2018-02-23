@@ -84,6 +84,7 @@ class MinidumpProcessor(object):
         os_detail = parsed_line[2]
         self.processed_crash.os_detail = os_detail
         self.processed_crash.set_view_os_name_to_model(os_name)
+        self.processed_crash.set_view_os_detail_parsed_to_model(os_detail)
 
     def _parse_frames(self, frames):
         threads = {}

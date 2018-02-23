@@ -193,6 +193,9 @@ class ProcessedCrash(models.Model):
     os_detail = models.CharField(max_length=100,
             default='')
 
+    os_detail_parsed = models.CharField(max_length=100,
+            default='')
+
     # CPU info
     cpu_architecture = models.CharField(max_length=20)
 
@@ -235,6 +238,15 @@ class ProcessedCrash(models.Model):
             self.os_name = ProcessedCrash.OSX
         else:
             logger.warning("could not determine the os: " + view_is_name)
+
+    def set_view_os_detail_parsed_to_model(self, view_os_detail):
+        if self.os_name == ProcessedCrash.LINUX:
+            self.os_detail_parsed = self.os_name + ' ' + \
+                    view_os_detail.split('Linux ')[1].split('-')[0]
+        elif self.os_name == ProcessedCrash.WINDOWS or self.os_name == ProcessedCrash.OSX:
+            self.os_detail_parsed = self.os_name + ' ' + view_os_detail
+        else:
+            self.os_detail_parsed = view_os_detail
 
     def _convert_frames(self, frame_list):
         text = ""

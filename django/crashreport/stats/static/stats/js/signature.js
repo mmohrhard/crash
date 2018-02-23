@@ -1,8 +1,9 @@
-$(document).ready(function() 
-{ 
+$(document).ready(function()
+{
     $("#tabs").tabs();
     $("#os_tab").tabs();
     $("#cpu_tab").tabs();
+    $("#os_detail_tab").tabs();
     $("#version_tab").tabs();
-} 
-); 
+}
+);
