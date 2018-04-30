@@ -7,6 +7,7 @@
 
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseBadRequest
+from django.http.response import HttpResponseNotAllowed
 from django import forms
 from django.shortcuts import get_object_or_404
 
