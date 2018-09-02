@@ -234,12 +234,12 @@ class ProcessedCrash(models.Model):
         elif view_os_name.lower() == ProcessedCrash.OSX:
             self.os_name = ProcessedCrash.OSX
         else:
-            logger.warning("could not determine the os: " + view_is_name)
+            logger.warning("could not determine the os: " + view_os_name)
 
     def _convert_frames(self, frame_list):
         text = ""
         for frame in frame_list:
-            text += self._convert_frame(frame) + "\n"
+            text += self._convert_frames(frame) + "\n"
         return text
 
     def _find_frame(self, json_frame_list):
