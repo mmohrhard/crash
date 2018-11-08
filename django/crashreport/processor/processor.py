@@ -94,6 +94,8 @@ class MinidumpProcessor(object):
             lib_name = parsed_line[2]
             function_name = parsed_line[3]
             file_name = parsed_line[4]
+            if file_name.startswith("/home/buildslave/source/libo-core/"):
+                file_name = file_name.replace("/home/buildslave/source/libo-core/", "")
             line_number = parsed_line[5]
             offset = parsed_line[6]
 
