@@ -113,7 +113,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': os.environ.get('DB_NAME', 'crashreport'),
 
-        'USER': os.environ.get('DB_USER', 'moggi'),
+        'USER': os.environ.get('DB_USER', os.environ.get('USER')),
         'PASSWORD': os.environ.get('DB_PASSWORD', ''),
         'HOST': os.environ.get('DB_HOST', '127.0.0.1'),                      # Empty for localhost through domain sockets or           '127.0.0.1' for localhost through TCP.
         'PORT': os.environ.get('DB_PORT', ''),                      # Set to empty string for default.
@@ -153,7 +153,11 @@ USE_L10N = True
 
 USE_TZ = True
 
-LOGGING_DIR = os.environ.get('LOGGING_DIR', '/home/moggi/django_logs/')
+HOME_DIR = os.path.expanduser("~")
+if not os.path.exists("{}/django_logs".format(HOME_DIR)):
+    os.mkdir("{}/django_logs".format(HOME_DIR))
+
+LOGGING_DIR = os.environ.get('LOGGING_DIR', "{}/django_logs/".format(HOME_DIR))
 
 LOGGING = {
     'version': 1,
