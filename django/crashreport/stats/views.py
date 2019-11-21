@@ -26,14 +26,14 @@ logger = logging.getLogger(__name__)
 
 def generate_product_version_data():
     data = {}
-    data['versions'] = Version.objects.all()
+    data['versions'] = Version.objects.order_by('-major_version', '-minor_version', '-micro_version', '-patch_version')
     return data
 
 class ListViewBase(ListView):
     # this is an abstract class, each subclass needs to set at least the template_name and base_url
 
     def generate_product_version_data(self, data):
-        data['versions'] = Version.objects.all()
+        data['versions'] = Version.objects.order_by('-major_version', '-minor_version', '-micro_version', '-patch_version')
 
     def get_context_data(self, **kwargs):
         context = super(ListView, self).get_context_data(**kwargs)
@@ -46,7 +46,7 @@ class ListViewBase(ListView):
         return HttpResponseRedirect(reverse(base_url, {'product': product, 'version': version}))
 
 def main(request):
-    featured_versions = Version.objects.filter(featured=True)
+    featured_versions = Version.objects.filter(featured=True).order_by('-major_version', '-minor_version', '-micro_version', '-patch_version')
     data = generate_product_version_data()
     data['featured'] = featured_versions
     data['version'] = 'current'
