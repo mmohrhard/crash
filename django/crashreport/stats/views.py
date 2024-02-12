@@ -122,6 +122,7 @@ class SignatureView(ListViewBase):
         if version is not None:
             version_filter_params = Version.get_filter_params(version, prefix='version__')
             crashes = crashes.filter(**version_filter_params)
+        crashes = crashes.order_by("-upload_time")
         return crashes
 
     def post(self, request, *args, **kwargs):
