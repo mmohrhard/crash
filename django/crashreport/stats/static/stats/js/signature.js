@@ -4,5 +4,7 @@ $(document).ready(function()
     $("#os_tab").tabs();
     $("#cpu_tab").tabs();
     $("#version_tab").tabs();
+
+    $("#data-table").tablesorter({sortList: [[1,1], [5,1]]});
 } 
 ); 
